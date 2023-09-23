@@ -1,4 +1,5 @@
 import '@/styles/global.css';
+import 'react-activity/dist/library.css';
 
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
