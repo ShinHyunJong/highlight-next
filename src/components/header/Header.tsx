@@ -17,7 +17,7 @@ function Header({
   }, [mounted]);
 
   return (
-    <header className="absolute top-0 z-50 flex h-[50px] w-full items-center justify-center px-4 shadow-lg">
+    <header className="fixed top-0 z-50 flex h-[50px] w-full items-center justify-center bg-gray-900 px-4 shadow-lg">
       {mounted && !isRoot && (
         <button
           className="absolute left-4"
