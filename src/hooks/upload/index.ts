@@ -58,7 +58,7 @@ export function useUpload() {
       const fileList = [...files];
       const result = await Promise.all(
         fileList.map(async (file) => {
-          const { url, compressedResult } = await compressImage(file, 0.8);
+          const { url, compressedResult } = await compressImage(file, 0.7);
           const { url: thumbSrc } = await compressImage(file, 0.1);
           const image = await createImage(url);
           const ratio = calculateRatio(image.width, image.height);
