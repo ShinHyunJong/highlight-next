@@ -9,10 +9,18 @@ class MyDocument extends Document {
     return (
       <Html lang={AppConfig.locale}>
         <Head>
-          <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js" />
+          <script
+            src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"
+            async
+          />
           <script
             type="text/javascript"
             src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+            async
+          />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
           />
         </Head>
         <body>
