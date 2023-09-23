@@ -59,6 +59,7 @@ export function useUpload() {
       const result = await Promise.all(
         fileList.map(async (file) => {
           const { url, compressedResult } = await compressImage(file, 0.8);
+          const { url: thumbSrc } = await compressImage(file, 0.1);
           const image = await createImage(url);
           const ratio = calculateRatio(image.width, image.height);
           const croppedHeight = image.width / ratio;
@@ -67,6 +68,7 @@ export function useUpload() {
             id: generateRandomNumber(),
             file: compressedResult,
             src: url,
+            thumbSrc,
             name: file.name,
             width: image.width,
             height: image.height,
