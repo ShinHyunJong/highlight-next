@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
+
+import Header from '@/components/header/Header';
 
 function HeaderTemplate({
   children,
@@ -11,16 +11,9 @@ function HeaderTemplate({
   children: ReactNode;
   rightNode?: ReactNode;
 }) {
-  const { back } = useRouter();
   return (
-    <section className="relative mx-auto h-full max-w-[600px]">
-      <header className="absolute top-0 z-50 flex h-[50px] w-full items-center justify-between px-4 shadow-lg">
-        <button type="button" onClick={() => back()}>
-          <FaArrowLeft />
-        </button>
-        <p>{title}</p>
-        <div>{rightNode && rightNode}</div>
-      </header>
+    <section className="relative mx-auto h-full w-full max-w-[600px]">
+      <Header title={title} rightNode={rightNode} />
       <section className="h-full w-full pt-[50px]">{children}</section>
     </section>
   );

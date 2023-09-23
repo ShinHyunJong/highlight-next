@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
 
@@ -15,7 +15,7 @@ function PhotoController() {
   const [uploadingImageList, setUploadingImageList] = useAtom(
     uploadAtom.uploadingImageList,
   );
-  const staticUploadingImageList = useAtomValue(
+  const [staticUploadingImageList, setStatic] = useAtom(
     uploadAtom.staticUploadingImageList,
   );
   const [selectedImage, setSelectedImage] = useState<
@@ -28,6 +28,13 @@ function PhotoController() {
     if (staticUploadingImageList.length === 0) return;
     setSelectedImage(staticUploadingImageList[0]);
   }, [staticUploadingImageList]);
+
+  useEffect(() => {
+    return () => {
+      setUploadingImageList([]);
+      setStatic([]);
+    };
+  }, []);
 
   const onSubmit = () => {};
 

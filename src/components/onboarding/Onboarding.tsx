@@ -25,7 +25,7 @@ function Onboarding() {
   if (!loaded || onboarded) return null;
   return (
     <div
-      className={`absolute inset-0 z-[40] h-full w-full ${
+      className={`absolute inset-0 z-[40] w-full ${
         onboarded ? 'opacity-0' : 'opacity-100'
       } bg-slate-900 transition-all duration-200 ease-out`}
     >

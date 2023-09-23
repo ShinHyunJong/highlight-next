@@ -3,9 +3,11 @@ import 'swiper/css';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import HomeScreen from '@/components/home/HomeScreen';
 import ProfileScreen from '@/components/home/ProfileScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
-import AppTemplate from '@/templates/AppTemplate';
+import AddMusic from '@/components/post/AddMusic';
+import PhotoController from '@/components/post/PhotoController';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -66,11 +68,15 @@ const Index = () => {
   const renderRoutes = () => {
     switch (tab) {
       case 'home':
-        return <div>Home</div>;
+        return <HomeScreen />;
       case 'profile':
         return <ProfileScreen />;
+      case 'upload':
+        return <PhotoController />;
+      case 'pick':
+        return <AddMusic />;
       default:
-        return <div>Home</div>;
+        return <HomeScreen />;
     }
   };
 
@@ -81,6 +87,5 @@ const Index = () => {
     </section>
   );
 };
-Index.Template = AppTemplate;
 
 export default Index;

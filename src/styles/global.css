@@ -10,10 +10,13 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.deviceHeight {
+  height: 100svh;
+}
+
+
 @layer base{
-    body {
-        @apply dark:bg-gray-900 bg-white
-    }
+
 }
 
 .clearButton {

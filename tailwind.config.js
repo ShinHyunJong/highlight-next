@@ -19,7 +19,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        gray: color.gray,
         beige: {
           100: '#EBEAE1',
         },

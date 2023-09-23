@@ -13,7 +13,7 @@ function ProfileScreen() {
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
-      router.push('/post');
+      router.push('/?tab=upload');
       await processFileList(files);
     } catch (error) {
       console.log(error);
