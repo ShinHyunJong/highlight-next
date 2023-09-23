@@ -1,4 +1,4 @@
-module.exports = {
+const colors = {
   gray: {
     100: '#f7fafc',
     200: '#edf2f7',
@@ -11,3 +11,4 @@ module.exports = {
     900: '#1a202c',
   },
 };
+module.exports = colors;

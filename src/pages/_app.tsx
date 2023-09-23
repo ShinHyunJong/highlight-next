@@ -2,6 +2,7 @@ import '@/styles/global.css';
 
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
+import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode } from 'react';
 
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -24,6 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const props = Component.props || {};
   return (
     <Provider>
+      <NextNProgress color="#ffffff" options={{ showSpinner: false }} />
       <ThemeProvider
         attribute="class"
         defaultTheme="dark"

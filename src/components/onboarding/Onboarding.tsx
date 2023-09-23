@@ -27,7 +27,7 @@ function Onboarding() {
     <div
       className={`absolute inset-0 z-[40] h-full w-full ${
         onboarded ? 'opacity-0' : 'opacity-100'
-      } bg-beige-100 transition-all duration-200 ease-out`}
+      } bg-slate-900 transition-all duration-200 ease-out`}
     >
       <Swiper
         className="h-full w-full"
