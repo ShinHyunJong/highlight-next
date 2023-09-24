@@ -18,10 +18,6 @@ class MyDocument extends Document {
             src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
             async
           />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1"
-          />
         </Head>
         <body>
           <Main />
