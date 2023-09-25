@@ -7,7 +7,7 @@ import axios from 'axios';
 
 import storage from '@/storages';
 
-export const API_ENDPOINT = 'https://rich-blue-llama-wrap.cyclic.cloud';
+export const API_ENDPOINT = 'https://api-dev.discoverrealmusic.com';
 // export const API_ENDPOINT = 'http://localhost:4000';
 export const api = axios.create({
   baseURL: API_ENDPOINT,
