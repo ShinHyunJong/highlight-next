@@ -1,4 +1,5 @@
 import { useAtom } from 'jotai';
+import Image from 'next/image';
 import { useContext, useState } from 'react';
 import { Levels } from 'react-activity';
 
@@ -10,44 +11,47 @@ type AddMusicItemProps = {
   song: Song;
 };
 
-export type ItemHandle = {
-  play: () => void;
-  pause: () => void;
-} | null;
-
 function AddMusicItem({ song }: AddMusicItemProps) {
   const [playing, setPlaying] = useState(false);
   const { changeAudio, pause } = useContext(AudioContext);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
 
   const handlePlay = () => {
-    setPlayingAudio(song);
-    setPlaying((p) => {
-      if (!p) {
+    if (!song.previewUrl === null) {
+      window.alert("This song doesn't have a preview.");
+    }
+    setPlayingAudio((prev) => {
+      if (prev?.spotifyId !== song.spotifyId) {
         changeAudio(song.previewUrl);
-        return true;
+        return song;
       }
       pause();
-      return false;
+      return null;
     });
   };
 
-  console.log(song);
+  const active = playingAudio?.spotifyId === song.spotifyId;
 
   return (
     <button
       type="button"
       onClick={handlePlay}
-      className="clearButton flex w-full items-center justify-between p-4"
+      className="clearButton flex w-full flex-row justify-between p-4"
     >
-      <div className="flex flex-row gap-3">
-        <img alt={song.title} className="h-10 w-10" src={song.thumbUrl} />
-        <div className="flex flex-col items-start gap-1">
+      <div className="flex flex-1 flex-row items-center gap-3">
+        <Image
+          className="object-fill"
+          width={40}
+          height={40}
+          alt={song.title}
+          src={song.thumbUrl}
+        />
+        <div className="flex flex-col gap-1 text-left">
           <p className="text-sm font-semibold">{song.title}</p>
           <p className="text-sm text-gray-500">{song.artistName}</p>
         </div>
       </div>
-      <div>{playingAudio?.spotifyId && song.spotifyId && <Levels />}</div>
+      <div>{active && <Levels />}</div>
     </button>
   );
 }

@@ -31,6 +31,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ['p.scdn.co', 'i.scdn.co', 'assets.discoverrealmusic.com'],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
