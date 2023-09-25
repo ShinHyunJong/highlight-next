@@ -30,8 +30,21 @@ function AddMusic() {
   const [songList, setSongList] = useState<Song[]>([]);
   const [searching, setSearching] = useState(false);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
-  const { pause, changeAudio } = useContext(AudioContext);
+  const { pause, changeAudio, audio } = useContext(AudioContext);
   const setSelectedPickSong = useSetAtom(authAtom.selectedPickSong);
+  const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
+
+  useEffect(() => {
+    if (!audio) return;
+    audio.addEventListener('progress', () => {
+      if (
+        audio.buffered.length > 0 &&
+        audio.buffered.end(0) === audio.duration
+      ) {
+        setAudioBuffering(false);
+      }
+    });
+  }, [audio]);
 
   const getSongs = async (value: string) => {
     if (!value) return;
@@ -51,17 +64,20 @@ function AddMusic() {
   }, [debouncedValue]);
 
   const handlePlay = (song: Song) => {
-    if (!song.previewUrl === null) {
+    setAudioBuffering(true);
+    if (!song.previewUrl) {
+      setAudioBuffering(false);
       window.alert("This song doesn't have a preview.");
+    } else {
+      setPlayingAudio((prev) => {
+        if (prev?.spotifyId !== song.spotifyId) {
+          changeAudio(song.previewUrl);
+          return song;
+        }
+        pause();
+        return null;
+      });
     }
-    setPlayingAudio((prev) => {
-      if (prev?.spotifyId !== song.spotifyId) {
-        changeAudio(song.previewUrl);
-        return song;
-      }
-      pause();
-      return null;
-    });
   };
 
   const handleAdd = (song: Song) => {

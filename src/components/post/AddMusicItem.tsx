@@ -1,7 +1,7 @@
 import colors from 'color';
 import { useAtom, useAtomValue } from 'jotai';
 import Image from 'next/image';
-import { Levels } from 'react-activity';
+import { Levels, Spinner } from 'react-activity';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaCheck } from 'react-icons/fa';
 
@@ -18,11 +18,20 @@ type AddMusicItemProps = {
 function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
+  const buffering = useAtomValue(audioAtom.audioBuffering);
 
   const active = playingAudio?.spotifyId === song.spotifyId;
   const added = selectedPickSong
     .map((s) => s.spotifyId)
     .includes(song.spotifyId);
+
+  const renderLevel = () => {
+    if (!active || !playingAudio) return null;
+    if (buffering) {
+      return <Spinner size={12} />;
+    }
+    return <Levels size={14} />;
+  };
 
   return (
     <button
@@ -44,7 +53,7 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
         </div>
       </div>
       <div className="flex items-center justify-end gap-2">
-        <div>{active && <Levels size={14} />}</div>
+        <div>{renderLevel()}</div>
         <button
           type="button"
           onClick={(e) => {
