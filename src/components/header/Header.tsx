@@ -28,7 +28,7 @@ function Header({
         </button>
       )}
       <p>{title}</p>
-      <div>{rightNode && rightNode}</div>
+      <div className="absolute right-4">{rightNode && rightNode}</div>
     </header>
   );
 }

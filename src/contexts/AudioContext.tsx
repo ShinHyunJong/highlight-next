@@ -1,5 +1,8 @@
+import { useSetAtom } from 'jotai';
 import type { ReactNode } from 'react';
-import { createContext, useEffect, useRef } from 'react';
+import { createContext, useRef } from 'react';
+
+import audioAtom from '@/atoms/audio';
 
 const AudioContext = createContext({
   audioRef: null,
@@ -10,20 +13,21 @@ const AudioContext = createContext({
 
 function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const setPlayingAudio = useSetAtom(audioAtom.playingAudio);
 
-  useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.volume = 0.3;
-    audioRef.current.addEventListener('progress', function () {
-      // Check if the audio has been buffered completely
-      if (
-        audioRef.current.buffered.length > 0 &&
-        audioRef.current.buffered.end(0) === audioRef.current.duration
-      ) {
-        console.log('Audio has been buffered completely.');
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   if (!audioRef.current) return;
+  //   audioRef.current.volume = 0.3;
+  //   audioRef.current.addEventListener('progress', function () {
+  //     // Check if the audio has been buffered completely
+  //     if (
+  //       audioRef.current.buffered.length > 0 &&
+  //       audioRef.current.buffered.end(0) === audioRef.current.duration
+  //     ) {
+  //       console.log('Audio has been buffered completely.');
+  //     }
+  //   });
+  // }, []);
 
   const play = () => {
     audioRef?.current?.play();
@@ -39,6 +43,10 @@ function AudioProvider({ children }: { children: ReactNode }) {
     play();
   };
 
+  const handleEnd = () => {
+    setPlayingAudio(null);
+  };
+
   return (
     <AudioContext.Provider
       value={{
@@ -48,7 +56,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio,
       }}
     >
-      <audio ref={audioRef} />
+      <audio onEnded={handleEnd} ref={audioRef} />
       {children}
     </AudioContext.Provider>
   );

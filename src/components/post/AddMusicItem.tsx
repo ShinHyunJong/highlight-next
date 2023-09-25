@@ -1,42 +1,34 @@
-import { useAtom } from 'jotai';
+import colors from 'color';
+import { useAtom, useAtomValue } from 'jotai';
 import Image from 'next/image';
-import { useContext, useState } from 'react';
 import { Levels } from 'react-activity';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { FaCheck } from 'react-icons/fa';
 
 import audioAtom from '@/atoms/audio';
-import { AudioContext } from '@/contexts/AudioContext';
+import authAtom from '@/atoms/auth';
 import type { Song } from '@/types/server.type';
 
 type AddMusicItemProps = {
   song: Song;
+  handlePlay: (song: Song) => void;
+  handleAdd: (song: Song) => void;
 };
 
-function AddMusicItem({ song }: AddMusicItemProps) {
-  const [playing, setPlaying] = useState(false);
-  const { changeAudio, pause } = useContext(AudioContext);
+function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
-
-  const handlePlay = () => {
-    if (!song.previewUrl === null) {
-      window.alert("This song doesn't have a preview.");
-    }
-    setPlayingAudio((prev) => {
-      if (prev?.spotifyId !== song.spotifyId) {
-        changeAudio(song.previewUrl);
-        return song;
-      }
-      pause();
-      return null;
-    });
-  };
+  const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
 
   const active = playingAudio?.spotifyId === song.spotifyId;
+  const added = selectedPickSong
+    .map((s) => s.spotifyId)
+    .includes(song.spotifyId);
 
   return (
     <button
       type="button"
-      onClick={handlePlay}
-      className="clearButton flex w-full flex-row justify-between p-4"
+      onClick={() => handlePlay(song)}
+      className="clearButton flex w-full flex-row items-stretch justify-between gap-2 p-2"
     >
       <div className="flex flex-1 flex-row items-center gap-3">
         <Image
@@ -51,7 +43,22 @@ function AddMusicItem({ song }: AddMusicItemProps) {
           <p className="text-sm text-gray-500">{song.artistName}</p>
         </div>
       </div>
-      <div>{active && <Levels />}</div>
+      <div className="flex items-center justify-end gap-2">
+        <div>{active && <Levels size={14} />}</div>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAdd(song);
+          }}
+        >
+          {added ? (
+            <FaCheck />
+          ) : (
+            <AiOutlinePlusCircle color={colors.gray[200]} />
+          )}
+        </button>
+      </div>
     </button>
   );
 }
