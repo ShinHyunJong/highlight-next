@@ -8,6 +8,7 @@ import type { Song } from '@/types/server.type';
 
 import Greeting from '../header/Gretting';
 import { Input } from '../ui/input';
+import AddMusicItem from './AddMusicItem';
 
 type FormValues = {
   term: string;
@@ -66,20 +67,7 @@ function AddMusic() {
         <div className="flex w-full flex-col">
           {songList.map((song) => {
             return (
-              <div
-                key={song.appleId}
-                className="flex w-full items-center gap-4 p-4"
-              >
-                <img
-                  alt={song.title}
-                  className="h-10 w-10"
-                  src={song.thumbUrl}
-                />
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm font-semibold">{song.title}</p>
-                  <p className="text-sm text-gray-500">{song.artistName}</p>
-                </div>
-              </div>
+              <AddMusicItem key={`add-music-${song.spotifyId}`} song={song} />
             );
           })}
         </div>

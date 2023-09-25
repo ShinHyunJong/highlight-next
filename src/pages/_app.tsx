@@ -7,6 +7,7 @@ import Head from 'next/head';
 import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode } from 'react';
 
+import { AudioProvider } from '@/contexts/AudioContext';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -39,9 +40,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         defaultTheme="dark"
         disableTransitionOnChange
       />
-      <Template {...props}>
-        <Component {...pageProps} />
-      </Template>
+      <AudioProvider>
+        <Template {...props}>
+          <Component {...pageProps} />
+        </Template>
+      </AudioProvider>
     </Provider>
   );
 };

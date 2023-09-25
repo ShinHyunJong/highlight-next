@@ -7,5 +7,7 @@ export type Song = {
   durationMs: number;
   isrc: string;
   appleId: string;
+  spotifyId: string;
   thumbUrl: string;
+  previewUrl: string;
 };
