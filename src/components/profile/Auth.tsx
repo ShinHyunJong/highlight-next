@@ -13,12 +13,11 @@ import Greeting from '../header/Gretting';
 
 function Auth() {
   const router = useRouter();
-  const { postRegister } = useAuth();
+  const { postRegisterApple } = useAuth();
 
   useEffect(() => {
-    if (router.query.code || router.query.id_token) {
-      if (!router.query.code) return;
-      postRegister(
+    if (router.query.code && router.query.id_token) {
+      postRegisterApple(
         router.query.code?.toString(),
         router.query.id_token?.toString(),
       );
