@@ -31,7 +31,7 @@ export const useAuth = () => {
     try {
       const result = await registerAppleApi(code, id_token);
       storage.tokenStorage.setAccessToken(result.accessToken);
-      afterLogin();
+      await afterLogin();
     } catch (error) {}
   };
 
