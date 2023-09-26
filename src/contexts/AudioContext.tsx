@@ -36,8 +36,10 @@ function AudioProvider({ children }: { children: ReactNode }) {
   };
 
   const changeAudio = (src: string) => {
+    pause();
     if (!audioRef.current) return;
     audioRef.current.src = src || '';
+    audioRef?.current?.load();
     play();
   };
 
@@ -54,7 +56,12 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio,
       }}
     >
-      <audio onEnded={handleEnd} ref={audioRef} />
+      <audio
+        onLoad={() => console.log('onLoad')}
+        onPlay={() => console.log('play')}
+        onEnded={handleEnd}
+        ref={audioRef}
+      />
       {children}
     </AudioContext.Provider>
   );

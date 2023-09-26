@@ -2,7 +2,7 @@ import { api } from '@/requests';
 import type { Song } from '@/types/server.type';
 
 export async function getMeApi() {
-  const { data } = await api.post('/auth/me');
+  const { data } = await api.get('/auth/me');
   return data;
 }
 

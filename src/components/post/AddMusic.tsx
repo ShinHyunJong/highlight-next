@@ -45,7 +45,7 @@ function AddMusic() {
       console.log(audio.buffered.end(0), audio.duration);
       if (
         audio.buffered.length > 0 &&
-        audio.buffered.end(0) === audio.duration
+        audio.buffered.end(0) <= audio.duration
       ) {
         setAudioBuffering(false);
       }
