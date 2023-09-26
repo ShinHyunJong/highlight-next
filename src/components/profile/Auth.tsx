@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect } from 'react';
+import { Spinner } from 'react-activity';
 import { FaApple, FaGoogle } from 'react-icons/fa';
 
 import { useAuth } from '@/hooks/auth';
@@ -13,7 +14,7 @@ import Greeting from '../header/Gretting';
 
 function Auth() {
   const router = useRouter();
-  const { postRegisterApple } = useAuth();
+  const { postRegisterApple, signInLoading } = useAuth();
 
   useEffect(() => {
     if (router.query.code && router.query.id_token) {
@@ -101,28 +102,32 @@ function Auth() {
     <HeaderTemplate title="로그인">
       <section className="flex h-full w-full flex-col p-4">
         <Greeting textList={['Join us.!']} />
-        <div className="flex flex-col gap-4 py-8">
-          <button
-            type="button"
-            onClick={handleApple}
-            className="fullBtnShadow relative flex w-full items-center justify-center rounded-lg bg-black px-4 py-2 text-white"
-          >
-            <div className="absolute left-4">
-              <FaApple color="#ffffff" />
-            </div>
-            Sign with Apple
-          </button>
-          <button
-            type="button"
-            onClick={() => handleGoogle()}
-            className="fullBtnShadow relative flex w-full items-center justify-center rounded-lg bg-white px-4 py-2 text-gray-900 shadow-md"
-          >
-            <div className="absolute left-4">
-              <FaGoogle />
-            </div>
-            Sign with Google
-          </button>
-        </div>
+        {signInLoading ? (
+          <Spinner />
+        ) : (
+          <div className="flex flex-col gap-4 py-8">
+            <button
+              type="button"
+              onClick={handleApple}
+              className="fullBtnShadow relative flex w-full items-center justify-center rounded-lg bg-black px-4 py-2 text-white"
+            >
+              <div className="absolute left-4">
+                <FaApple color="#ffffff" />
+              </div>
+              Sign with Apple
+            </button>
+            <button
+              type="button"
+              onClick={() => handleGoogle()}
+              className="fullBtnShadow relative flex w-full items-center justify-center rounded-lg bg-white px-4 py-2 text-gray-900 shadow-md"
+            >
+              <div className="absolute left-4">
+                <FaGoogle />
+              </div>
+              Sign with Google
+            </button>
+          </div>
+        )}
       </section>
     </HeaderTemplate>
   );

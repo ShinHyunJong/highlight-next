@@ -4,8 +4,6 @@ import { FaPlus } from 'react-icons/fa';
 import { useUpload } from '@/hooks/upload';
 import AppTemplate from '@/templates/AppTemplate';
 
-import Auth from '../profile/Auth';
-
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, processing } = useUpload();
@@ -21,9 +19,6 @@ function ProfileScreen() {
 
   return (
     <section>
-      <div className="flex">
-        <Auth />
-      </div>
       <div className="mt-4 flex">
         <label className="cursor-pointer" htmlFor="upload">
           <FaPlus />

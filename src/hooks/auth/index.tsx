@@ -17,6 +17,7 @@ export const useAuth = () => {
   const [pickedSongList, setPickedSongList] = useAtom(
     authAtom.selectedPickSong,
   );
+  const [signInLoading, setSignInLoading] = useAtom(authAtom.signInLoading);
 
   const { data, isLoading, refetch } = useQuery('me', () => getMeApi());
 
@@ -25,9 +26,11 @@ export const useAuth = () => {
     setPickedSongList([]);
     router.replace('/?tab=profile');
     refetch();
+    setSignInLoading(false);
   };
 
   const postRegisterApple = async (code: string, id_token: string) => {
+    setSignInLoading(true);
     try {
       const result = await registerAppleApi(code, id_token);
       storage.tokenStorage.setAccessToken(result.accessToken);
@@ -36,10 +39,12 @@ export const useAuth = () => {
   };
 
   const postRegisterGoogle = async (email: string, googleId: string) => {
+    setSignInLoading(true);
+
     try {
       const result = await registerApi(email, googleId);
       storage.tokenStorage.setAccessToken(result.accessToken);
-      refetch();
+      await afterLogin();
     } catch (error) {}
   };
 
@@ -49,5 +54,6 @@ export const useAuth = () => {
     refetch,
     postRegisterApple,
     postRegisterGoogle,
+    signInLoading,
   };
 };
