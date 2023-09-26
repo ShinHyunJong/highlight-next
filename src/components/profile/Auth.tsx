@@ -107,7 +107,9 @@ function Auth() {
       <section className="flex h-full w-full flex-col p-4">
         <Greeting textList={['Join us.!']} />
         {signInLoading ? (
-          <Spinner />
+          <div className="flex h-full w-full items-center justify-center">
+            <Spinner size={20} />
+          </div>
         ) : (
           <div className="flex flex-col gap-4 py-8">
             <button
