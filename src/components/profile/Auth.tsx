@@ -1,11 +1,13 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect } from 'react';
 import { Spinner } from 'react-activity';
 import { FaApple, FaGoogle } from 'react-icons/fa';
 
+import authAtom from '@/atoms/auth';
 import { useAuth } from '@/hooks/auth';
 import { api } from '@/requests';
 import HeaderTemplate from '@/templates/HeaderTemplate';
@@ -15,15 +17,17 @@ import Greeting from '../header/Gretting';
 function Auth() {
   const router = useRouter();
   const { postRegisterApple, signInLoading } = useAuth();
+  const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
 
   useEffect(() => {
+    if (selectedPickSong.length === 0) return;
     if (router.query.code && router.query.id_token) {
       postRegisterApple(
         router.query.code?.toString(),
         router.query.id_token?.toString(),
       );
     }
-  }, [router]);
+  }, [router, selectedPickSong]);
 
   const handleApple = () => {
     const config = {
