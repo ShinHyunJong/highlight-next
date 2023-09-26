@@ -42,6 +42,7 @@ function AddMusic() {
   useEffect(() => {
     if (!audio) return;
     audio.addEventListener('progress', () => {
+      console.log(audio.buffered.end(0), audio.duration);
       if (
         audio.buffered.length > 0 &&
         audio.buffered.end(0) === audio.duration
