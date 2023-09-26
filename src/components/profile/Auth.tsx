@@ -16,12 +16,12 @@ function Auth() {
   const { postRegister } = useAuth();
 
   useEffect(() => {
-    if (router.query.email || router.query.appleId) {
-      if (!router.query.email) return;
-      // postRegister(
-      //   router.query.email?.toString(),
-      //   router.query.appleId?.toString(),
-      // );
+    if (router.query.code || router.query.id_token) {
+      if (!router.query.code) return;
+      postRegister(
+        router.query.code?.toString(),
+        router.query.id_token?.toString(),
+      );
     }
   }, [router]);
 
@@ -40,9 +40,7 @@ function Auth() {
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    const result =
-      (window.location.href = `https://appleid.apple.com/auth/authorize?${queryString}`);
-    console.log(result);
+    window.location.href = `https://appleid.apple.com/auth/authorize?${queryString}`;
   };
   const handleAppleMusic = async () => {
     if (typeof window === 'undefined') return;

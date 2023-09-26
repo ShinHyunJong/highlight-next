@@ -8,13 +8,15 @@ export async function getMeApi() {
 
 export async function registerApi(
   email: string,
-  appleId?: string,
   googleId?: string,
+  code?: string,
+  id_token?: string,
 ) {
   const { data } = await api.post('/auth/register', {
     email,
-    appleId,
     googleId,
+    code,
+    id_token,
   });
   return data;
 }
