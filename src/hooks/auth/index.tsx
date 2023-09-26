@@ -22,7 +22,13 @@ export const useAuth = () => {
   const { data, isLoading, refetch } = useQuery('me', () => getMeApi());
 
   const afterLogin = async () => {
-    await registerSongsApi(pickedSongList);
+    const orderInserted = pickedSongList.map((song, index) => {
+      return {
+        ...song,
+        order: index + 1,
+      };
+    });
+    await registerSongsApi(orderInserted);
     setPickedSongList([]);
     router.replace('/?tab=profile');
     refetch();

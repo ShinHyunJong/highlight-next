@@ -18,4 +18,5 @@ export type Song = {
   spotifyId: string;
   thumbUrl: string;
   previewUrl: string;
+  order?: number;
 };

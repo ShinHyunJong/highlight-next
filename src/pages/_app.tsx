@@ -1,13 +1,14 @@
 import '@/styles/global.css';
 import 'react-activity/dist/library.css';
 
-import { Provider } from 'jotai';
+import { Provider, useSetAtom } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import NextNProgress from 'nextjs-progressbar';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import authAtom from '@/atoms/auth';
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -29,6 +30,11 @@ const queryClient = new QueryClient();
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const Template = Component.Template || Empty;
   const props = Component.props || {};
+  const setSelectedPickSong = useSetAtom(authAtom.selectedPickSong);
+  useEffect(() => {
+    setSelectedPickSong([]);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Provider>
