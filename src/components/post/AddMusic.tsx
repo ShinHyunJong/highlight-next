@@ -40,6 +40,10 @@ function AddMusic() {
   const router = useRouter();
 
   useEffect(() => {
+    setSelectedPickSong([]);
+  }, []);
+
+  useEffect(() => {
     if (!audio) return;
     audio.addEventListener('progress', () => {
       console.log(audio.buffered.end(0), audio.duration);

@@ -28,11 +28,15 @@ export const useAuth = () => {
         order: index + 1,
       };
     });
-    await registerSongsApi(orderInserted);
-    setPickedSongList([]);
-    router.replace('/?tab=profile');
-    refetch();
-    setSignInLoading(false);
+    try {
+      await registerSongsApi(orderInserted);
+      setPickedSongList([]);
+      router.replace('/?tab=profile');
+      refetch();
+      setSignInLoading(false);
+    } catch (error) {
+      setPickedSongList([]);
+    }
   };
 
   const postRegisterApple = async (code: string, id_token: string) => {
