@@ -18,10 +18,10 @@ function Auth() {
   useEffect(() => {
     if (router.query.email || router.query.appleId) {
       if (!router.query.email) return;
-      postRegister(
-        router.query.email?.toString(),
-        router.query.appleId?.toString(),
-      );
+      // postRegister(
+      //   router.query.email?.toString(),
+      //   router.query.appleId?.toString(),
+      // );
     }
   }, [router]);
 
