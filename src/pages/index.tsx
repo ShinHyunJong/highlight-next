@@ -2,6 +2,7 @@ import 'swiper/css';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import HomeScreen from '@/components/home/HomeScreen';
 import ProfileScreen from '@/components/home/ProfileScreen';
@@ -9,6 +10,7 @@ import Onboarding from '@/components/onboarding/Onboarding';
 import AddMusic from '@/components/post/AddMusic';
 import PhotoController from '@/components/post/PhotoController';
 import Auth from '@/components/profile/Auth';
+import storage from '@/storages';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -24,6 +26,13 @@ const Index = () => {
   const router = useRouter();
   const { tab } = router.query;
 
+  const getToken = async () => {
+    const result = await storage.tokenStorage.getAccessToken();
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
   //     'Notification' in window &&
@@ -74,7 +83,7 @@ const Index = () => {
         return <AddMusic />;
       case 'auth':
         return (
-          <GoogleOAuthProvider clientId="295809402799-qau23032p9iou8bpgp67j9r1q1gqf89e.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="924733757125-uom43l9ir4pipd61b248q975benop8u9.apps.googleusercontent.com">
             <Auth />
           </GoogleOAuthProvider>
         );

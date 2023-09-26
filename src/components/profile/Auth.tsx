@@ -16,7 +16,7 @@ import Greeting from '../header/Gretting';
 
 function Auth() {
   const router = useRouter();
-  const { postRegisterApple, signInLoading } = useAuth();
+  const { postRegisterApple, signInLoading, postRegisterGoogle } = useAuth();
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
 
   useEffect(() => {
@@ -83,14 +83,14 @@ function Auth() {
       const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`,
       );
-      console.log(data);
+      await postRegisterGoogle(data.email, data.sub);
     },
   });
 
   const handleSpotify = () => {
     if (typeof window === 'undefined') return;
     const scope = 'user-read-private user-read-email';
-    const client_id = '2e437b5b537441a393bc68887bd9d180';
+    const client_id = '';
     const redirect_uri = 'http://localhost:3001?tab=auth';
     window.location.href = `https://accounts.spotify.com/authorize?${queryString.stringify(
       {

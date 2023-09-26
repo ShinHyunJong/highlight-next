@@ -7,8 +7,8 @@ import storage from '@/storages';
 
 import {
   getMeApi,
-  registerApi,
   registerAppleApi,
+  registerGoogleApi,
   registerSongsApi,
 } from './api';
 
@@ -43,17 +43,16 @@ export const useAuth = () => {
     setSignInLoading(true);
     try {
       const result = await registerAppleApi(code, id_token);
-      storage.tokenStorage.setAccessToken(result.accessToken);
+      await storage.tokenStorage.setAccessToken(result.accessToken);
       await afterLogin();
     } catch (error) {}
   };
 
   const postRegisterGoogle = async (email: string, googleId: string) => {
     setSignInLoading(true);
-
     try {
-      const result = await registerApi(email, googleId);
-      storage.tokenStorage.setAccessToken(result.accessToken);
+      const result = await registerGoogleApi(email, googleId);
+      await storage.tokenStorage.setAccessToken(result.accessToken);
       await afterLogin();
     } catch (error) {}
   };
