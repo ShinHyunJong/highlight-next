@@ -6,17 +6,18 @@ export async function getMeApi() {
   return data;
 }
 
-export async function registerApi(
-  email: string,
-  googleId?: string,
-  code?: string,
-  id_token?: string,
-) {
-  const { data } = await api.post('/auth/register', {
-    email,
-    googleId,
+export async function registerAppleApi(code: string, id_token: string) {
+  const { data } = await api.post('/auth/register/apple', {
     code,
     id_token,
+  });
+  return data;
+}
+
+export async function registerGoogleApi(email: string, googleId: string) {
+  const { data } = await api.post('/auth/register/google', {
+    email,
+    googleId,
   });
   return data;
 }

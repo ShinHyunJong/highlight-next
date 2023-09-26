@@ -5,7 +5,12 @@ import { useQuery } from 'react-query';
 import authAtom from '@/atoms/auth';
 import storage from '@/storages';
 
-import { getMeApi, registerApi, registerSongsApi } from './api';
+import {
+  getMeApi,
+  registerApi,
+  registerAppleApi,
+  registerSongsApi,
+} from './api';
 
 export const useAuth = () => {
   const router = useRouter();
@@ -15,17 +20,25 @@ export const useAuth = () => {
 
   const { data, isLoading, refetch } = useQuery('me', () => getMeApi());
 
-  const postRegister = async (
-    email: string,
-    appleId?: string,
-    googleId?: string,
-  ) => {
+  const afterLogin = async () => {
+    await registerSongsApi(pickedSongList);
+    setPickedSongList([]);
+    router.replace('/?tab=profile');
+    refetch();
+  };
+
+  const postRegisterApple = async (code: string, id_token: string) => {
     try {
-      const result = await registerApi(email, appleId, googleId);
+      const result = await registerAppleApi(code, id_token);
       storage.tokenStorage.setAccessToken(result.access_token);
-      await registerSongsApi(pickedSongList);
-      setPickedSongList([]);
-      router.replace('/?tab=profile');
+      afterLogin();
+    } catch (error) {}
+  };
+
+  const postRegisterGoogle = async (email: string, googleId: string) => {
+    try {
+      const result = await registerApi(email, googleId);
+      storage.tokenStorage.setAccessToken(result.access_token);
       refetch();
     } catch (error) {}
   };
@@ -34,6 +47,7 @@ export const useAuth = () => {
     data,
     isLoading,
     refetch,
-    postRegister,
+    postRegisterApple,
+    postRegisterGoogle,
   };
 };
