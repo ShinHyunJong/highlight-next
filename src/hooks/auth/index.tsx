@@ -30,7 +30,7 @@ export const useAuth = () => {
   const postRegisterApple = async (code: string, id_token: string) => {
     try {
       const result = await registerAppleApi(code, id_token);
-      storage.tokenStorage.setAccessToken(result.access_token);
+      storage.tokenStorage.setAccessToken(result.accessToken);
       afterLogin();
     } catch (error) {}
   };
@@ -38,7 +38,7 @@ export const useAuth = () => {
   const postRegisterGoogle = async (email: string, googleId: string) => {
     try {
       const result = await registerApi(email, googleId);
-      storage.tokenStorage.setAccessToken(result.access_token);
+      storage.tokenStorage.setAccessToken(result.accessToken);
       refetch();
     } catch (error) {}
   };
