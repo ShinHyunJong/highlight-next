@@ -32,7 +32,12 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['p.scdn.co', 'i.scdn.co', 'assets.discoverrealmusic.com'],
+    domains: [
+      'p.scdn.co',
+      'i.scdn.co',
+      'assets.discoverrealmusic.com',
+      'is1-ssl.mzstatic.com',
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

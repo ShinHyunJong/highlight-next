@@ -20,10 +20,8 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
   const buffering = useAtomValue(audioAtom.audioBuffering);
 
-  const active = playingAudio?.spotifyId === song.spotifyId;
-  const added = selectedPickSong
-    .map((s) => s.spotifyId)
-    .includes(song.spotifyId);
+  const active = playingAudio?.isrc === song.isrc;
+  const added = selectedPickSong.map((s) => s.isrc).includes(song.isrc);
 
   const renderLevel = () => {
     if (!active || !playingAudio) return null;

@@ -80,7 +80,7 @@ function AddMusic() {
       window.alert("This song doesn't have a preview.");
     } else {
       setPlayingAudio((prev) => {
-        if (prev?.spotifyId !== song.spotifyId) {
+        if (prev?.isrc !== song.isrc) {
           changeAudio(song.previewUrl);
           return song;
         }
@@ -93,9 +93,7 @@ function AddMusic() {
   const handleAdd = (song: Song) => {
     setSelectedPickSong((prev) => {
       const copied = [...prev];
-      const targetIndex = copied.findIndex(
-        (x) => x.spotifyId === song.spotifyId,
-      );
+      const targetIndex = copied.findIndex((x) => x.isrc === song.isrc);
       if (targetIndex === -1) {
         if (copied.length === 3) return prev;
         copied.push(song);
@@ -145,18 +143,20 @@ function AddMusic() {
             }}
           />
         </div>
-        <div className="flex w-full flex-col">
-          {songList.map((song) => {
-            return (
-              <AddMusicItem
-                key={`add-music-${song.spotifyId}`}
-                song={song}
-                handlePlay={handlePlay}
-                handleAdd={handleAdd}
-              />
-            );
-          })}
-        </div>
+        {!searching && (
+          <div className="flex w-full flex-col">
+            {songList.map((song) => {
+              return (
+                <AddMusicItem
+                  key={`add-music-${song.isrc}`}
+                  song={song}
+                  handlePlay={handlePlay}
+                  handleAdd={handleAdd}
+                />
+              );
+            })}
+          </div>
+        )}
       </section>
     </HeaderTemplate>
   );
