@@ -35,36 +35,36 @@ requestInterceptor.use(
 const responseInterceptor: AxiosInterceptorManager<AxiosResponse> =
   interceptors.response;
 
-responseInterceptor.use(
-  (response) => response,
-  async (error) => {
-    const {
-      config,
-      response: { status },
-    } = error;
-    const originalRequest = config;
-    if (status === 401) {
-      const options: any = {
-        method: 'GET',
-        url: refershUrl,
-        headers: {
-          Authorization: `Bearer ${storage.tokenStorage.getRefreshToken()}`,
-        },
-      };
-      try {
-        const response = await axios(options);
-        storage.tokenStorage.setAccessToken(response.data.access_token);
-        storage.tokenStorage.setRefreshToken(response.data.refresh_token);
-        originalRequest.headers = {
-          Authorization: `Bearer ${response.data.access_token}`,
-        };
-        return await axios(originalRequest);
-      } catch (err) {
-        storage.tokenStorage.deleteAccessToken();
-        storage.tokenStorage.deleteRefreshToken();
-        // window.location.href = '/auth/signIn';
-      }
-    }
-    return Promise.reject(error);
-  },
-);
+// responseInterceptor.use(
+//   (response) => response,
+//   async (error) => {
+//     const {
+//       config,
+//       response: { status },
+//     } = error;
+//     const originalRequest = config;
+//     if (status === 401) {
+//       const options: any = {
+//         method: 'GET',
+//         url: refershUrl,
+//         headers: {
+//           Authorization: `Bearer ${storage.tokenStorage.getRefreshToken()}`,
+//         },
+//       };
+//       try {
+//         const response = await axios(options);
+//         storage.tokenStorage.setAccessToken(response.data.access_token);
+//         storage.tokenStorage.setRefreshToken(response.data.refresh_token);
+//         originalRequest.headers = {
+//           Authorization: `Bearer ${response.data.access_token}`,
+//         };
+//         return await axios(originalRequest);
+//       } catch (err) {
+//         storage.tokenStorage.deleteAccessToken();
+//         storage.tokenStorage.deleteRefreshToken();
+//         // window.location.href = '/auth/signIn';
+//       }
+//     }
+//     return Promise.reject(error);
+//   },
+// );
