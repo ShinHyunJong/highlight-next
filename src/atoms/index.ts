@@ -2,8 +2,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { atomWithHash } from 'jotai-location';
 import { Router } from 'next/router';
 
-const pageAtom = atomWithHash('page', 1, {
-  replaceState: true,
+export const pageAtom = atomWithHash('page', 1, {
   subscribe: (callback) => {
     Router.events.on('routeChangeComplete', callback);
     window.addEventListener('hashchange', callback);

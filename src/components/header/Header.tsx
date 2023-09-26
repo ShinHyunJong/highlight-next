@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useContext, useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
+
+import { RouteContext } from '@/contexts/RouteContext';
 
 function Header({
   title,
@@ -12,6 +14,7 @@ function Header({
   const { back, asPath } = useRouter();
   const [mounted, setMounted] = useState(false);
   const isRoot = asPath === '/';
+  const routeContext = useContext(RouteContext);
   useEffect(() => {
     setMounted(true);
   }, [mounted]);

@@ -1,4 +1,5 @@
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDebounce } from 'usehooks-ts';
@@ -11,6 +12,7 @@ import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Song } from '@/types/server.type';
 
 import Greeting from '../header/Gretting';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import AddMusicItem from './AddMusicItem';
 
@@ -31,8 +33,11 @@ function AddMusic() {
   const [searching, setSearching] = useState(false);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const { pause, changeAudio, audio } = useContext(AudioContext);
-  const setSelectedPickSong = useSetAtom(authAtom.selectedPickSong);
+  const [selectedPickSong, setSelectedPickSong] = useAtom(
+    authAtom.selectedPickSong,
+  );
   const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
+  const router = useRouter();
 
   useEffect(() => {
     if (!audio) return;
@@ -87,6 +92,7 @@ function AddMusic() {
         (x) => x.spotifyId === song.spotifyId,
       );
       if (targetIndex === -1) {
+        if (copied.length === 3) return prev;
         copied.push(song);
       } else {
         copied.splice(targetIndex, 1);
@@ -95,13 +101,24 @@ function AddMusic() {
     });
   };
 
+  const routeToAuth = () => {
+    router.push('/?tab=auth');
+  };
+
   return (
     <HeaderTemplate
       title="Select Top 3"
       rightNode={
-        <button type="button" className="clearButton">
+        <Button
+          isDisabled={selectedPickSong.length === 0}
+          onClick={routeToAuth}
+          variant="ghost"
+        >
+          <p className="mr-1 text-sm text-blue-500">
+            {selectedPickSong.length}
+          </p>
           DONE
-        </button>
+        </Button>
       }
     >
       <section className="h-full w-full p-4">

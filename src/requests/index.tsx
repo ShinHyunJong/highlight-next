@@ -62,7 +62,7 @@ responseInterceptor.use(
       } catch (err) {
         storage.tokenStorage.deleteAccessToken();
         storage.tokenStorage.deleteRefreshToken();
-        window.location.href = '/auth/signIn';
+        // window.location.href = '/auth/signIn';
       }
     }
     return Promise.reject(error);

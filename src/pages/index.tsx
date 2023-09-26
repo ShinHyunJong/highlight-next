@@ -1,13 +1,14 @@
 import 'swiper/css';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import HomeScreen from '@/components/home/HomeScreen';
 import ProfileScreen from '@/components/home/ProfileScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
 import AddMusic from '@/components/post/AddMusic';
 import PhotoController from '@/components/post/PhotoController';
+import Auth from '@/components/profile/Auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -61,10 +62,6 @@ const Index = () => {
   //   });
   // };
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-  }, []);
-
   const renderRoutes = () => {
     switch (tab) {
       case 'home':
@@ -75,6 +72,12 @@ const Index = () => {
         return <PhotoController />;
       case 'pick':
         return <AddMusic />;
+      case 'auth':
+        return (
+          <GoogleOAuthProvider clientId="295809402799-qau23032p9iou8bpgp67j9r1q1gqf89e.apps.googleusercontent.com">
+            <Auth />
+          </GoogleOAuthProvider>
+        );
       default:
         return <HomeScreen />;
     }

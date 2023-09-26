@@ -1,4 +1,3 @@
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
 import { FaPlus } from 'react-icons/fa';
 
@@ -23,9 +22,7 @@ function ProfileScreen() {
   return (
     <section>
       <div className="flex">
-        <GoogleOAuthProvider clientId="295809402799-qau23032p9iou8bpgp67j9r1q1gqf89e.apps.googleusercontent.com">
-          <Auth />
-        </GoogleOAuthProvider>
+        <Auth />
       </div>
       <div className="mt-4 flex">
         <label className="cursor-pointer" htmlFor="upload">
