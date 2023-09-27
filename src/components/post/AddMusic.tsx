@@ -11,7 +11,7 @@ import { searchSongApi } from '@/hooks/song/api';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Song } from '@/types/server.type';
 
-import Greeting from '../header/Gretting';
+import Stepper from '../header/Stepper';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import AddMusicItem from './AddMusicItem';
@@ -106,6 +106,8 @@ function AddMusic() {
 
   const routeToAuth = () => {
     router.push('/?tab=auth');
+    pause();
+    setPlayingAudio(null);
   };
 
   return (
@@ -113,7 +115,7 @@ function AddMusic() {
       title="Select Top 3"
       rightNode={
         <Button
-          isDisabled={selectedPickSong.length === 0}
+          isDisabled={selectedPickSong.length < 3}
           onClick={routeToAuth}
           variant="ghost"
         >
@@ -125,8 +127,8 @@ function AddMusic() {
       }
     >
       <section className="h-full w-full p-4">
-        <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />
-        <div className="py-8">
+        <Stepper count={3} step={2} />
+        <div className="pb-4">
           <Controller
             name="term"
             control={control}

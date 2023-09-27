@@ -12,13 +12,42 @@ import {
   registerSongsApi,
 } from './api';
 
+export const useToken = () => {
+  const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
+  const [hasLogout, setHasLogout] = useAtom(authAtom.hasLogout);
+
+  const getHasLogout = async () => {
+    const result = await storage.tokenStorage.getHasLogout();
+    setHasLogout(result);
+  };
+
+  const getToken = async () => {
+    const result = await storage.tokenStorage.getAccessToken();
+    setAccessToken(result);
+    getHasLogout();
+  };
+
+  const deleteToken = async () => {
+    await storage.tokenStorage.deleteAccessToken();
+    setAccessToken(null);
+  };
+
+  return {
+    getToken,
+    hasLogout,
+    accessToken,
+    deleteToken,
+    getHasLogout,
+  };
+};
+
 export const useAuth = () => {
   const router = useRouter();
   const [pickedSongList, setPickedSongList] = useAtom(
     authAtom.selectedPickSong,
   );
   const [signInLoading, setSignInLoading] = useAtom(authAtom.signInLoading);
-
+  const { deleteToken } = useToken();
   const { data, isLoading, refetch } = useQuery('me', () => getMeApi());
 
   const afterLogin = async () => {
@@ -57,9 +86,17 @@ export const useAuth = () => {
     } catch (error) {}
   };
 
+  const logout = async () => {
+    router.replace('/');
+    await deleteToken();
+    await storage.tokenStorage.setHasLogout(true);
+    refetch();
+  };
+
   return {
-    data,
+    user: data || null,
     isLoading,
+    logout,
     refetch,
     postRegisterApple,
     postRegisterGoogle,

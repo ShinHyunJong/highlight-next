@@ -13,6 +13,7 @@ import { api } from '@/requests';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import Greeting from '../header/Gretting';
+import Stepper from '../header/Stepper';
 
 function Auth() {
   const router = useRouter();
@@ -105,6 +106,7 @@ function Auth() {
   return (
     <HeaderTemplate title="로그인">
       <section className="flex h-full w-full flex-col p-4">
+        <Stepper count={3} step={3} />
         <Greeting textList={['Join us.!']} />
         {signInLoading ? (
           <div className="flex h-full w-full items-center justify-center">

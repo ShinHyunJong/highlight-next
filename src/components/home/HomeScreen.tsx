@@ -1,14 +1,20 @@
 import { useRouter } from 'next/router';
 import { FaUser } from 'react-icons/fa';
 
+import { useToken } from '@/hooks/auth';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import Greeting from '../header/Gretting';
 
 function HomeScreen() {
   const router = useRouter();
+  const { accessToken, hasLogout } = useToken();
   const handleLogin = () => {
-    router.push('/?tab=pick');
+    if (accessToken) {
+      router.push('/?tab=profile');
+    } else {
+      router.push(`/?tab=before-pick`);
+    }
   };
   return (
     <HeaderTemplate title="">
