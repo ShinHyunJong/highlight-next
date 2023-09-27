@@ -8,19 +8,17 @@ import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
 import { AudioContext } from '@/contexts/AudioContext';
 import { searchSongApi } from '@/hooks/song/api';
-import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Song } from '@/types/server.type';
 
+import AddMusicItem from '../global/AddMusicItem';
 import Stepper from '../header/Stepper';
-import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import AddMusicItem from './AddMusicItem';
 
 type FormValues = {
   term: string;
 };
 
-function AddMusic() {
+function AddMusicHighlight() {
   const { control, watch } = useForm<FormValues>({
     defaultValues: {
       term: '',
@@ -46,7 +44,6 @@ function AddMusic() {
   useEffect(() => {
     if (!audio) return;
     audio.addEventListener('progress', () => {
-      console.log(audio.buffered.end(0), audio.duration);
       if (
         audio.buffered.length > 0 &&
         audio.buffered.end(0) <= audio.duration
@@ -111,57 +108,41 @@ function AddMusic() {
   };
 
   return (
-    <HeaderTemplate
-      title="Select Top 3"
-      rightNode={
-        <Button
-          isDisabled={selectedPickSong.length < 3}
-          onClick={routeToAuth}
-          variant="ghost"
-        >
-          <p className="mr-1 text-sm text-blue-500">
-            {selectedPickSong.length}
-          </p>
-          DONE
-        </Button>
-      }
-    >
-      <section className="h-full w-full p-4">
-        <Stepper count={3} step={2} />
-        <div className="pb-4">
-          <Controller
-            name="term"
-            control={control}
-            rules={{ required: true, min: 2, max: 50 }}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  type="text"
-                  placeholder="Search songs."
-                  isLoading={searching}
-                />
-              );
-            }}
-          />
+    <section className="h-full w-full p-4">
+      <Stepper count={3} step={2} />
+      <div className="pb-4">
+        <Controller
+          name="term"
+          control={control}
+          rules={{ required: true, min: 2, max: 50 }}
+          render={({ field }) => {
+            return (
+              <Input
+                {...field}
+                type="text"
+                placeholder="Search songs."
+                isLoading={searching}
+              />
+            );
+          }}
+        />
+      </div>
+      {!searching && (
+        <div className="flex w-full flex-col">
+          {songList.map((song) => {
+            return (
+              <AddMusicItem
+                key={`add-music-${song.isrc}`}
+                song={song}
+                handlePlay={handlePlay}
+                handleAdd={handleAdd}
+              />
+            );
+          })}
         </div>
-        {!searching && (
-          <div className="flex w-full flex-col">
-            {songList.map((song) => {
-              return (
-                <AddMusicItem
-                  key={`add-music-${song.isrc}`}
-                  song={song}
-                  handlePlay={handlePlay}
-                  handleAdd={handleAdd}
-                />
-              );
-            })}
-          </div>
-        )}
-      </section>
-    </HeaderTemplate>
+      )}
+    </section>
   );
 }
 
-export default AddMusic;
+export default AddMusicHighlight;

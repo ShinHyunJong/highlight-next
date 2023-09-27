@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Levels, Spinner } from 'react-activity';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaCheck } from 'react-icons/fa';
+import { LuMusic2 } from 'react-icons/lu';
 
 import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
@@ -24,7 +25,9 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
   const added = selectedPickSong.map((s) => s.isrc).includes(song.isrc);
 
   const renderLevel = () => {
+    if (!active && song.previewUrl) return <LuMusic2 />;
     if (!active || !playingAudio) return null;
+
     if (buffering) {
       return <Spinner size={12} />;
     }
@@ -50,7 +53,7 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
           <p className="text-sm text-gray-500">{song.artistName}</p>
         </div>
       </div>
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex items-center justify-end gap-3">
         <div>{renderLevel()}</div>
         <button
           type="button"

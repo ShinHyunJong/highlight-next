@@ -6,7 +6,7 @@ import Greeting from '../header/Gretting';
 import Stepper from '../header/Stepper';
 import { Button } from '../ui/button';
 
-function PostGreeting() {
+function AuthGreeting() {
   const router = useRouter();
   return (
     <HeaderTemplate title="">
@@ -20,4 +20,4 @@ function PostGreeting() {
     </HeaderTemplate>
   );
 }
-export default PostGreeting;
+export default AuthGreeting;

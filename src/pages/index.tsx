@@ -3,12 +3,12 @@ import 'swiper/css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
 
+import Auth from '@/components/auth/Auth';
+import AuthAddMusic from '@/components/auth/AuthAddMusic';
+import AuthGreeting from '@/components/auth/AuthGreeting';
 import HomeScreen from '@/components/home/HomeScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
-import AddMusic from '@/components/post/AddMusic';
 import PhotoController from '@/components/post/PhotoController';
-import PostGreeting from '@/components/post/PostGreeting';
-import Auth from '@/components/profile/Auth';
 import ProfileScreen from '@/components/profile/ProfileScreen';
 import SettingScreen from '@/components/profile/SettingScreen';
 
@@ -73,9 +73,9 @@ const Index = () => {
       case 'upload':
         return <PhotoController />;
       case 'before-pick':
-        return <PostGreeting />;
+        return <AuthGreeting />;
       case 'pick':
-        return <AddMusic />;
+        return <AuthAddMusic />;
       case 'settings':
         return <SettingScreen />;
       case 'auth':

@@ -49,7 +49,7 @@ export function useUpload() {
       // formData.append(`file_name_list[${i}]`, imageList[i].name);
       formData.append(`imageList[]`, imageList[i]!);
     }
-    await postHighlightApi(formData);
+    const result = await postHighlightApi(formData);
   };
 
   const processFileList = async (files: File[] | Blob[]) => {

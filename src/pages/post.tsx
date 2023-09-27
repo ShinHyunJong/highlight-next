@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/router';
 
-import AddMusic from '@/components/post/AddMusic';
+import AddMusicHighlight from '@/components/post/AddMusicHighlight';
 import PhotoController from '@/components/post/PhotoController';
 import { useUpload } from '@/hooks/upload';
 import HeaderTemplate from '@/templates/HeaderTemplate';
@@ -24,24 +24,63 @@ function PostHighlight() {
         return <PhotoController />;
 
       case 'music':
-        return <AddMusic />;
+        return <AddMusicHighlight />;
 
       default:
         return <PhotoController />;
     }
   };
 
+  const renderRightNode = () => {
+    switch (step) {
+      case 'photo':
+        return (
+          <button
+            type="button"
+            onClick={postHighlight}
+            // onClick={() => router.push('/post?step=music')}
+            className="clearButton"
+          >
+            <p>NEXT</p>
+          </button>
+        );
+
+      case 'music':
+        return (
+          <button
+            type="button"
+            onClick={() => router.push('/post?step=edit')}
+            className="clearButton"
+          >
+            <p>NEXT</p>
+          </button>
+        );
+
+      case 'edit':
+        return (
+          <button type="button" onClick={postHighlight} className="clearButton">
+            <p>DONE</p>
+          </button>
+        );
+
+      default:
+        return (
+          <button
+            type="button"
+            // onClick={() => router.push('/post?step=music')}
+            onClick={postHighlight}
+            className="clearButton"
+          >
+            <p>NEXT</p>
+          </button>
+        );
+    }
+  };
+
   const title =
     routeList.find((x) => x.value === step)?.title || 'Select Photo';
   return (
-    <HeaderTemplate
-      rightNode={
-        <button type="button" onClick={postHighlight} className="clearButton">
-          <p>upload</p>
-        </button>
-      }
-      title={title}
-    >
+    <HeaderTemplate rightNode={renderRightNode()} title={title}>
       {renderContent()}
     </HeaderTemplate>
   );
