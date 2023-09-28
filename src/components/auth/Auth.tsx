@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from 'react-activity';
 import { FaApple, FaGoogle } from 'react-icons/fa';
 
@@ -17,6 +17,7 @@ import Stepper from '../header/Stepper';
 
 function Auth() {
   const router = useRouter();
+  const [appleLoading, setAppleLoading] = useState(false);
   const {
     postRegisterApple,
     signInLoading,
@@ -30,12 +31,16 @@ function Auth() {
       postRegisterApple(
         router.query.code?.toString(),
         router.query.id_token?.toString(),
+        () => {
+          postRegisterSong();
+          setAppleLoading(false);
+        },
       );
-      postRegisterSong();
     }
   }, [router]);
 
   const handleApple = () => {
+    setAppleLoading(true);
     const config = {
       client_id: 'com.signin.highlight', // This is the service ID we created.
       redirect_uri: 'https://api-dev.discoverrealmusic.com/auth/apple/verify', // As registered along with our service ID
@@ -89,8 +94,7 @@ function Auth() {
       const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`,
       );
-      await postRegisterGoogle(data.email, data.sub);
-      await postRegisterSong();
+      await postRegisterGoogle(data.email, data.sub, postRegisterSong);
     },
   });
 
@@ -128,7 +132,7 @@ function Auth() {
               <div className="absolute left-4">
                 <FaApple color="#ffffff" />
               </div>
-              Sign with Apple
+              {appleLoading ? <Spinner size={14} /> : 'Sign with Apple'}
             </button>
             <button
               type="button"

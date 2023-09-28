@@ -80,20 +80,30 @@ export const useAuth = () => {
     setSignInLoading(false);
   };
 
-  const postRegisterApple = async (code: string, id_token: string) => {
+  const postRegisterApple = async (
+    code: string,
+    id_token: string,
+    callback: () => void,
+  ) => {
     setSignInLoading(true);
     try {
       const result = await registerAppleApi(code, id_token);
       await storage.tokenStorage.setAccessToken(result.accessToken);
+      callback();
       await afterLogin();
     } catch (error) {}
   };
 
-  const postRegisterGoogle = async (email: string, googleId: string) => {
+  const postRegisterGoogle = async (
+    email: string,
+    googleId: string,
+    callback: () => void,
+  ) => {
     setSignInLoading(true);
     try {
       const result = await registerGoogleApi(email, googleId);
       await storage.tokenStorage.setAccessToken(result.accessToken);
+      callback();
       await afterLogin();
     } catch (error) {}
   };
