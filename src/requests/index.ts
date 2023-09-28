@@ -21,14 +21,15 @@ const requestInterceptor: AxiosInterceptorManager<AxiosRequestConfig> =
 
 requestInterceptor.use(
   async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-    const token = await storage.tokenStorage.getAccessToken();
+    const token = storage.tokenStorage.getAccessToken();
+    const accessToken = token ? JSON.parse(token) : null;
     const newConfig: AxiosRequestConfig = {
       ...config,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     };
-    return token ? newConfig : config;
+    return accessToken ? newConfig : config;
   },
 );
 

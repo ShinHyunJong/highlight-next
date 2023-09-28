@@ -5,41 +5,7 @@ import { useQuery } from 'react-query';
 import authAtom from '@/atoms/auth';
 import storage from '@/storages';
 
-import {
-  getMeApi,
-  registerAppleApi,
-  registerGoogleApi,
-  registerSongsApi,
-} from './api';
-
-export const useToken = () => {
-  const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
-  const [hasLogout, setHasLogout] = useAtom(authAtom.hasLogout);
-
-  const getHasLogout = async () => {
-    const result = await storage.tokenStorage.getHasLogout();
-    setHasLogout(result);
-  };
-
-  const getToken = async () => {
-    const result = await storage.tokenStorage.getAccessToken();
-    setAccessToken(result);
-    getHasLogout();
-  };
-
-  const deleteToken = async () => {
-    await storage.tokenStorage.deleteAccessToken();
-    setAccessToken(null);
-  };
-
-  return {
-    getToken,
-    hasLogout,
-    accessToken,
-    deleteToken,
-    getHasLogout,
-  };
-};
+import { getMeApi, registerGoogleApi } from './api';
 
 export const useAuth = () => {
   const router = useRouter();
@@ -50,68 +16,33 @@ export const useAuth = () => {
   const [registerSongLoading, setRegisterSongLoading] = useAtom(
     authAtom.registerSongLoading,
   );
-  const { deleteToken } = useToken();
-  const { data, isLoading, refetch, error } = useQuery('me', () => getMeApi(), {
-    retry: false,
-  });
+  const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
 
-  const postRegisterSong = async () => {
-    if (pickedSongList.length === 0) return;
-    setRegisterSongLoading(true);
-    const orderInserted = pickedSongList.map((song, index) => {
-      return {
-        ...song,
-        order: index + 1,
-      };
-    });
+  const { data, isLoading, refetch, error } = useQuery('me', () => getMeApi());
+
+  const postRegisterGoogle = async (email: string, googleId: string) => {
+    setSignInLoading(true);
     try {
-      await registerSongsApi(orderInserted);
+      const orderInserted = pickedSongList.map((song, index) => {
+        return {
+          ...song,
+          order: index + 1,
+        };
+      });
+
+      const result = await registerGoogleApi(email, googleId, orderInserted);
+      setAccessToken(result.accessToken);
+      refetch();
       setPickedSongList([]);
-      setRegisterSongLoading(false);
+      setSignInLoading(false);
     } catch (error) {
-      setPickedSongList([]);
-      setRegisterSongLoading(false);
+      setSignInLoading(false);
     }
-  };
-
-  const afterLogin = async () => {
-    router.replace('/?tab=profile');
-    refetch();
-    setSignInLoading(false);
-  };
-
-  const postRegisterApple = async (
-    code: string,
-    id_token: string,
-    callback: () => void,
-  ) => {
-    setSignInLoading(true);
-    try {
-      const result = await registerAppleApi(code, id_token);
-      await storage.tokenStorage.setAccessToken(result.accessToken);
-      callback();
-      await afterLogin();
-    } catch (error) {}
-  };
-
-  const postRegisterGoogle = async (
-    email: string,
-    googleId: string,
-    callback: () => void,
-  ) => {
-    setSignInLoading(true);
-    try {
-      const result = await registerGoogleApi(email, googleId);
-      await storage.tokenStorage.setAccessToken(result.accessToken);
-      callback();
-      await afterLogin();
-    } catch (error) {}
   };
 
   const logout = async () => {
     router.replace('/');
-    await deleteToken();
-    await storage.tokenStorage.setHasLogout(true);
+    storage.tokenStorage.deleteAccessToken();
     refetch();
   };
 
@@ -120,10 +51,8 @@ export const useAuth = () => {
     isLoading,
     logout,
     refetch,
-    postRegisterApple,
     postRegisterGoogle,
     signInLoading,
-    postRegisterSong,
     registerSongLoading,
     error,
   };

@@ -1,14 +1,15 @@
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FaUser } from 'react-icons/fa';
 
-import { useToken } from '@/hooks/auth';
+import authAtom from '@/atoms/auth';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import Greeting from '../header/Gretting';
 
 function HomeScreen() {
   const router = useRouter();
-  const { accessToken, hasLogout } = useToken();
+  const accessToken = useAtomValue(authAtom.accessToken);
   const handleLogin = () => {
     if (accessToken) {
       router.push('/?tab=profile');

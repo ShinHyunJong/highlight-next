@@ -1,6 +1,4 @@
-import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
@@ -21,15 +19,15 @@ function ProfileScreen() {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    if (!error) return;
-    if (isAxiosError(error)) {
-      const { response } = error;
-      if (response?.status === 401) {
-        router.push('/?tab=home');
-      }
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (!error) return;
+  //   if (isAxiosError(error)) {
+  //     const { response } = error;
+  //     if (response?.status === 401) {
+  //       router.push('/?tab=home');
+  //     }
+  //   }
+  // }, [error]);
 
   return (
     <HeaderTemplate
@@ -54,6 +52,7 @@ function ProfileScreen() {
             src="https://images.unsplash.com/photo-1695455784661-fcc66aa04be7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2187&q=80"
           />
           <div className="absolute top-[90%] h-full w-full rounded-t-xl bg-gray-900 p-4">
+            <p>{user?.email}</p>
             <div className="mt-4 flex">
               <label className="cursor-pointer" htmlFor="upload">
                 <FaPlus />

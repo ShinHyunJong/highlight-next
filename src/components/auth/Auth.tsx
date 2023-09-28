@@ -1,6 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
@@ -18,26 +18,24 @@ import Stepper from '../header/Stepper';
 function Auth() {
   const router = useRouter();
   const [appleLoading, setAppleLoading] = useState(false);
-  const {
-    postRegisterApple,
-    signInLoading,
-    postRegisterGoogle,
-    postRegisterSong,
-  } = useAuth();
-  const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
+  const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
+  const { signInLoading, postRegisterGoogle, refetch } = useAuth();
+  const [selectedPickSong, setSelectedPickSong] = useAtom(
+    authAtom.selectedPickSong,
+  );
 
   useEffect(() => {
-    if (router.query.code && router.query.id_token) {
-      postRegisterApple(
-        router.query.code?.toString(),
-        router.query.id_token?.toString(),
-        () => {
-          postRegisterSong();
-          setAppleLoading(false);
-        },
-      );
-    }
+    if (typeof window === 'undefined') return;
+    if (!router.query.accessToken) return;
+    setSelectedPickSong([]);
+    setAccessToken(router.query.accessToken.toString());
   }, [router]);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    refetch();
+    router.replace('/?tab=profile');
+  }, [accessToken]);
 
   const handleApple = () => {
     setAppleLoading(true);
@@ -45,7 +43,7 @@ function Auth() {
       client_id: 'com.signin.highlight', // This is the service ID we created.
       redirect_uri: 'https://api-dev.discoverrealmusic.com/auth/apple/verify', // As registered along with our service ID
       response_type: 'code id_token',
-      state: 'origin:web', // Any string of your choice that you may use for some logic. It's optional and you may omit it.
+      state: JSON.stringify(selectedPickSong), // Any string of your choice that you may use for some logic. It's optional and you may omit it.
       scope: 'name email', // To tell apple we want the user name and emails fields in the response it sends us.
       response_mode: 'form_post',
       m: 11,
@@ -94,7 +92,7 @@ function Auth() {
       const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`,
       );
-      await postRegisterGoogle(data.email, data.sub, postRegisterSong);
+      await postRegisterGoogle(data.email, data.sub);
     },
   });
 

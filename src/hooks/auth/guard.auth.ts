@@ -1,17 +1,11 @@
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useToken } from '.';
-
-export function usePrivateGuard() {
-  const { accessToken } = useToken();
-  useEffect(() => {
-    console.log(accessToken);
-  }, [accessToken]);
-}
+import authAtom from '@/atoms/auth';
 
 export function usePublicGuard() {
-  const { accessToken } = useToken();
+  const accessToken = useAtomValue(authAtom.accessToken);
   const router = useRouter();
   useEffect(() => {
     if (!accessToken) return;

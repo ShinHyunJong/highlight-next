@@ -61,6 +61,7 @@ function AuthAddMusic() {
   const getSongs = async (value: string) => {
     if (!value) return;
     try {
+      console.log('jh');
       setSongList([]);
       setSearching(true);
       const result = await searchSongApi(value);

@@ -5,12 +5,11 @@ import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import NextNProgress from 'nextjs-progressbar';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
-import { useToken } from '@/hooks/auth';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -18,13 +17,6 @@ type AppProps<P = any> = {
   pageProps: P;
 } & Omit<NextAppProps<P>, 'pageProps'>;
 const Empty = ({ children }: { children: ReactNode }) => children;
-const Token = () => {
-  const { getToken } = useToken();
-  useEffect(() => {
-    getToken();
-  }, []);
-  return null;
-};
 
 declare global {
   interface Window {
@@ -41,7 +33,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider>
-        <Token />
         <Head>
           <meta
             name="viewport"
