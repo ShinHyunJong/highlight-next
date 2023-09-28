@@ -56,6 +56,7 @@ export const useAuth = () => {
   });
 
   const postRegisterSong = async () => {
+    if (pickedSongList.length === 0) return;
     setRegisterSongLoading(true);
     const orderInserted = pickedSongList.map((song, index) => {
       return {

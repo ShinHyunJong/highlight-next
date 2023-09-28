@@ -31,13 +31,9 @@ function Auth() {
         router.query.code?.toString(),
         router.query.id_token?.toString(),
       );
+      postRegisterSong();
     }
   }, [router]);
-
-  useEffect(() => {
-    if (selectedPickSong.length === 0) return;
-    postRegisterSong();
-  }, [selectedPickSong]);
 
   const handleApple = () => {
     const config = {
@@ -94,6 +90,7 @@ function Auth() {
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`,
       );
       await postRegisterGoogle(data.email, data.sub);
+      await postRegisterSong();
     },
   });
 
