@@ -7,6 +7,7 @@ import { useDebounce } from 'usehooks-ts';
 import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
 import { AudioContext } from '@/contexts/AudioContext';
+import { usePublicGuard } from '@/hooks/auth/guard.auth';
 import { searchSongApi } from '@/hooks/song/api';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Song } from '@/types/server.type';
@@ -39,6 +40,8 @@ function AuthAddMusic() {
   const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
   const router = useRouter();
 
+  usePublicGuard();
+
   useEffect(() => {
     setSelectedPickSong([]);
   }, []);
@@ -46,7 +49,6 @@ function AuthAddMusic() {
   useEffect(() => {
     if (!audio) return;
     audio.addEventListener('progress', () => {
-      console.log(audio.buffered.end(0), audio.duration);
       if (
         audio.buffered.length > 0 &&
         audio.buffered.end(0) <= audio.duration

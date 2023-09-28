@@ -1,7 +1,10 @@
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
+import { useAuth } from '@/hooks/auth';
 import { useUpload } from '@/hooks/upload';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
@@ -9,15 +12,24 @@ import HeaderTemplate from '@/templates/HeaderTemplate';
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, processing } = useUpload();
+  const { user, error } = useAuth();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
       router.push('/post');
       await processFileList(files);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
+
+  useEffect(() => {
+    if (!error) return;
+    if (isAxiosError(error)) {
+      const { response } = error;
+      if (response?.status === 401) {
+        router.push('/?tab=home');
+      }
+    }
+  }, [error]);
 
   return (
     <HeaderTemplate

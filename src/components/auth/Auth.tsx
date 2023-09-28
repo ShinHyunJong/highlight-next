@@ -17,18 +17,27 @@ import Stepper from '../header/Stepper';
 
 function Auth() {
   const router = useRouter();
-  const { postRegisterApple, signInLoading, postRegisterGoogle } = useAuth();
+  const {
+    postRegisterApple,
+    signInLoading,
+    postRegisterGoogle,
+    postRegisterSong,
+  } = useAuth();
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
 
   useEffect(() => {
-    if (selectedPickSong.length === 0) return;
     if (router.query.code && router.query.id_token) {
       postRegisterApple(
         router.query.code?.toString(),
         router.query.id_token?.toString(),
       );
     }
-  }, [router, selectedPickSong]);
+  }, [router]);
+
+  useEffect(() => {
+    if (selectedPickSong.length === 0) return;
+    postRegisterSong();
+  }, [selectedPickSong]);
 
   const handleApple = () => {
     const config = {

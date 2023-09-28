@@ -47,13 +47,13 @@ const nextConfig = {
 export default withPlugins(
   [
     [bundleAnalyzer],
-    [
-      withPWA({
-        dest: 'public',
-        register: true,
-        skipWaiting: true,
-      }),
-    ],
+    // [
+    //   withPWA({
+    //     dest: 'public',
+    //     register: true,
+    //     skipWaiting: true,
+    //   }),
+    // ],
   ],
   nextConfig,
 );

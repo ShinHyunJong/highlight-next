@@ -47,10 +47,16 @@ export const useAuth = () => {
     authAtom.selectedPickSong,
   );
   const [signInLoading, setSignInLoading] = useAtom(authAtom.signInLoading);
+  const [registerSongLoading, setRegisterSongLoading] = useAtom(
+    authAtom.registerSongLoading,
+  );
   const { deleteToken } = useToken();
-  const { data, isLoading, refetch } = useQuery('me', () => getMeApi());
+  const { data, isLoading, refetch, error } = useQuery('me', () => getMeApi(), {
+    retry: false,
+  });
 
-  const afterLogin = async () => {
+  const postRegisterSong = async () => {
+    setRegisterSongLoading(true);
     const orderInserted = pickedSongList.map((song, index) => {
       return {
         ...song,
@@ -60,12 +66,17 @@ export const useAuth = () => {
     try {
       await registerSongsApi(orderInserted);
       setPickedSongList([]);
-      router.replace('/?tab=profile');
-      refetch();
-      setSignInLoading(false);
+      setRegisterSongLoading(false);
     } catch (error) {
       setPickedSongList([]);
+      setRegisterSongLoading(false);
     }
+  };
+
+  const afterLogin = async () => {
+    router.replace('/?tab=profile');
+    refetch();
+    setSignInLoading(false);
   };
 
   const postRegisterApple = async (code: string, id_token: string) => {
@@ -101,5 +112,8 @@ export const useAuth = () => {
     postRegisterApple,
     postRegisterGoogle,
     signInLoading,
+    postRegisterSong,
+    registerSongLoading,
+    error,
   };
 };
