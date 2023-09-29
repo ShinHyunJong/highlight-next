@@ -19,7 +19,7 @@ function Auth() {
   const router = useRouter();
   const [appleLoading, setAppleLoading] = useState(false);
   const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
-  const { signInLoading, postRegisterGoogle, getUser, setUser } = useAuth();
+  const { signInLoading, postRegisterGoogle, setUser } = useAuth();
   const [selectedPickSong, setSelectedPickSong] = useAtom(
     authAtom.selectedPickSong,
   );
@@ -30,13 +30,8 @@ function Auth() {
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
     setUser(JSON.parse(router.query.user.toString()));
-  }, [router]);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    getUser();
     router.replace('/?tab=profile');
-  }, [accessToken]);
+  }, [router]);
 
   const handleApple = () => {
     setAppleLoading(true);
