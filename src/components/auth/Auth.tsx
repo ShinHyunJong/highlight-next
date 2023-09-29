@@ -19,21 +19,22 @@ function Auth() {
   const router = useRouter();
   const [appleLoading, setAppleLoading] = useState(false);
   const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
-  const { signInLoading, postRegisterGoogle, refetch } = useAuth();
+  const { signInLoading, postRegisterGoogle, getUser, setUser } = useAuth();
   const [selectedPickSong, setSelectedPickSong] = useAtom(
     authAtom.selectedPickSong,
   );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (!router.query.accessToken) return;
+    if (!router.query.accessToken || !router.query.user) return;
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
+    setUser(JSON.parse(router.query.user.toString()));
   }, [router]);
 
   useEffect(() => {
     if (!accessToken) return;
-    refetch();
+    getUser();
     router.replace('/?tab=profile');
   }, [accessToken]);
 

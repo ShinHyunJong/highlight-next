@@ -1,9 +1,7 @@
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
 
 import authAtom from '@/atoms/auth';
-import storage from '@/storages';
 
 import { getMeApi, registerGoogleApi } from './api';
 
@@ -17,8 +15,19 @@ export const useAuth = () => {
     authAtom.registerSongLoading,
   );
   const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
+  const [user, setUser] = useAtom(authAtom.user);
+  const [userLoading, setUserLoading] = useAtom(authAtom.userLoading);
 
-  const { data, isLoading, refetch, error } = useQuery('me', () => getMeApi());
+  const getUser = async () => {
+    try {
+      setUserLoading(true);
+      const result = await getMeApi();
+      setUser(result);
+      setUserLoading(false);
+    } catch (error) {
+      setUserLoading(false);
+    }
+  };
 
   const postRegisterGoogle = async (email: string, googleId: string) => {
     setSignInLoading(true);
@@ -32,7 +41,7 @@ export const useAuth = () => {
 
       const result = await registerGoogleApi(email, googleId, orderInserted);
       setAccessToken(result.accessToken);
-      refetch();
+      setUser(result.user);
       setPickedSongList([]);
       setSignInLoading(false);
     } catch (error) {
@@ -42,18 +51,18 @@ export const useAuth = () => {
 
   const logout = async () => {
     router.replace('/');
-    storage.tokenStorage.deleteAccessToken();
-    refetch();
+    setAccessToken(null);
+    setUser(null);
   };
 
   return {
-    user: data || null,
-    isLoading,
+    user,
+    userLoading,
     logout,
-    refetch,
+    getUser,
+    setUser,
     postRegisterGoogle,
     signInLoading,
     registerSongLoading,
-    error,
   };
 };

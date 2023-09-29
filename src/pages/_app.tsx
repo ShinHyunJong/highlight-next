@@ -1,12 +1,12 @@
 import '@/styles/global.css';
 import 'react-activity/dist/library.css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
