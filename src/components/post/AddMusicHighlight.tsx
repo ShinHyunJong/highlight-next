@@ -11,7 +11,6 @@ import { searchSongApi } from '@/hooks/song/api';
 import type { Song } from '@/types/server.type';
 
 import AddMusicItem from '../global/AddMusicItem';
-import Stepper from '../header/Stepper';
 import { Input } from '../ui/input';
 
 type FormValues = {
@@ -108,8 +107,7 @@ function AddMusicHighlight() {
   };
 
   return (
-    <section className="h-full w-full p-4">
-      <Stepper count={3} step={2} />
+    <section className="w-full p-4">
       <div className="pb-4">
         <Controller
           name="term"
@@ -128,18 +126,19 @@ function AddMusicHighlight() {
         />
       </div>
       {!searching && (
-        <div className="flex w-full flex-col">
+        <ul className="flex w-full flex-col">
           {songList.map((song) => {
             return (
               <AddMusicItem
                 key={`add-music-${song.isrc}`}
                 song={song}
-                handlePlay={handlePlay}
+                onClick={handlePlay}
                 handleAdd={handleAdd}
+                selection
               />
             );
           })}
-        </div>
+        </ul>
       )}
     </section>
   );

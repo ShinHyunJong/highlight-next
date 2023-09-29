@@ -5,6 +5,7 @@ import { Levels, Spinner } from 'react-activity';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaCheck } from 'react-icons/fa';
 import { LuMusic2 } from 'react-icons/lu';
+import { MdDragHandle } from 'react-icons/md';
 
 import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
@@ -12,11 +13,19 @@ import type { Song } from '@/types/server.type';
 
 type AddMusicItemProps = {
   song: Song;
-  handlePlay: (song: Song) => void;
-  handleAdd: (song: Song) => void;
+  onClick?: (song: Song) => void;
+  handleAdd?: (song: Song) => void;
+  selection?: boolean;
+  draggable?: boolean;
 };
 
-function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
+function AddMusicItem({
+  song,
+  onClick,
+  handleAdd,
+  selection,
+  draggable,
+}: AddMusicItemProps) {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
   const buffering = useAtomValue(audioAtom.audioBuffering);
@@ -35,12 +44,18 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={() => handlePlay(song)}
-      className="clearButton flex w-full flex-row items-stretch justify-between gap-2 p-2"
+    <li
+      aria-hidden="true"
+      onClick={() => onClick && onClick(song)}
+      className="clearButton flex w-full flex-row items-stretch justify-between gap-2 bg-gray-900 p-2"
     >
       <div className="flex flex-1 flex-row items-center gap-3">
+        {draggable && (
+          <div>
+            <MdDragHandle />
+          </div>
+        )}
+
         <Image
           className="object-fill"
           width={40}
@@ -55,21 +70,25 @@ function AddMusicItem({ song, handlePlay, handleAdd }: AddMusicItemProps) {
       </div>
       <div className="flex items-center justify-end gap-3">
         <div>{renderLevel()}</div>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAdd(song);
-          }}
-        >
-          {added ? (
-            <FaCheck />
-          ) : (
-            <AiOutlinePlusCircle color={colors.gray[200]} />
-          )}
-        </button>
+        {selection && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (handleAdd) {
+                handleAdd(song);
+              }
+            }}
+          >
+            {added ? (
+              <FaCheck />
+            ) : (
+              <AiOutlinePlusCircle color={colors.gray[200]} />
+            )}
+          </button>
+        )}
       </div>
-    </button>
+    </li>
   );
 }
 

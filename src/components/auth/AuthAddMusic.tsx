@@ -61,7 +61,6 @@ function AuthAddMusic() {
   const getSongs = async (value: string) => {
     if (!value) return;
     try {
-      console.log('jh');
       setSongList([]);
       setSearching(true);
       const result = await searchSongApi(value);
@@ -129,7 +128,7 @@ function AuthAddMusic() {
         </Button>
       }
     >
-      <section className="h-full w-full p-4">
+      <section className="w-full p-4">
         <Stepper count={3} step={2} />
         <div className="pb-4">
           <Controller
@@ -149,18 +148,19 @@ function AuthAddMusic() {
           />
         </div>
         {!searching && (
-          <div className="flex w-full flex-col">
+          <ul className="flex w-full flex-col">
             {songList.map((song) => {
               return (
                 <AddMusicItem
                   key={`add-music-${song.isrc}`}
                   song={song}
-                  handlePlay={handlePlay}
+                  onClick={handlePlay}
                   handleAdd={handleAdd}
+                  selection
                 />
               );
             })}
-          </div>
+          </ul>
         )}
       </section>
     </HeaderTemplate>

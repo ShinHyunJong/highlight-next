@@ -29,13 +29,6 @@ function PhotoController() {
     setSelectedImage(staticUploadingImageList[0]);
   }, [staticUploadingImageList]);
 
-  useEffect(() => {
-    return () => {
-      setUploadingImageList([]);
-      setStatic([]);
-    };
-  }, []);
-
   const onSubmit = () => {};
 
   const onCropComplete = useCallback(

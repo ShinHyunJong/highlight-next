@@ -11,8 +11,8 @@ export const compressImage = (file: File | Blob, quality: number) => {
     try {
       const compress = new Compressor(file, {
         quality,
-        mimeType: 'image/webp',
-        width: 720,
+        mimeType: 'image/jpeg',
+        width: 1024,
         success: (compressedResult) => {
           const url = URL.createObjectURL(compressedResult);
           resolve({

@@ -14,7 +14,9 @@ function HeaderTemplate({
   return (
     <section className="relative mx-auto h-full w-full max-w-[600px]">
       <Header title={title} rightNode={rightNode} />
-      <section className="h-full w-full pt-[50px]">{children}</section>
+      <section className="h-full w-full pt-[50px] dark:bg-gray-900">
+        {children}
+      </section>
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import uploadAtom from '@/atoms/upload';
@@ -19,6 +20,7 @@ const calculateRatio = (width: number, height: number) => {
 };
 
 export function useUpload() {
+  const [uploading, setUploading] = useAtom(uploadAtom.uploading);
   const [uploadingImageList, setUploadImageList] = useAtom(
     uploadAtom.uploadingImageList,
   );
@@ -26,30 +28,37 @@ export function useUpload() {
     uploadAtom.staticUploadingImageList,
   );
   const [processing, setIsProcessing] = useState(false);
-
+  const router = useRouter();
   const postHighlight = async () => {
-    const formData = new FormData();
-    const imageList = await Promise.all(
-      uploadingImageList.map(async (x) => {
-        if (x.croppedBlob) {
-          return x.croppedBlob;
-        }
-        const defaultCropped = await getCroppedImg(x.src, {
-          width: x.width,
-          height: x.height,
-          x: 0,
-          y: x.defaultCropY,
-        });
-        return defaultCropped;
-      }),
-    );
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      const imageList = await Promise.all(
+        uploadingImageList.map(async (x) => {
+          if (x.croppedBlob) {
+            return x.croppedBlob;
+          }
+          const defaultCropped = await getCroppedImg(x.src, {
+            width: x.width,
+            height: x.height,
+            x: 0,
+            y: x.defaultCropY,
+          });
+          return defaultCropped;
+        }),
+      );
 
-    formData.append('title', 'test');
-    for (let i = 0; i < imageList.length; i += 1) {
-      // formData.append(`file_name_list[${i}]`, imageList[i].name);
-      formData.append(`imageList[]`, imageList[i]!);
+      formData.append('title', 'test');
+      for (let i = 0; i < imageList.length; i += 1) {
+        // formData.append(`file_name_list[${i}]`, imageList[i].name);
+        formData.append(`imageList[]`, imageList[i]!);
+      }
+      await postHighlightApi(formData);
+      setUploading(false);
+      router.replace('/?tab=profile');
+    } catch (error) {
+      setUploading(false);
     }
-    const result = await postHighlightApi(formData);
   };
 
   const processFileList = async (files: File[] | Blob[]) => {
@@ -87,6 +96,7 @@ export function useUpload() {
     }
   };
   return {
+    uploading,
     postHighlight,
     uploadingImageList,
     processFileList,
