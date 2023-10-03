@@ -29,7 +29,7 @@ function UploadHighlight() {
           {imageList.map((x) => {
             return (
               <SwiperSlide key={x.id.toString()}>
-                <img className="rounded-md" alt={x.name} src={x.src} />
+                <img className="w-full rounded-md" alt={x.name} src={x.src} />
               </SwiperSlide>
             );
           })}
