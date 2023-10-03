@@ -1,8 +1,14 @@
 import { api } from '@/requests';
-import type { Song, User } from '@/types/server.type';
+import type { Song, User, UserFav } from '@/types/server.type';
 
 export async function getMeApi(): Promise<User> {
   const { data } = await api.get('/auth/me');
+  return data;
+}
+
+export async function getMeFavApi(): Promise<UserFav[]> {
+  const { data } = await api.get('/auth/me/fav');
+  console.log(data);
   return data;
 }
 

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { type ReactNode, useContext, useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
@@ -7,9 +8,11 @@ import { RouteContext } from '@/contexts/RouteContext';
 function Header({
   title,
   rightNode,
+  transparent,
 }: {
   title: string;
   rightNode?: ReactNode;
+  transparent?: boolean;
 }) {
   const { back, asPath } = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -20,7 +23,12 @@ function Header({
   }, [mounted]);
 
   return (
-    <header className="fixed top-0 z-50 mx-auto flex h-[50px] w-full max-w-[600px] items-center justify-center bg-gray-900 px-4 shadow-lg">
+    <header
+      className={clsx(
+        'fixed top-0 z-50 mx-auto flex h-[50px] w-full max-w-[600px] items-center justify-center px-4 shadow-lg',
+        transparent ? 'bg-transparent' : 'bg-gray-900',
+      )}
+    >
       {mounted && !isRoot && (
         <button
           className="absolute left-4"

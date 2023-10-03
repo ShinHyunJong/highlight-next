@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaUser } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
 import { useAuth } from '@/hooks/auth';
@@ -7,10 +7,13 @@ import { useUpload } from '@/hooks/upload';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
+import AddMusicItem from '../global/AddMusicItem';
+import { Button } from '../ui/button';
+
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, processing } = useUpload();
-  const { user, error } = useAuth();
+  const { user, userFav } = useAuth();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
@@ -31,7 +34,8 @@ function ProfileScreen() {
 
   return (
     <HeaderTemplate
-      title="My Profile"
+      title=""
+      transparent
       rightNode={
         <div>
           <button
@@ -51,6 +55,29 @@ function ProfileScreen() {
             className="h-auto w-full"
             src="https://images.unsplash.com/photo-1695455784661-fcc66aa04be7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2187&q=80"
           />
+          <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-[20%]">
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2">
+                <button type="button" className="rounded-full bg-white p-1">
+                  <FaUser color="#000000" />
+                </button>
+                <p className="font-bold text-white">user {user?.id}</p>
+              </div>
+              <Button size="sm" variant="outline">
+                Edit
+              </Button>
+            </div>
+            <div className="flex flex-1 flex-col justify-center gap-4">
+              <p>Favorite Top 3</p>
+              <div className="space-y-0 border-y border-white px-2 py-3">
+                {userFav.map((x) => {
+                  return (
+                    <AddMusicItem key={`user-fav-${x.id}`} song={x.song} />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
           <div className="absolute top-[90%] h-full w-full rounded-t-xl bg-gray-900 p-4">
             <p>{user?.email}</p>
             <div className="mt-4 flex">

@@ -65,7 +65,7 @@ function AddMusicItem({
         />
         <div className="flex flex-col gap-1 text-left">
           <p className="text-sm font-semibold">{song.title}</p>
-          <p className="text-sm text-gray-500">{song.artistName}</p>
+          <p className="text-sm text-gray-400">{song.artistName}</p>
         </div>
       </div>
       <div className="flex items-center justify-end gap-3">

@@ -20,3 +20,8 @@ export type Song = {
   previewUrl: string;
   order?: number;
 };
+
+export type UserFav = {
+  id: number;
+  song: Song;
+};

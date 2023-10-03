@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import authAtom from '@/atoms/auth';
 
-import { getMeApi, registerGoogleApi } from './api';
+import { getMeApi, getMeFavApi, registerGoogleApi } from './api';
 
 export const useAuth = () => {
   const router = useRouter();
@@ -16,13 +16,16 @@ export const useAuth = () => {
   );
   const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
   const [user, setUser] = useAtom(authAtom.user);
+  const [userFav, setUserFav] = useAtom(authAtom.userFav);
   const [userLoading, setUserLoading] = useAtom(authAtom.userLoading);
 
   const getUser = async () => {
     try {
       setUserLoading(true);
       const result = await getMeApi();
+      const favResult = await getMeFavApi();
       setUser(result);
+      setUserFav(favResult);
       setUserLoading(false);
     } catch (error) {
       setUserLoading(false);
@@ -58,6 +61,7 @@ export const useAuth = () => {
 
   return {
     user,
+    userFav,
     userLoading,
     logout,
     getUser,
