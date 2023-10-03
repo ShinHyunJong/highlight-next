@@ -1,5 +1,3 @@
-import 'swiper/css';
-
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
 
