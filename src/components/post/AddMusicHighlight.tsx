@@ -8,9 +8,11 @@ import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
 import { AudioContext } from '@/contexts/AudioContext';
 import { searchSongApi } from '@/hooks/song/api';
+import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Song } from '@/types/server.type';
 
 import AddMusicItem from '../global/AddMusicItem';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
 type FormValues = {
@@ -107,40 +109,56 @@ function AddMusicHighlight() {
   };
 
   return (
-    <section className="w-full p-4">
-      <div className="pb-4">
-        <Controller
-          name="term"
-          control={control}
-          rules={{ required: true, min: 2, max: 50 }}
-          render={({ field }) => {
-            return (
-              <Input
-                {...field}
-                type="text"
-                placeholder="Search songs."
-                isLoading={searching}
-              />
-            );
-          }}
-        />
-      </div>
-      {!searching && (
-        <ul className="flex w-full flex-col">
-          {songList.map((song) => {
-            return (
-              <AddMusicItem
-                key={`add-music-${song.isrc}`}
-                song={song}
-                onClick={handlePlay}
-                handleAdd={handleAdd}
-                selection
-              />
-            );
-          })}
-        </ul>
-      )}
-    </section>
+    <HeaderTemplate
+      title="Add Music"
+      rightNode={
+        <Button
+          isDisabled={selectedPickSong.length < 3}
+          onClick={() => router.push('/post?step=upload')}
+          variant="ghost"
+        >
+          <p className="mr-1 text-sm text-blue-500">
+            {selectedPickSong.length}
+          </p>
+          NEXT
+        </Button>
+      }
+    >
+      <section className="w-full p-4">
+        <div className="pb-4">
+          <Controller
+            name="term"
+            control={control}
+            rules={{ required: true, min: 2, max: 50 }}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  type="text"
+                  placeholder="Search songs."
+                  isLoading={searching}
+                />
+              );
+            }}
+          />
+        </div>
+        {!searching && (
+          <ul className="flex w-full flex-col">
+            {songList.map((song) => {
+              return (
+                <AddMusicItem
+                  key={`add-music-${song.isrc}`}
+                  song={song}
+                  onClick={handlePlay}
+                  handleAdd={handleAdd}
+                  selection
+                />
+              );
+            })}
+          </ul>
+        )}
+      </section>
+    </HeaderTemplate>
   );
 }
 

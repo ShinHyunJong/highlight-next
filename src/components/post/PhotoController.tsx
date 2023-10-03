@@ -2,10 +2,12 @@
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
+import router from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
 
 import uploadAtom from '@/atoms/upload';
+import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { UploadingImage } from '@/types/client.type';
 import getCroppedImg from '@/utils/image.util';
 
@@ -58,46 +60,60 @@ function PhotoController() {
   };
 
   return (
-    <section className="flex h-full w-full flex-col justify-between">
-      <div
-        style={{ height: `calc(100% - ${thumbContainerH}px)` }}
-        className="relative flex w-full flex-col"
-      >
-        {selectedImage && (
-          <Cropper
-            image={selectedImage.src}
-            crop={crop}
-            zoom={zoom}
-            aspect={selectedImage.ratio}
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={setZoom}
-          />
-        )}
-      </div>
-      <div className="flex" style={{ height: thumbContainerH }}>
-        {uploadingImageList.map((image) => {
-          const selected = selectedImage?.id === image.id;
-          return (
-            <button
-              type="button"
-              onClick={() => handleThumb(image)}
-              key={`${image.id}`}
-              className="clearButton"
-            >
-              <img
-                alt={`${image.id}`}
-                className={clsx(
-                  'h-20 w-20 border-2 border-solid object-cover',
-                  selected ? 'border-slate-100' : 'border-slate-900',
-                )}
-                src={image.thumbSrc}
-              />
-            </button>
-          );
-        })}
-      </div>
-    </section>
+    <HeaderTemplate
+      title="Select Photo"
+      rightNode={
+        <button
+          type="button"
+          // onClick={postHighlight}
+          onClick={() => router.push('/post?step=music')}
+          className="clearButton"
+        >
+          <p>NEXT</p>
+        </button>
+      }
+    >
+      <section className="flex h-full w-full flex-col justify-between">
+        <div
+          style={{ height: `calc(100% - ${thumbContainerH}px)` }}
+          className="relative flex w-full flex-col"
+        >
+          {selectedImage && (
+            <Cropper
+              image={selectedImage.src}
+              crop={crop}
+              zoom={zoom}
+              aspect={selectedImage.ratio}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+            />
+          )}
+        </div>
+        <div className="flex" style={{ height: thumbContainerH }}>
+          {uploadingImageList.map((image) => {
+            const selected = selectedImage?.id === image.id;
+            return (
+              <button
+                type="button"
+                onClick={() => handleThumb(image)}
+                key={`${image.id}`}
+                className="clearButton"
+              >
+                <img
+                  alt={`${image.id}`}
+                  className={clsx(
+                    'h-20 w-20 border-2 border-solid object-cover',
+                    selected ? 'border-slate-100' : 'border-slate-900',
+                  )}
+                  src={image.thumbSrc}
+                />
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    </HeaderTemplate>
   );
 }
 

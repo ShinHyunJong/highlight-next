@@ -29,7 +29,7 @@ export function useUpload() {
   );
   const [processing, setIsProcessing] = useState(false);
   const router = useRouter();
-  const postHighlight = async () => {
+  const postHighlight = async (title: string, desc: string) => {
     try {
       setUploading(true);
       const formData = new FormData();
@@ -48,7 +48,8 @@ export function useUpload() {
         }),
       );
 
-      formData.append('title', 'test');
+      formData.append('title', title);
+      formData.append('desc', desc);
       for (let i = 0; i < imageList.length; i += 1) {
         // formData.append(`file_name_list[${i}]`, imageList[i].name);
         formData.append(`imageList[]`, imageList[i]!);
