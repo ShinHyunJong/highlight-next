@@ -15,10 +15,13 @@ function HeaderTemplate({
   transparent?: boolean;
 }) {
   return (
-    <section className="relative mx-auto h-full w-full max-w-[600px]">
+    <section className="relative mx-auto h-full w-full max-w-[600px] scrollbar-hide">
       <Header title={title} rightNode={rightNode} transparent={transparent} />
       <section
-        className={clsx('h-full w-full', transparent ? 'pt-0' : 'pt-[50px]')}
+        className={clsx(
+          'h-full w-full scrollbar-hide',
+          transparent ? 'pt-0' : 'pt-[50px]',
+        )}
       >
         {children}
       </section>

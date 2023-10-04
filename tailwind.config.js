@@ -18,6 +18,9 @@ module.exports = {
       },
     },
     extend: {
+      aspectRatio: {
+        '4/5': '4 / 5',
+      },
       colors: {
         gray: color.gray,
         green: color.green,
@@ -41,5 +44,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 };

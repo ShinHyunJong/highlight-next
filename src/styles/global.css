@@ -4,10 +4,6 @@
 @tailwind utilities;
 
 
-body::-webkit-scrollbar {
-  display: none;
-}
-
 
 #__next {
   width: 100vw;

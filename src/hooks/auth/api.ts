@@ -1,5 +1,5 @@
 import { api } from '@/requests';
-import type { Song, User, UserFav } from '@/types/server.type';
+import type { Highlight, Song, User, UserFav } from '@/types/server.type';
 
 export async function getMeApi(): Promise<User> {
   const { data } = await api.get('/auth/me');
@@ -8,7 +8,11 @@ export async function getMeApi(): Promise<User> {
 
 export async function getMeFavApi(): Promise<UserFav[]> {
   const { data } = await api.get('/auth/me/fav');
-  console.log(data);
+  return data;
+}
+
+export async function getMyHighlightApi(): Promise<Highlight[]> {
+  const { data } = await api.get(`/auth/list/me`);
   return data;
 }
 

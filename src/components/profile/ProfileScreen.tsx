@@ -3,23 +3,52 @@ import { FaPlus, FaUser } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
 import { useAuth } from '@/hooks/auth';
+import { useMyHighlight } from '@/hooks/highlight';
 import { useUpload } from '@/hooks/upload';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import AddMusicItem from '../global/AddMusicItem';
+import HighlightItem from '../global/HighlightItem';
 import { Button } from '../ui/button';
+import { Skeleton } from '../ui/skeleton';
 
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, processing } = useUpload();
   const { user, userFav } = useAuth();
+  const { myHighlightList, isLoading } = useMyHighlight();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
       router.push('/post');
       await processFileList(files);
     } catch (error) {}
+  };
+
+  const renderHighlight = () => {
+    if (isLoading) {
+      return (
+        <div className="relative aspect-[4/5] overflow-hidden">
+          <Skeleton className="h-full w-full" />
+        </div>
+      );
+    }
+    return (
+      <>
+        {myHighlightList.map((h) => {
+          const firstImage = h.highlightImage[0];
+          if (!firstImage) return null;
+          return (
+            <HighlightItem
+              key={`my-highlight-${h.id}`}
+              highlight={h}
+              highlightImage={firstImage}
+            />
+          );
+        })}
+      </>
+    );
   };
 
   // useEffect(() => {
@@ -79,9 +108,12 @@ function ProfileScreen() {
             </div>
           </div>
           <div className="absolute top-[90%] h-full w-full rounded-t-xl bg-gray-900 p-4">
-            <p>{user?.email}</p>
-            <div className="mt-4 flex">
-              <label className="cursor-pointer" htmlFor="upload">
+            <div className="grid grid-cols-2 gap-4">
+              {renderHighlight()}
+              <label
+                className="relative flex aspect-[4/5] cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
+                htmlFor="upload"
+              >
                 <FaPlus />
               </label>
               <input
@@ -92,7 +124,7 @@ function ProfileScreen() {
                 id="upload"
                 className="hidden"
               />
-            </div>{' '}
+            </div>
           </div>
         </div>
       </section>

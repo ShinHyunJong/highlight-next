@@ -25,8 +25,8 @@ function Header({
   return (
     <header
       className={clsx(
-        'fixed top-0 z-50 mx-auto flex h-[50px] w-full max-w-[600px] items-center justify-center px-4 shadow-lg',
-        transparent ? 'bg-transparent' : 'bg-gray-900',
+        'fixed top-0 z-50 mx-auto flex h-[50px] w-full max-w-[600px] items-center justify-center px-4',
+        transparent ? 'bg-transparent' : 'bg-gray-900 shadow-lg',
       )}
     >
       {mounted && !isRoot && (

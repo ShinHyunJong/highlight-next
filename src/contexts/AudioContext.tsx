@@ -21,11 +21,25 @@ const AudioContext = createContext<AudioContextType>({
 function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const setPlayingAudio = useSetAtom(audioAtom.playingAudio);
+  const setAudioBuffering = useSetAtom(audioAtom.audioBuffering);
 
   useEffect(() => {
     if (!audioRef.current) return;
     audioRef.current.volume = 0.3;
   }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    audioRef.current.addEventListener('progress', () => {
+      if (!audioRef.current) return;
+      if (
+        audioRef.current.buffered.length > 0 &&
+        audioRef.current.buffered.end(0) <= audioRef.current.duration
+      ) {
+        setAudioBuffering(false);
+      }
+    });
+  }, [audioRef.current]);
 
   const play = () => {
     audioRef?.current?.play();
@@ -36,10 +50,8 @@ function AudioProvider({ children }: { children: ReactNode }) {
   };
 
   const changeAudio = (src: string) => {
-    pause();
     if (!audioRef.current) return;
     audioRef.current.src = src || '';
-    audioRef?.current?.load();
     play();
   };
 

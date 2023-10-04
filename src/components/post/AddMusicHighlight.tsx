@@ -42,18 +42,6 @@ function AddMusicHighlight() {
     setSelectedPickSong([]);
   }, []);
 
-  useEffect(() => {
-    if (!audio) return;
-    audio.addEventListener('progress', () => {
-      if (
-        audio.buffered.length > 0 &&
-        audio.buffered.end(0) <= audio.duration
-      ) {
-        setAudioBuffering(false);
-      }
-    });
-  }, [audio]);
-
   const getSongs = async (value: string) => {
     if (!value) return;
     try {

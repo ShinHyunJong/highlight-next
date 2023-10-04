@@ -25,3 +25,19 @@ export type UserFav = {
   id: number;
   song: Song;
 };
+
+export type Highlight = {
+  id: number;
+  title: string;
+  highlightImage: HighlightImage[];
+  desc?: string | null;
+  tags?: string | null;
+  createdAt: Date;
+};
+
+export type HighlightImage = {
+  id: number;
+  highlightId: number;
+  url: string;
+  key: string;
+};
