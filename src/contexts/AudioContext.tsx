@@ -28,18 +28,18 @@ function AudioProvider({ children }: { children: ReactNode }) {
     audioRef.current.volume = 0.3;
   }, []);
 
-  useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.addEventListener('progress', () => {
-      if (!audioRef.current) return;
-      if (
-        audioRef.current.buffered.length > 0 &&
-        audioRef.current.buffered.end(0) <= audioRef.current.duration
-      ) {
-        setAudioBuffering(false);
-      }
-    });
-  }, [audioRef.current]);
+  // useEffect(() => {
+  //   if (!audioRef.current) return;
+  //   audioRef.current.addEventListener('progress', () => {
+  //     if (!audioRef.current) return;
+  //     if (
+  //       audioRef.current.buffered.length > 0 &&
+  //       audioRef.current.buffered.end(0) <= audioRef.current.duration
+  //     ) {
+  //       setAudioBuffering(false);
+  //     }
+  //   });
+  // }, [audioRef.current]);
 
   const play = () => {
     audioRef?.current?.play();
@@ -69,8 +69,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
       }}
     >
       <audio
-        onLoad={() => console.log('onLoad')}
-        onPlay={() => console.log('play')}
+        onCanPlay={() => setAudioBuffering(false)}
         onEnded={handleEnd}
         ref={audioRef}
       />

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useRouter } from 'next/router';
 import { FaPlus, FaUser } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
