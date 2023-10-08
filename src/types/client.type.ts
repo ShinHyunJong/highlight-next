@@ -1,3 +1,8 @@
+export type CropPos = {
+  x: number;
+  y: number;
+};
+
 export type UploadingImage = {
   id: Number;
   file: File | Blob;
@@ -8,5 +13,8 @@ export type UploadingImage = {
   height: number;
   ratio: number;
   croppedBlob: Blob | null;
+  croppedUrl: string | null;
   defaultCropY: number;
+  crop: CropPos;
+  zoom: number;
 };

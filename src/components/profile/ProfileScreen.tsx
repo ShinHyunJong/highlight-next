@@ -18,7 +18,7 @@ import { Skeleton } from '../ui/skeleton';
 
 function ProfileScreen() {
   const router = useRouter();
-  const { processFileList, processing } = useUpload();
+  const { processFileList, initialize } = useUpload();
   const { user, userFav, getUser } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
   const { handlePlay } = useAudio();
@@ -32,6 +32,7 @@ function ProfileScreen() {
 
   useEffect(() => {
     getUser();
+    initialize();
   }, []);
 
   const renderHighlight = () => {

@@ -49,6 +49,7 @@ export function useUpload() {
 
   const initialize = () => {
     setSelectedPickSong([]);
+    setDeleteingSongList([]);
     setStaticUploadingImageList([]);
     setUploadImageList([]);
   };
@@ -57,20 +58,8 @@ export function useUpload() {
     try {
       setUploading(true);
       const formData = new FormData();
-      const imageList = await Promise.all(
-        uploadingImageList.map(async (x) => {
-          if (x.croppedBlob) {
-            return x.croppedBlob;
-          }
-          const defaultCropped = await getCroppedImg(x.src, {
-            width: x.width,
-            height: x.height - x.defaultCropY * 2,
-            x: 0,
-            y: x.defaultCropY,
-          });
-          return defaultCropped;
-        }),
-      );
+      const imageList = uploadingImageList.map((x) => x.croppedBlob);
+
       const orderedSong = selectedPickSong.map((x, i) => {
         return {
           ...x,
@@ -82,7 +71,6 @@ export function useUpload() {
       formData.append('desc', desc);
       formData.append('songList', JSON.stringify(orderedSong));
       for (let i = 0; i < imageList.length; i += 1) {
-        // formData.append(`file_name_list[${i}]`, imageList[i].name);
         formData.append(`imageList[]`, imageList[i]!);
       }
 
@@ -93,6 +81,28 @@ export function useUpload() {
     } catch (error) {
       setUploading(false);
     }
+  };
+
+  const completePhotoUpload = async () => {
+    const photoCompletd = await Promise.all(
+      uploadingImageList.map(async (x) => {
+        if (x.croppedBlob) {
+          return x;
+        }
+        const defaultCropped = await getCroppedImg(x.src, {
+          width: x.width,
+          height: x.height - x.defaultCropY * 2,
+          x: 0,
+          y: x.defaultCropY,
+        });
+        return {
+          ...x,
+          croppedBlob: defaultCropped,
+          croppedUrl: URL.createObjectURL(defaultCropped!),
+        };
+      }),
+    );
+    setUploadImageList(photoCompletd);
   };
 
   const updateHighlight = async (
@@ -116,9 +126,7 @@ export function useUpload() {
           }
         }),
       );
-      setDeleteingSongList([]);
-      setSelectedPickSong([]);
-      setUploading(false);
+      initialize();
       router.replace('/profile');
       setEditingHighlight(null);
     } catch (error) {
@@ -146,8 +154,11 @@ export function useUpload() {
             name: file.name,
             width: image.width,
             height: image.height,
+            crop: { x: 0, y: 0 },
+            zoom: 1,
             ratio: calculateRatio(image.width, image.height),
             croppedBlob: null,
+            croppedUrl: null,
             defaultCropY,
           };
         }),
@@ -178,11 +189,13 @@ export function useUpload() {
   return {
     uploading,
     postHighlight,
+    completePhotoUpload,
     uploadingImageList,
     processFileList,
     processing,
     handleDeleteSong,
     updateHighlight,
     editing,
+    initialize,
   };
 }

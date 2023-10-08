@@ -3,13 +3,16 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import router from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Cropper from 'react-easy-crop';
 
 import uploadAtom from '@/atoms/upload';
+import { useUpload } from '@/hooks/upload';
 import HeaderTemplate from '@/templates/HeaderTemplate';
-import type { UploadingImage } from '@/types/client.type';
+import type { CropPos, UploadingImage } from '@/types/client.type';
 import getCroppedImg from '@/utils/image.util';
+
+import { Button } from '../ui/button';
 
 const thumbContainerH = 82;
 
@@ -23,8 +26,8 @@ function PhotoController() {
   const [selectedImage, setSelectedImage] = useState<
     UploadingImage | undefined
   >(undefined);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const { completePhotoUpload } = useUpload();
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   useEffect(() => {
     if (staticUploadingImageList.length === 0) return;
@@ -32,6 +35,18 @@ function PhotoController() {
   }, [staticUploadingImageList]);
 
   const onSubmit = () => {};
+
+  const renderedImage = useMemo(
+    () => uploadingImageList.find((x) => x.id === selectedImage?.id),
+    [uploadingImageList, selectedImage],
+  );
+
+  const handleNext = async () => {
+    setPhotoUploading(true);
+    await completePhotoUpload();
+    router.push('/post?step=music&mode=upload');
+    setPhotoUploading(false);
+  };
 
   const onCropComplete = useCallback(
     async (croppedArea, croppedAreaPixels) => {
@@ -48,29 +63,62 @@ function PhotoController() {
         copied.splice(targetIndex, 1, {
           ...target,
           croppedBlob: croppedImage,
+          croppedUrl: URL.createObjectURL(croppedImage!),
         });
         return copied;
       });
     },
-    [selectedImage, setUploadingImageList],
+    [renderedImage, setUploadingImageList],
   );
 
   const handleThumb = (img: UploadingImage) => {
     setSelectedImage(img);
   };
 
+  const handleZoom = (z: number) => {
+    if (!selectedImage) return;
+    setUploadingImageList((prev) => {
+      const copied = [...prev];
+      const targetIndex = prev.findIndex((x) => x.id === selectedImage.id);
+      const target = prev[targetIndex];
+      if (!target) return prev;
+      copied.splice(targetIndex, 1, {
+        ...target,
+        zoom: z,
+      });
+      return copied;
+    });
+  };
+
+  const handleCrop = (c: CropPos) => {
+    if (!selectedImage) return;
+    setUploadingImageList((prev) => {
+      const copied = [...prev];
+      const targetIndex = prev.findIndex((x) => x.id === selectedImage.id);
+      const target = prev[targetIndex];
+      if (!target) return prev;
+      copied.splice(targetIndex, 1, {
+        ...target,
+        crop: c,
+      });
+      return copied;
+    });
+  };
+
   return (
     <HeaderTemplate
       title="Select Photo"
       rightNode={
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          isLoading={photoUploading}
           // onClick={postHighlight}
-          onClick={() => router.push('/post?step=music&mode=upload')}
+          onClick={handleNext}
           className="clearButton"
         >
           <p>NEXT</p>
-        </button>
+        </Button>
       }
     >
       <section className="flex h-full w-full flex-col justify-between">
@@ -78,15 +126,15 @@ function PhotoController() {
           style={{ height: `calc(100% - ${thumbContainerH}px)` }}
           className="relative flex w-full flex-col"
         >
-          {selectedImage && (
+          {renderedImage && (
             <Cropper
-              image={selectedImage.src}
-              crop={crop}
-              zoom={zoom}
-              aspect={selectedImage.ratio}
-              onCropChange={setCrop}
+              image={renderedImage.src}
+              crop={renderedImage.crop}
+              zoom={renderedImage.zoom}
+              aspect={renderedImage.ratio}
+              onCropChange={handleCrop}
               onCropComplete={onCropComplete}
-              onZoomChange={setZoom}
+              onZoomChange={handleZoom}
             />
           )}
         </div>
