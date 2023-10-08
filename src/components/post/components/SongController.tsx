@@ -28,13 +28,13 @@ function SongController() {
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
 
-    // setSongList((prev) => {
-    //   const items = [...prev];
-    //   const [removed] = items.splice(startIndex, 1);
-    //   if (!removed) return prev;
-    //   items.splice(endIndex, 0, removed);
-    //   return items;
-    // });
+    setSongList((prev) => {
+      const items = [...prev];
+      const [removed] = items.splice(startIndex, 1);
+      if (!removed) return prev;
+      items.splice(endIndex, 0, removed);
+      return items;
+    });
   };
 
   return (
