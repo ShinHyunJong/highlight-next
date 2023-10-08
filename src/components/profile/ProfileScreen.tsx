@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { FaPlus, FaUser } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
@@ -18,7 +19,7 @@ import { Skeleton } from '../ui/skeleton';
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, processing } = useUpload();
-  const { user, userFav } = useAuth();
+  const { user, userFav, getUser } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
   const { handlePlay } = useAudio();
   const handleFile = async (e: any) => {
@@ -28,6 +29,10 @@ function ProfileScreen() {
       await processFileList(files);
     } catch (error) {}
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const renderHighlight = () => {
     if (isLoading) {

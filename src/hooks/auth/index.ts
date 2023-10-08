@@ -57,6 +57,7 @@ export const useAuth = () => {
     router.replace('/');
     setAccessToken(null);
     setUser(null);
+    setUserFav([]);
   };
 
   return {
