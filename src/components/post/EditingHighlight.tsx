@@ -64,11 +64,17 @@ function EditingHighlight() {
     >
       <section className="w-full space-y-8 p-4">
         <div className="px-4">
-          <Swiper className="h-full w-full" spaceBetween={8} slidesPerView={2}>
+          <Swiper spaceBetween={8} slidesPerView={2}>
             {editingHighlight?.highlightImage.map((x) => {
               return (
                 <SwiperSlide key={x.id.toString()}>
-                  <img className="w-full rounded-md" alt={x.key} src={x.url} />
+                  <div className="flex h-full items-center bg-gray-900">
+                    <img
+                      className="w-full rounded-md object-contain"
+                      alt={x.key}
+                      src={x.url}
+                    />
+                  </div>
                 </SwiperSlide>
               );
             })}
