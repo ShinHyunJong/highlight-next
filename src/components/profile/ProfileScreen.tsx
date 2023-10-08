@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FaPlus, FaUser } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
+import { useAudio } from '@/hooks/audio';
 import { useAuth } from '@/hooks/auth';
 import { useMyHighlight } from '@/hooks/highlight';
 import { useUpload } from '@/hooks/upload';
@@ -10,7 +11,7 @@ import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import AddMusicItem from '../global/AddMusicItem';
-import HighlightItem from '../global/HighlightItem';
+import HighlightItem from '../global/HighlightItem/HighlightItem';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 
@@ -19,6 +20,7 @@ function ProfileScreen() {
   const { processFileList, processing } = useUpload();
   const { user, userFav } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
+  const { handlePlay } = useAudio();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
@@ -69,7 +71,7 @@ function ProfileScreen() {
       rightNode={
         <div>
           <button
-            onClick={() => router.push('/?tab=settings')}
+            onClick={() => router.push('/profile?tab=settings')}
             type="button"
             className="clearButton"
           >
@@ -102,7 +104,11 @@ function ProfileScreen() {
               <div className="space-y-0 border-y border-white px-2 py-3">
                 {userFav.map((x) => {
                   return (
-                    <AddMusicItem key={`user-fav-${x.id}`} song={x.song} />
+                    <AddMusicItem
+                      key={`user-fav-${x.id}`}
+                      song={x.song}
+                      onClick={handlePlay}
+                    />
                   );
                 })}
               </div>

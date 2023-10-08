@@ -7,6 +7,7 @@ export type User = {
 };
 
 export type Song = {
+  id?: number;
   title: string;
   trackNumber: number;
   albumName: string;
@@ -29,10 +30,20 @@ export type UserFav = {
 export type Highlight = {
   id: number;
   title: string;
+  userId: number;
+  highlightSong: HighlightSong[];
   highlightImage: HighlightImage[];
   desc?: string | null;
   tags?: string | null;
   createdAt: Date;
+  updatedAt: Date;
+};
+
+export type HighlightSong = {
+  id: number;
+  highlightId: number;
+  songId: number;
+  song?: Song;
 };
 
 export type HighlightImage = {

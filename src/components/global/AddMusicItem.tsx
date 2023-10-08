@@ -1,21 +1,24 @@
 import colors from 'color';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import Image from 'next/image';
 import { Levels, Spinner } from 'react-activity';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaCheck } from 'react-icons/fa';
 import { LuMusic2 } from 'react-icons/lu';
-import { MdDragHandle } from 'react-icons/md';
+import { MdClose, MdDragHandle } from 'react-icons/md';
 
 import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
+import uploadAtom from '@/atoms/upload';
 import type { Song } from '@/types/server.type';
 
 type AddMusicItemProps = {
   song: Song;
   onClick?: (song: Song) => void;
   handleAdd?: (song: Song) => void;
+  handleDelete?: (song: Song) => void;
   selection?: boolean;
+  deleteable?: boolean;
   draggable?: boolean;
 };
 
@@ -23,18 +26,21 @@ function AddMusicItem({
   song,
   onClick,
   handleAdd,
+  handleDelete,
   selection,
+  deleteable,
   draggable,
 }: AddMusicItemProps) {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
+  const setDeletingSong = useSetAtom(uploadAtom.deletingSongList);
   const buffering = useAtomValue(audioAtom.audioBuffering);
 
   const active = playingAudio?.isrc === song.isrc;
   const added = selectedPickSong.map((s) => s.isrc).includes(song.isrc);
 
   const renderLevel = () => {
-    if (!active && song.previewUrl) return <LuMusic2 />;
+    if (!active && !draggable && song.previewUrl) return <LuMusic2 />;
     if (!active || !playingAudio) return null;
 
     if (buffering) {
@@ -85,6 +91,19 @@ function AddMusicItem({
             ) : (
               <AiOutlinePlusCircle color={colors.gray[200]} />
             )}
+          </button>
+        )}
+        {!selection && deleteable && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              if (handleDelete) {
+                handleDelete(song);
+              }
+            }}
+          >
+            <MdClose />
           </button>
         )}
       </div>

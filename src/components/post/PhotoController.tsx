@@ -66,7 +66,7 @@ function PhotoController() {
         <button
           type="button"
           // onClick={postHighlight}
-          onClick={() => router.push('/post?step=music')}
+          onClick={() => router.push('/post?step=music&mode=upload')}
           className="clearButton"
         >
           <p>NEXT</p>

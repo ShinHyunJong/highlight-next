@@ -25,7 +25,6 @@ function AddMusicHighlight() {
       term: '',
     },
   });
-
   const term = watch('term');
   const debouncedValue = useDebounce<string>(term, 500);
   const [songList, setSongList] = useState<Song[]>([]);
@@ -36,11 +35,9 @@ function AddMusicHighlight() {
     authAtom.selectedPickSong,
   );
   const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
-  const router = useRouter();
 
-  useEffect(() => {
-    setSelectedPickSong([]);
-  }, []);
+  const router = useRouter();
+  const isEdit = router.query.mode === 'edit';
 
   const getSongs = async (value: string) => {
     if (!value) return;
@@ -81,7 +78,7 @@ function AddMusicHighlight() {
       const copied = [...prev];
       const targetIndex = copied.findIndex((x) => x.isrc === song.isrc);
       if (targetIndex === -1) {
-        if (copied.length === 3) return prev;
+        if (copied.length === 5) return prev;
         copied.push(song);
       } else {
         copied.splice(targetIndex, 1);
@@ -91,25 +88,29 @@ function AddMusicHighlight() {
   };
 
   const routeToAuth = () => {
-    router.push('/?tab=auth');
+    router.push('/auth');
     pause();
     setPlayingAudio(null);
   };
+
+  const nextRoute = isEdit ? '/edit?step=upload' : '/post?step=upload';
 
   return (
     <HeaderTemplate
       title="Add Music"
       rightNode={
-        <Button
-          isDisabled={selectedPickSong.length < 3}
-          onClick={() => router.push('/post?step=upload')}
-          variant="ghost"
-        >
-          <p className="mr-1 text-sm text-blue-500">
-            {selectedPickSong.length}
-          </p>
-          NEXT
-        </Button>
+        <div className="flex">
+          <Button
+            isDisabled={selectedPickSong.length === 0}
+            onClick={() => router.push(nextRoute)}
+            variant="ghost"
+          >
+            <p className="mr-2 text-sm text-blue-500">
+              {selectedPickSong.length} / 5
+            </p>
+            NEXT
+          </Button>
+        </div>
       }
     >
       <section className="w-full p-4">

@@ -1,5 +1,8 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { FaPlus } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import uploadAtom from '@/atoms/upload';
@@ -15,29 +18,39 @@ type FormValues = {
   desc: string;
 };
 
-function UploadHighlight() {
-  const imageList = useAtomValue(uploadAtom.uploadingImageList);
+function EditingHighlight() {
+  const router = useRouter();
   const [editingHighlight, setEditingHighlight] = useAtom(
     uploadAtom.editingHighlight,
   );
   const { control, watch, getValues, setValue } = useForm<FormValues>({
     defaultValues: {
-      title: '',
-      desc: '',
+      title: editingHighlight?.title || '',
+      desc: editingHighlight?.desc || '',
     },
   });
 
-  const { postHighlight, uploading } = useUpload();
+  useEffect(() => {
+    if (!editingHighlight) return;
+    setValue('title', editingHighlight?.title || '');
+    setValue('desc', editingHighlight?.desc || '');
+  }, [editingHighlight]);
+
+  const { uploading, editing, updateHighlight } = useUpload();
 
   const handlePost = () => {
-    postHighlight(getValues().title, getValues().desc);
+    updateHighlight(editingHighlight?.id!, getValues().title, getValues().desc);
+  };
+
+  const handleAddMusic = () => {
+    router.push('/edit?step=music&mode=edit');
   };
 
   const titleValue = watch('title');
 
   return (
     <HeaderTemplate
-      title="Upload"
+      title="Edit"
       rightNode={
         <Button
           isLoading={uploading}
@@ -45,17 +58,17 @@ function UploadHighlight() {
           onClick={handlePost}
           variant="ghost"
         >
-          UPLOAD
+          DONE
         </Button>
       }
     >
       <section className="w-full space-y-8 p-4">
         <div className="px-4">
           <Swiper className="h-full w-full" spaceBetween={8} slidesPerView={2}>
-            {imageList.map((x) => {
+            {editingHighlight?.highlightImage.map((x) => {
               return (
                 <SwiperSlide key={x.id.toString()}>
-                  <img className="w-full rounded-md" alt={x.name} src={x.src} />
+                  <img className="w-full rounded-md" alt={x.key} src={x.url} />
                 </SwiperSlide>
               );
             })}
@@ -85,9 +98,19 @@ function UploadHighlight() {
           <p>Tracks</p>
           <SongController />
         </div>
+        <div className="py-4">
+          <button
+            type="button"
+            onClick={handleAddMusic}
+            className="clearButton flex w-full flex-col items-center justify-center gap-1"
+          >
+            <FaPlus />
+            <p className="text-sm text-gray-100">Choose another songs</p>
+          </button>
+        </div>
       </section>
     </HeaderTemplate>
   );
 }
 
-export default UploadHighlight;
+export default EditingHighlight;

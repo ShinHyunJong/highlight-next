@@ -1,14 +1,7 @@
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useRouter } from 'next/router';
 
-import Auth from '@/components/auth/Auth';
-import AuthAddMusic from '@/components/auth/AuthAddMusic';
-import AuthGreeting from '@/components/auth/AuthGreeting';
 import HomeScreen from '@/components/home/HomeScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
-import PhotoController from '@/components/post/PhotoController';
-import ProfileScreen from '@/components/profile/ProfileScreen';
-import SettingScreen from '@/components/profile/SettingScreen';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -22,7 +15,6 @@ const firebaseConfig = {
 
 const Index = () => {
   const router = useRouter();
-  const { tab } = router.query;
 
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
@@ -62,35 +54,10 @@ const Index = () => {
   //   });
   // };
 
-  const renderRoutes = () => {
-    switch (tab) {
-      case 'home':
-        return <HomeScreen />;
-      case 'profile':
-        return <ProfileScreen />;
-      case 'upload':
-        return <PhotoController />;
-      case 'before-pick':
-        return <AuthGreeting />;
-      case 'pick':
-        return <AuthAddMusic />;
-      case 'settings':
-        return <SettingScreen />;
-      case 'auth':
-        return (
-          <GoogleOAuthProvider clientId="924733757125-uom43l9ir4pipd61b248q975benop8u9.apps.googleusercontent.com">
-            <Auth />
-          </GoogleOAuthProvider>
-        );
-      default:
-        return <HomeScreen />;
-    }
-  };
-
   return (
     <section className="relative flex h-full w-full flex-col">
       <Onboarding />
-      {renderRoutes()}
+      <HomeScreen />
     </section>
   );
 };

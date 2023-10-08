@@ -47,7 +47,7 @@ export const useAuth = () => {
       setUser(result.user);
       setPickedSongList([]);
       setSignInLoading(false);
-      router.replace('/?tab=profile');
+      router.replace('/profile');
     } catch (error) {
       setSignInLoading(false);
     }

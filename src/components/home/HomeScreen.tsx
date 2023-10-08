@@ -20,9 +20,9 @@ function HomeScreen() {
 
   const handleLogin = () => {
     if (accessToken) {
-      router.push('/?tab=profile');
+      router.push('/profile');
     } else {
-      router.push(`/?tab=before-pick`);
+      router.push(`/auth?tab=before-pick`);
     }
   };
   return (

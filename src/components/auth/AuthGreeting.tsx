@@ -17,11 +17,13 @@ function AuthGreeting() {
         <Stepper count={3} step={1} />
         <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />
         <div className="py-8">
-          <Button onClick={() => router.push('/?tab=pick')}>Get Started</Button>
+          <Button onClick={() => router.push('/auth?tab=pick')}>
+            Get Started
+          </Button>
         </div>
         <div className="mt-8">
           <Button
-            onClick={() => router.push('/?tab=auth')}
+            onClick={() => router.push('/auth')}
             type="button"
             variant="link"
             className="px-0"

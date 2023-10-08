@@ -21,12 +21,12 @@
     "storybook:serve": "http-server storybook-static --port 6006 --silent",
     "serve-storybook": "run-s storybook:*",
     "test-storybook:ci": "start-server-and-test serve-storybook http://localhost:6006 test-storybook",
-    "prepare": "husky install",
     "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-dialog": "^1.0.4",
+    "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-oauth/google": "^0.11.1",
     "@t3-oss/env-nextjs": "^0.6.1",
@@ -121,7 +121,6 @@
     "eslint-plugin-testing-library": "^6.0.1",
     "eslint-plugin-unused-imports": "^3.0.0",
     "http-server": "^14.1.1",
-    "husky": "^8.0.3",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
     "lint-staged": "^14.0.1",

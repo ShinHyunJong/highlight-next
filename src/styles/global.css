@@ -24,6 +24,17 @@
   background: linear-gradient(0deg, rgba(0,0,0,0.8) 60%,  rgba(0,0,0,0) 80%);
 }
 
+.scrollbar-hide {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+  /* Firefox */
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 
 
 

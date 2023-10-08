@@ -27,10 +27,11 @@ function Auth() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!router.query.accessToken || !router.query.user) return;
+    console.log('auth');
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
     setUser(JSON.parse(router.query.user.toString()));
-    router.replace('/?tab=profile');
+    router.replace('/profile');
   }, [router]);
 
   const handleApple = () => {
@@ -96,7 +97,7 @@ function Auth() {
     if (typeof window === 'undefined') return;
     const scope = 'user-read-private user-read-email';
     const client_id = '';
-    const redirect_uri = 'http://localhost:3001?tab=auth';
+    const redirect_uri = 'http://localhost:3001/auth';
     window.location.href = `https://accounts.spotify.com/authorize?${queryString.stringify(
       {
         response_type: 'code',

@@ -2,11 +2,17 @@ import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import authAtom from '@/atoms/auth';
 import uploadAtom from '@/atoms/upload';
+import type { Song } from '@/types/server.type';
 import getCroppedImg, { compressImage, createImage } from '@/utils/image.util';
 import { generateRandomNumber } from '@/utils/random';
 
-import { postHighlightApi } from './api';
+import {
+  deleteHighlightSongApi,
+  postHighlightApi,
+  updateHighlightApi,
+} from './api';
 
 const calculateRatio = (width: number, height: number) => {
   if (width === height) {
@@ -24,11 +30,29 @@ export function useUpload() {
   const [uploadingImageList, setUploadImageList] = useAtom(
     uploadAtom.uploadingImageList,
   );
+  const [selectedPickSong, setSelectedPickSong] = useAtom(
+    authAtom.selectedPickSong,
+  );
   const [staticUploadingImageList, setStaticUploadingImageList] = useAtom(
     uploadAtom.staticUploadingImageList,
   );
   const [processing, setIsProcessing] = useState(false);
+  const [editingHighlight, setEditingHighlight] = useAtom(
+    uploadAtom.editingHighlight,
+  );
+  const [deletingSongList, setDeleteingSongList] = useAtom(
+    uploadAtom.deletingSongList,
+  );
+  const [editing, setEditing] = useAtom(uploadAtom.editing);
+
   const router = useRouter();
+
+  const initialize = () => {
+    setSelectedPickSong([]);
+    setStaticUploadingImageList([]);
+    setUploadImageList([]);
+  };
+
   const postHighlight = async (title: string, desc: string) => {
     try {
       setUploading(true);
@@ -40,23 +64,63 @@ export function useUpload() {
           }
           const defaultCropped = await getCroppedImg(x.src, {
             width: x.width,
-            height: x.height,
+            height: x.height - x.defaultCropY * 2,
             x: 0,
             y: x.defaultCropY,
           });
           return defaultCropped;
         }),
       );
+      const orderedSong = selectedPickSong.map((x, i) => {
+        return {
+          ...x,
+          order: i + 1,
+        };
+      });
 
       formData.append('title', title);
       formData.append('desc', desc);
+      formData.append('songList', JSON.stringify(orderedSong));
       for (let i = 0; i < imageList.length; i += 1) {
         // formData.append(`file_name_list[${i}]`, imageList[i].name);
         formData.append(`imageList[]`, imageList[i]!);
       }
+
       await postHighlightApi(formData);
       setUploading(false);
-      router.replace('/?tab=profile');
+      initialize();
+      router.replace('/profile');
+    } catch (error) {
+      setUploading(false);
+    }
+  };
+
+  const updateHighlight = async (
+    highlightId: number,
+    title: string,
+    desc: string,
+  ) => {
+    try {
+      setUploading(true);
+      const orderInserted = selectedPickSong.map((x, i) => {
+        return {
+          ...x,
+          order: i + 1,
+        };
+      });
+      await updateHighlightApi(highlightId, title, desc, orderInserted);
+      await Promise.all(
+        deletingSongList.map(async (x) => {
+          if (x.id) {
+            await deleteHighlightSongApi(x.id);
+          }
+        }),
+      );
+      setDeleteingSongList([]);
+      setSelectedPickSong([]);
+      setUploading(false);
+      router.replace('/profile');
+      setEditingHighlight(null);
     } catch (error) {
       setUploading(false);
     }
@@ -96,11 +160,29 @@ export function useUpload() {
       setIsProcessing(false);
     }
   };
+
+  const handleDeleteSong = (song: Song) => {
+    setSelectedPickSong((prev) => {
+      const newList = [...prev];
+      const index = newList.findIndex((x) => x.isrc === song.isrc);
+      newList.splice(index, 1);
+      return newList;
+    });
+    setDeleteingSongList((prev) => {
+      const newList = [...prev];
+      newList.push(song);
+      return newList;
+    });
+  };
+
   return {
     uploading,
     postHighlight,
     uploadingImageList,
     processFileList,
     processing,
+    handleDeleteSong,
+    updateHighlight,
+    editing,
   };
 }

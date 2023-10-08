@@ -33,11 +33,12 @@ function AuthAddMusic() {
   const [songList, setSongList] = useState<Song[]>([]);
   const [searching, setSearching] = useState(false);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
+  const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
+
   const { pause, changeAudio, audio } = useContext(AudioContext);
   const [selectedPickSong, setSelectedPickSong] = useAtom(
     authAtom.selectedPickSong,
   );
-  const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
   const router = useRouter();
 
   usePublicGuard();
@@ -95,7 +96,7 @@ function AuthAddMusic() {
   };
 
   const routeToAuth = () => {
-    router.push('/?tab=auth');
+    router.push('/auth');
     pause();
     setPlayingAudio(null);
   };

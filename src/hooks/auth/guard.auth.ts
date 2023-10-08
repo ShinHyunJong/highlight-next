@@ -9,6 +9,6 @@ export function usePublicGuard() {
   const router = useRouter();
   useEffect(() => {
     if (!accessToken) return;
-    router.replace('/?tab=profile');
+    router.replace('/profile');
   }, [accessToken]);
 }
