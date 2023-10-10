@@ -103,7 +103,9 @@ export const useAuth = () => {
       setUploadingCoverImg(null);
       if (callback) callback();
       await getUser();
-    } catch (error) {}
+    } catch (error) {
+      setProfileLoading(false);
+    }
   };
 
   const updateProfileImg = async (file: Blob, callback?: () => void) => {

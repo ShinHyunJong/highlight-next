@@ -90,14 +90,15 @@ function ProfileScreen() {
       <section className="flex h-full w-full flex-col">
         <div className="relative w-full">
           <div className="aspect-4/5 w-full bg-gray-600">
-            <Image
-              alt="coverImg"
-              className="object-cover"
-              src={user?.coverImgUrl || ''}
-              fill
-            />
+            {user?.coverImgUrl && (
+              <Image
+                alt="coverImg"
+                className="object-cover"
+                src={user?.coverImgUrl || ''}
+                fill
+              />
+            )}
           </div>
-
           <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-[20%]">
             <div className="whitespace-pre-line break-keep py-4">
               <p className="text-sm text-gray-200">{user?.bio}</p>
