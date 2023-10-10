@@ -9,6 +9,8 @@ import { Controller, useForm } from 'react-hook-form';
 import authAtom from '@/atoms/auth';
 import EditCoverImgModal from '@/components/auth/EditCoverImgModal';
 import EditProfileImgModal from '@/components/auth/EditProfileImgModal';
+import AddMusicButton from '@/components/global/AddMusicButton';
+import AddMusicModal from '@/components/global/AddMusicModal';
 import SongController from '@/components/post/components/SongController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,12 +64,18 @@ function AuthEdit({}) {
     <HeaderTemplate
       title="Edit Profile"
       rightNode={
-        <Button onClick={handleDone} variant="ghost">
+        <Button
+          isDisabled={song.length < 3}
+          isLoading={profileLoading}
+          onClick={handleDone}
+          variant="ghost"
+        >
           DONE
         </Button>
       }
     >
-      <section className="w-full">
+      <AddMusicModal />
+      <section className="w-full pb-8">
         <div className="relative aspect-4/5 w-full bg-gray-600">
           {(coverImgUrl || user?.coverImgUrl) && (
             <div className="absolute inset-0 z-10">
@@ -130,7 +138,9 @@ function AuthEdit({}) {
         <div className="rounded-t-xl bg-gray-900 p-4">
           <p className="mb-4">Top 3 Songs</p>
           <SongController />
+          {song.length < 3 && <AddMusicButton />}
         </div>
+        <div />
       </section>
     </HeaderTemplate>
   );

@@ -13,3 +13,5 @@ export const editingHighlight = atom<Highlight | null>(null);
 
 export const deleting = atom<boolean>(false);
 export const deletingSongList = atom<Song[]>([]);
+
+export const addMusicModalOpen = atom<boolean>(false);

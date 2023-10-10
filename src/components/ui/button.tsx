@@ -57,7 +57,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const Comp = asChild ? Slot : 'button';
-    if (isLoading) return <Spinner size={12} />;
     return (
       <Comp
         className={cn(
@@ -66,7 +65,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         ref={ref}
         {...props}
-      />
+      >
+        {isLoading ? <Spinner size={12} /> : props.children}
+      </Comp>
     );
   },
 );

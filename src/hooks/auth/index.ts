@@ -2,12 +2,15 @@ import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 
 import authAtom from '@/atoms/auth';
+import uploadAtom from '@/atoms/upload';
 
 import {
+  deleteFavSong,
   getMeApi,
   getMeFavApi,
   registerGoogleApi,
   updateCoverImgApi,
+  updateFavSong,
   updateProfileApi,
   updateProfileImgApi,
 } from './api';
@@ -38,6 +41,9 @@ export const useAuth = () => {
   );
   const [userLoading, setUserLoading] = useAtom(authAtom.userLoading);
   const [profileLoading, setProfileLoading] = useAtom(authAtom.profileLoading);
+  const [deleteingSongList, setDeleteingSongList] = useAtom(
+    uploadAtom.deletingSongList,
+  );
 
   const initilizeUploadingAsessts = () => {
     setUploadingProfileImg(null);
@@ -98,25 +104,36 @@ export const useAuth = () => {
         formData.append('file', uploadingCoverImg);
         await updateCoverImgApi(formData);
       }
-      setProfileLoading(false);
+      const orderedSongList = pickedSongList.map((x, i) => {
+        return {
+          ...x,
+          order: i + 1,
+        };
+      });
+      await updateFavSong(orderedSongList);
+      const filteredDeleteingSongList = deleteingSongList.filter((x) => x.id);
+      await Promise.all(
+        filteredDeleteingSongList.map(async (x) => {
+          await deleteFavSong(x.id!);
+        }),
+      );
+
       setUploadingProfileImg(null);
       setUploadingCoverImg(null);
+
       if (callback) callback();
       await getUser();
+      setProfileLoading(false);
     } catch (error) {
       setProfileLoading(false);
     }
   };
 
-  const updateProfileImg = async (file: Blob, callback?: () => void) => {
+  const updateProfileImg = async (file: Blob) => {
     try {
-      setProfileLoading(true);
       const formData = new FormData();
       formData.append('file', file);
       await updateProfileImgApi(formData);
-      setProfileLoading(false);
-      if (callback) callback();
-      await getUser();
     } catch (error) {}
   };
 

@@ -74,3 +74,15 @@ export async function updateProfileImgApi(body: FormData) {
   });
   return data;
 }
+
+export async function updateFavSong(songList: Song[]) {
+  const { data } = await api.put('/auth/me/profile/favSong', {
+    songList,
+  });
+  return data;
+}
+
+export async function deleteFavSong(favId: number) {
+  const { data } = await api.delete(`/auth/me/profile/favSong/${favId}`);
+  return data;
+}

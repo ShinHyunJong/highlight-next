@@ -8,18 +8,28 @@ function HeaderTemplate({
   title,
   transparent,
   rightNode,
+  isModal,
+  onCloseModal,
 }: {
   title: string;
   children: ReactNode;
   rightNode?: ReactNode;
   transparent?: boolean;
+  isModal?: boolean;
+  onCloseModal?: () => void;
 }) {
   return (
-    <section className="relative mx-auto h-full w-full max-w-[600px] scrollbar-hide">
-      <Header title={title} rightNode={rightNode} transparent={transparent} />
+    <section className="scrollbar-hide relative mx-auto h-full w-full max-w-[600px]">
+      <Header
+        isModal={isModal}
+        title={title}
+        rightNode={rightNode}
+        transparent={transparent}
+        onCloseModal={onCloseModal}
+      />
       <section
         className={clsx(
-          'h-full w-full scrollbar-hide',
+          'scrollbar-hide h-full w-full',
           transparent ? 'pt-0' : 'pt-[50px]',
         )}
       >

@@ -1,4 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+
+'use client';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -93,6 +96,7 @@ function ProfileScreen() {
             {user?.coverImgUrl && (
               <Image
                 alt="coverImg"
+                priority
                 className="object-cover"
                 src={user?.coverImgUrl || ''}
                 fill
@@ -100,9 +104,11 @@ function ProfileScreen() {
             )}
           </div>
           <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-[20%]">
-            <div className="whitespace-pre-line break-keep py-4">
-              <p className="text-sm text-gray-200">{user?.bio}</p>
-            </div>
+            {user?.bio && (
+              <div className="whitespace-pre-line break-keep py-4">
+                <p className="text-sm text-gray-200">{user?.bio}</p>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 <button type="button" className="rounded-full bg-white">
