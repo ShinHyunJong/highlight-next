@@ -48,3 +48,29 @@ export async function registerSongsApi(songList: Song[]) {
   });
   return data;
 }
+
+export async function updateProfileApi(name: string, bio?: string) {
+  const { data } = await api.put('/auth/me/profile', {
+    name,
+    bio,
+  });
+  return data;
+}
+
+export async function updateCoverImgApi(body: FormData) {
+  const { data } = await api.put('/auth/me/coverImg', body, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  });
+  return data;
+}
+
+export async function updateProfileImgApi(body: FormData) {
+  const { data } = await api.put('/auth/me/profileImg', body, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  });
+  return data;
+}

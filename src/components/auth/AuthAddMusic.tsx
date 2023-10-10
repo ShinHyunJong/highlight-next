@@ -138,10 +138,11 @@ function AuthAddMusic() {
         </div>
         {!searching && (
           <ul className="flex w-full flex-col">
-            {songList.map((song) => {
+            {songList.map((song, i) => {
               return (
                 <AddMusicItem
                   key={`add-music-${song.isrc}`}
+                  index={i}
                   song={song}
                   onClick={handlePlay}
                   handleAdd={handleAdd}

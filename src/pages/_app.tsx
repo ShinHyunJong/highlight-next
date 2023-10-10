@@ -8,10 +8,11 @@ import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 import NextNProgress from 'nextjs-progressbar';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
+import { useAuth } from '@/hooks/auth';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -31,6 +32,11 @@ const queryClient = new QueryClient();
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const Template = Component.Template || Empty;
   const props = Component.props || {};
+  const { getUser } = useAuth();
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

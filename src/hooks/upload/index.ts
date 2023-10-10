@@ -128,6 +128,7 @@ export function useUpload() {
       );
       initialize();
       router.replace('/profile');
+      setUploading(false);
       setEditingHighlight(null);
     } catch (error) {
       setUploading(false);

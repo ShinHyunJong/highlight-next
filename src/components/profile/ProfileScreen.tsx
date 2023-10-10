@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { FaPlus, FaUser } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
 
 import { useAudio } from '@/hooks/audio';
@@ -19,7 +20,7 @@ import { Skeleton } from '../ui/skeleton';
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, initialize } = useUpload();
-  const { user, userFav, getUser } = useAuth();
+  const { user, userFav, getUser, initilizeUploadingAsessts } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
   const { handlePlay } = useAudio();
   const handleFile = async (e: any) => {
@@ -31,8 +32,8 @@ function ProfileScreen() {
   };
 
   useEffect(() => {
-    getUser();
     initialize();
+    initilizeUploadingAsessts();
   }, []);
 
   const renderHighlight = () => {
@@ -88,20 +89,39 @@ function ProfileScreen() {
     >
       <section className="flex h-full w-full flex-col">
         <div className="relative w-full">
-          <img
-            alt="bg"
-            className="h-auto w-full"
-            src="https://images.unsplash.com/photo-1695455784661-fcc66aa04be7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2187&q=80"
-          />
+          <div className="aspect-4/5 w-full bg-gray-600">
+            <Image
+              alt="coverImg"
+              className="object-cover"
+              src={user?.coverImgUrl || ''}
+              fill
+            />
+          </div>
+
           <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-[20%]">
+            <div className="whitespace-pre-line break-keep py-4">
+              <p className="text-sm text-gray-200">{user?.bio}</p>
+            </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                <button type="button" className="rounded-full bg-white p-1">
-                  <FaUser color="#000000" />
+                <button type="button" className="rounded-full bg-white">
+                  <Image
+                    alt="profileImg"
+                    width={26}
+                    className="rounded-full"
+                    height={26}
+                    src={user?.profileImgUrl || ''}
+                  />
                 </button>
-                <p className="font-bold text-white">user {user?.id}</p>
+                <p className="font-bold text-white">
+                  {user?.name ? user?.name : `user ${user?.id}`}
+                </p>
               </div>
-              <Button size="sm" variant="outline">
+              <Button
+                onClick={() => router.push('/auth/edit')}
+                size="sm"
+                variant="outline"
+              >
                 Edit
               </Button>
             </div>
@@ -112,7 +132,7 @@ function ProfileScreen() {
                   return (
                     <AddMusicItem
                       index={i}
-                      key={`user-fav-${x.id}`}
+                      key={`usefr-fav-${x.id}`}
                       song={x.song}
                       onClick={handlePlay}
                     />

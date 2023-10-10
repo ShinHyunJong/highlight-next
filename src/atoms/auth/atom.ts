@@ -17,10 +17,16 @@ export const userFav = atomWithStorage<UserFav[]>(
   [],
 );
 export const userLoading = atom<boolean>(false);
+export const profileLoading = atom<boolean>(false);
 export const signInLoading = atom<boolean>(false);
 export const registerSongLoading = atom<boolean>(false);
 export const accessToken = atomWithStorage<string | null>(
   ACCESS_TOKEN_KEY,
   null,
 );
+export const uploadingProfileImg = atom<Blob | File | null>(null);
+export const uploadingProfileImgUrl = atom<string | null>(null);
+
+export const uploadingCoverImg = atom<Blob | File | null>(null);
+export const uploadingCoverImgUrl = atom<string | null>(null);
 export const hasLogout = atom<boolean | null>(false);

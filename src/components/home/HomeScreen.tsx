@@ -1,6 +1,5 @@
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 
 import authAtom from '@/atoms/auth';
@@ -13,10 +12,6 @@ function HomeScreen() {
   const router = useRouter();
   const accessToken = useAtomValue(authAtom.accessToken);
   const { getUser } = useAuth();
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   const handleLogin = () => {
     if (accessToken) {
