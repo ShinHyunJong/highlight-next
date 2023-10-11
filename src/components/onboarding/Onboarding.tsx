@@ -20,14 +20,14 @@ function Onboarding() {
   const sliderIndexCx = (index: number) =>
     clsx(
       'h-1 w-[50%] rounded-full',
-      activeIndex === index ? 'bg-black' : 'bg-gray-300',
+      activeIndex === index ? 'bg-gray-600' : 'bg-gray-300',
     );
   if (!loaded || onboarded) return null;
   return (
     <div
       className={`deviceHeight absolute inset-0 z-[40] w-full ${
         onboarded ? 'opacity-0' : 'opacity-100'
-      } bg-gray-600 transition-all duration-200 ease-out`}
+      } bg-gray-900 transition-all duration-200 ease-out`}
     >
       <Swiper
         className="h-full w-full"
