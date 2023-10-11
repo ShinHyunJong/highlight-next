@@ -7,7 +7,7 @@ import type { Highlight } from '@/types/server.type';
 
 import { getMyHighlightApi } from '../auth/api';
 import { deleteHighlightApi } from '../upload/api';
-import { getHighlightDetailApi } from './api';
+import { getHighlightDetailApi, getHighlightListApi } from './api';
 
 export function useMyHighlight() {
   const [deleting, setDeleting] = useAtom(uploadAtom.deleting);
@@ -35,6 +35,21 @@ export function useMyHighlight() {
     isLoading,
     deleting,
     handleDelete,
+  };
+}
+
+export function useHighlightList(highlightList?: Highlight[]) {
+  const { data, isLoading } = useQuery(
+    ['mainFeed'],
+    () => getHighlightListApi(),
+    {
+      initialData: highlightList,
+    },
+  );
+
+  return {
+    highlightList: data,
+    isLoading,
   };
 }
 

@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 
 import HomeScreen from '@/components/home/HomeScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
+import { getHighlightListApi } from '@/hooks/highlight/api';
+import type { Highlight } from '@/types/server.type';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -13,7 +15,11 @@ const firebaseConfig = {
   measurementId: 'G-QRRSYR1FT9',
 };
 
-const Index = () => {
+type IndexProps = {
+  highLightList: Highlight[];
+};
+
+const Index = (props: IndexProps) => {
   const router = useRouter();
 
   // const onMessageFCM = async () => {
@@ -61,5 +67,14 @@ const Index = () => {
     </section>
   );
 };
+
+export async function getStaticProps() {
+  const highLightList = await getHighlightListApi();
+  return {
+    props: {
+      highLightList,
+    },
+  };
+}
 
 export default Index;

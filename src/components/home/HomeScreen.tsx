@@ -3,15 +3,17 @@ import { useRouter } from 'next/router';
 import { FaUser } from 'react-icons/fa';
 
 import authAtom from '@/atoms/auth';
-import { useAuth } from '@/hooks/auth';
+import { useHighlightList } from '@/hooks/highlight';
 import HeaderTemplate from '@/templates/HeaderTemplate';
+import type { Highlight } from '@/types/server.type';
 
+import HighlightItem from '../global/HighlightItem/HighlightItem';
 import Greeting from '../header/Gretting';
 
-function HomeScreen() {
+function HomeScreen(props: { highlightList: Highlight[] }) {
   const router = useRouter();
   const accessToken = useAtomValue(authAtom.accessToken);
-  const { getUser } = useAuth();
+  const { highlightList } = useHighlightList(props.highlightList);
 
   const handleLogin = () => {
     if (accessToken) {
@@ -22,7 +24,7 @@ function HomeScreen() {
   };
   return (
     <HeaderTemplate title="">
-      <section className="h-full w-full p-4">
+      <section className="w-full p-4">
         <Greeting textList={['Discover', 'New Places', 'with Music']} />
         <div className="pt-8 text-gray-500">
           <h1>
@@ -38,6 +40,19 @@ function HomeScreen() {
           >
             <FaUser color="#000000" />
           </button>
+        </div>
+        <div className="my-4 grid grid-cols-2 gap-4">
+          {highlightList?.map((h) => {
+            const firstImage = h.highlightImage[0];
+            if (!firstImage) return null;
+            return (
+              <HighlightItem
+                key={`highlight-${h.id}`}
+                highlight={h}
+                highlightImage={firstImage}
+              />
+            );
+          })}
         </div>
       </section>
     </HeaderTemplate>
