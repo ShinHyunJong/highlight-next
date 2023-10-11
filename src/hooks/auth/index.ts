@@ -56,8 +56,8 @@ export const useAuth = () => {
     try {
       setUserLoading(true);
       const result = await getMeApi();
-      const favResult = await getMeFavApi();
       setUser(result);
+      const favResult = await getMeFavApi();
       setUserFav(favResult);
       setUserLoading(false);
     } catch (error) {

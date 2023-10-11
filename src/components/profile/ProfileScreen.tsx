@@ -24,7 +24,7 @@ import { Skeleton } from '../ui/skeleton';
 function ProfileScreen() {
   const router = useRouter();
   const { processFileList, initialize } = useUpload();
-  const { user, userFav, getUser, initilizeUploadingAsessts } = useAuth();
+  const { user, userFav, initilizeUploadingAsessts } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
   const { handlePlay } = useAudio();
   const handleFile = async (e: any) => {
@@ -134,7 +134,7 @@ function ProfileScreen() {
             <div className="flex flex-1 flex-col justify-center gap-4">
               <p>Favorite Top 3</p>
               <div className="space-y-0 border-y border-white px-2 py-3">
-                {userFav.map((x, i) => {
+                {userFav?.map((x, i) => {
                   return (
                     <AddMusicItem
                       index={i}

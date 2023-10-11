@@ -30,14 +30,17 @@ declare global {
 }
 const queryClient = new QueryClient();
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  const Template = Component.Template || Empty;
-  const props = Component.props || {};
+const GetUser = () => {
   const { getUser } = useAuth();
-
   useEffect(() => {
     getUser();
   }, []);
+  return null;
+};
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const Template = Component.Template || Empty;
+  const props = Component.props || {};
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -65,6 +68,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           disableTransitionOnChange
         />
         <RouteProvider>
+          <GetUser />
           <AudioProvider>
             <Template {...props}>
               <Component {...pageProps} />
