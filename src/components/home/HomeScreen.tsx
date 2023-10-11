@@ -25,8 +25,10 @@ function HomeScreen() {
       <section className="h-full w-full p-4">
         <Greeting textList={['Discover', 'New Places', 'with Music']} />
         <div className="pt-8 text-gray-500">
-          Get Help from <b className="text-gray-200">brands, cafes, friends</b>{' '}
-          and more.!
+          <h1>
+            Get Help from{' '}
+            <b className="text-gray-200">brands, cafes, friends</b> and more.!
+          </h1>
         </div>
         <div className="pt-8">
           <button

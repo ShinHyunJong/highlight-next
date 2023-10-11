@@ -80,6 +80,7 @@ function AuthEdit({}) {
           {(coverImgUrl || user?.coverImgUrl) && (
             <div className="absolute inset-0 z-10">
               <Image
+                unoptimized
                 alt="coverImg"
                 src={coverImgUrl || user?.coverImgUrl || ''}
                 fill
