@@ -147,7 +147,7 @@ function ProfileScreen() {
               </div>
             </div>
           </div>
-          <div className="absolute top-[95%] h-full w-full rounded-t-xl bg-gray-900 p-4">
+          <div className="absolute top-[95%] w-full rounded-t-xl bg-gray-900 p-4 pb-8">
             <div className="grid grid-cols-2 gap-4">
               {renderHighlight()}
               <label
