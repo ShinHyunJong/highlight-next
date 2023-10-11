@@ -57,7 +57,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           url: 'https://discoverrealmusic.com/',
           images: [
             {
-              url: 'https://discoverrealmusic.com/public/ogImage.png',
+              url: 'https://assets.discoverrealmusic.com/public/ogImage.png',
             },
           ],
         }}
