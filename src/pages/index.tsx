@@ -70,6 +70,7 @@ export async function getStaticProps() {
     props: {
       highLightList,
     },
+    revalidate: 60,
   };
 }
 
