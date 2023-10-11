@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import HomeScreen from '@/components/home/HomeScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
 import { getHighlightListApi } from '@/hooks/highlight/api';
@@ -20,8 +18,6 @@ type IndexProps = {
 };
 
 const Index = (props: IndexProps) => {
-  const router = useRouter();
-
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
   //     'Notification' in window &&
@@ -63,7 +59,7 @@ const Index = (props: IndexProps) => {
   return (
     <section className="relative flex h-full w-full flex-col">
       <Onboarding />
-      <HomeScreen />
+      <HomeScreen highlightList={props.highLightList} />
     </section>
   );
 };

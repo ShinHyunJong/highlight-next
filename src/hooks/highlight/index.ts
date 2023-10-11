@@ -43,6 +43,7 @@ export function useHighlightList(highlightList?: Highlight[]) {
     ['mainFeed'],
     () => getHighlightListApi(),
     {
+      refetchOnWindowFocus: false,
       initialData: highlightList,
     },
   );
