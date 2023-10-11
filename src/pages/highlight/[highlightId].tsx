@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import AddMusicItem from '@/components/global/AddMusicItem';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { useAudio } from '@/hooks/audio';
+import { useHighlightDetail } from '@/hooks/highlight';
 import {
   getHighlightDetailApi,
   getHighlightListApi,
@@ -17,14 +18,14 @@ type HighlightDetailProps = {
   highlightDetail: Highlight;
 };
 
-function HighlightDetail({ highlightDetail }: HighlightDetailProps) {
+function HighlightDetail(props: HighlightDetailProps) {
   const { handlePlay } = useAudio();
-
+  const { highlightDetail } = useHighlightDetail(props.highlightDetail);
   return (
     <HeaderTemplate transparent title="">
       <section className="w-full">
         <Swiper className="w-full" spaceBetween={0} slidesPerView={1}>
-          {highlightDetail.highlightImage.map((x) => {
+          {highlightDetail?.highlightImage.map((x) => {
             return (
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
                 <div className="relative aspect-4/5 w-full">
@@ -43,9 +44,9 @@ function HighlightDetail({ highlightDetail }: HighlightDetailProps) {
       </section>
       <section className="w-full p-4">
         <div className="flex flex-col">
-          <h1 className="mb-4 text-2xl font-bold">{highlightDetail.title}</h1>
+          <h1 className="mb-4 text-2xl font-bold">{highlightDetail?.title}</h1>
           <div className="space-y-1">
-            {highlightDetail.highlightSong.map((x, i) => {
+            {highlightDetail?.highlightSong.map((x, i) => {
               return (
                 <AddMusicItem
                   onClick={handlePlay}
@@ -80,7 +81,7 @@ export async function getStaticPaths() {
       params: { highlightId: x.id.toString() },
     };
   });
-  return { paths };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }: any) {
