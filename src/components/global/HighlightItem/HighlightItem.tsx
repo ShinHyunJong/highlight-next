@@ -39,6 +39,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
           <ItemSetting onClickEdit={handleEdit} onClickRemove={handleRemove} />
         )}
         <Image
+          unoptimized
           fill
           alt={highlightImage.key}
           src={highlightImage.url}

@@ -97,6 +97,7 @@ function ProfileScreen() {
             {user?.coverImgUrl && (
               <Image
                 alt="coverImg"
+                unoptimized
                 priority
                 className="object-cover"
                 src={user?.coverImgUrl || ''}

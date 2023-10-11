@@ -30,6 +30,7 @@ function HighlightDetail(props: HighlightDetailProps) {
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
                 <div className="relative aspect-4/5 w-full">
                   <Image
+                    unoptimized
                     className="object-contain"
                     src={x.url}
                     fill
