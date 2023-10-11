@@ -51,7 +51,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         openGraph={{
           type: 'website',
           locale: 'en',
+          title: `Discover Real Music`,
+          description:
+            'What your favorite cafes, brands, and friends actually listen to.',
           url: 'https://discoverrealmusic.com/',
+          images: [
+            {
+              url: 'https://discoverrealmusic.com/public/ogImage.png',
+            },
+          ],
         }}
       />
       <Provider>

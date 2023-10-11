@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -8,6 +9,7 @@ import {
   getHighlightDetailApi,
   getHighlightListApi,
 } from '@/hooks/highlight/api';
+import { foramtName } from '@/hooks/utils/format.utils';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight } from '@/types/server.type';
 
@@ -17,7 +19,6 @@ type HighlightDetailProps = {
 
 function HighlightDetail({ highlightDetail }: HighlightDetailProps) {
   const { handlePlay } = useAudio();
-  console.log(highlightDetail);
 
   return (
     <HeaderTemplate transparent title="">
@@ -56,15 +57,16 @@ function HighlightDetail({ highlightDetail }: HighlightDetailProps) {
             })}
           </div>
         </div>
-        <div className="py-4">
+        <div className="px-2 py-4">
           <p className="text-gray-300">{highlightDetail?.desc}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-sm text-gray-300">
           <Avatar className="bg-white">
             <AvatarImage src={highlightDetail?.user?.profileImgUrl || ''} />
           </Avatar>
-          <p>By {highlightDetail?.user?.name}</p>
+          <p>By {foramtName(highlightDetail?.user)}</p>
           <p>|</p>
+          <p>{dayjs(highlightDetail?.createdAt).format('DD MMM YYYY')}</p>
         </div>
       </section>
     </HeaderTemplate>

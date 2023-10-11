@@ -56,7 +56,10 @@ export const useAuth = () => {
     try {
       setUserLoading(true);
       const result = await getMeApi();
-      setUser(result);
+      setUser({
+        ...result,
+        name: result.name || `user${result.id}`,
+      });
       const favResult = await getMeFavApi();
       setUserFav(favResult);
       setUserLoading(false);

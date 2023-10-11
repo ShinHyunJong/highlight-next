@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { imageConfig } from '@/configs/image.config';
@@ -29,7 +30,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   };
 
   return (
-    <div className="space-y-2">
+    <Link href={`/highlight/${highlight.id}`} className="space-y-2">
       <div
         key={`my-highlight-${highlight.id}`}
         className="relative aspect-[4/5] overflow-hidden"
@@ -46,7 +47,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
         />
       </div>
       <p>{highlight.title}</p>
-    </div>
+    </Link>
   );
 }
 
