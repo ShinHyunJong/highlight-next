@@ -19,7 +19,7 @@ function Auth() {
   const router = useRouter();
   const [appleLoading, setAppleLoading] = useState(false);
   const [accessToken, setAccessToken] = useAtom(authAtom.accessToken);
-  const { signInLoading, postRegisterGoogle, setUser } = useAuth();
+  const { signInLoading, postRegisterGoogle, setUser, getUser } = useAuth();
   const [selectedPickSong, setSelectedPickSong] = useAtom(
     authAtom.selectedPickSong,
   );
@@ -29,7 +29,7 @@ function Auth() {
     if (!router.query.accessToken || !router.query.user) return;
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
-    setUser(JSON.parse(router.query.user.toString()));
+    getUser();
     router.replace('/profile');
   }, [router]);
 
