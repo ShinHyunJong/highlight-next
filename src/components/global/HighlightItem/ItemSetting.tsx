@@ -1,7 +1,10 @@
 import clsx from 'clsx';
+import colors from 'color';
 import { useRef, useState } from 'react';
+import { Spinner } from 'react-activity';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 
+import { useMyHighlight } from '@/hooks/highlight';
 import { useOutsideClick } from '@/hooks/utils/click.utils';
 
 type ItemSettingProps = {
@@ -12,6 +15,7 @@ type ItemSettingProps = {
 function ItemSetting({ onClickEdit, onClickRemove }: ItemSettingProps) {
   const [open, setOpen] = useState(false);
   const settingRef = useRef<HTMLDivElement>(null);
+  const { deleting } = useMyHighlight();
   useOutsideClick(settingRef, () => setOpen(false));
 
   const handleEdit = () => {
@@ -38,16 +42,29 @@ function ItemSetting({ onClickEdit, onClickRemove }: ItemSettingProps) {
           open ? 'flex flex-col' : 'hidden',
         )}
       >
-        <button onClick={handleEdit} type="button" className="clearButton p-2">
-          <p className="text-sm text-gray-900">Edit Post</p>
-        </button>
-        <button
-          onClick={handleRemove}
-          type="button"
-          className="clearButton p-2"
-        >
-          <p className="text-sm text-gray-900">Remove</p>
-        </button>
+        {deleting ? (
+          <div className="p-4">
+            <Spinner size={12} color={colors.gray[900]} />
+          </div>
+        ) : (
+          <>
+            {' '}
+            <button
+              onClick={handleEdit}
+              type="button"
+              className="clearButton p-2"
+            >
+              <p className="text-sm text-gray-900">Edit Post</p>
+            </button>
+            <button
+              onClick={handleRemove}
+              type="button"
+              className="clearButton p-2"
+            >
+              <p className="text-sm text-gray-900">Remove</p>
+            </button>
+          </>
+        )}
       </div>
     </>
   );

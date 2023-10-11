@@ -24,6 +24,10 @@ export async function updateHighlightApi(
   });
 }
 
+export async function deleteHighlightApi(highlightId: number) {
+  await api.delete(`/highlight/${highlightId}`);
+}
+
 export async function deleteHighlightSongApi(id: number) {
   await api.delete(`/highlight/song/${id}`);
 }

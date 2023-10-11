@@ -76,16 +76,17 @@ function EditProfileImgModal() {
       />
       <label
         htmlFor="uploadProfile"
-        type="button"
         className="cursor-pointer rounded-full bg-white"
       >
-        <Image
-          alt="profileImg"
-          width={30}
-          className="rounded-full"
-          height={30}
-          src={uploadingProfileImgUrl || user?.profileImgUrl || ''}
-        />
+        {(uploadingProfileImg || user?.profileImgUrl) && (
+          <Image
+            alt="profileImg"
+            width={30}
+            className="rounded-full"
+            height={30}
+            src={uploadingProfileImgUrl || user?.profileImgUrl || ''}
+          />
+        )}
       </label>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>

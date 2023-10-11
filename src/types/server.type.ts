@@ -34,6 +34,7 @@ export type Highlight = {
   id: number;
   title: string;
   userId: number;
+  user?: User;
   highlightSong: HighlightSong[];
   highlightImage: HighlightImage[];
   desc?: string | null;

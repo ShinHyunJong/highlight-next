@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import { imageConfig } from '@/configs/image.config';
 import { useAuth } from '@/hooks/auth';
+import { useMyHighlight } from '@/hooks/highlight';
 import type { Highlight, HighlightImage } from '@/types/server.type';
 
 import ItemSetting from './ItemSetting';
@@ -16,11 +17,16 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   const { user } = useAuth();
   const isMine = user?.id === highlight.userId;
   const router = useRouter();
+  const { handleDelete } = useMyHighlight();
 
   const handleEdit = () => {
     router.push(`/edit?highlightId=${highlight.id}`);
   };
-  const handleRemove = () => {};
+  const handleRemove = () => {
+    if (window.confirm('Are you sure to delete?')) {
+      handleDelete(highlight.id);
+    }
+  };
 
   return (
     <div className="space-y-2">

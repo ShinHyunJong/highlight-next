@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
+import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode, useEffect } from 'react';
 
@@ -40,6 +41,16 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <DefaultSeo
+        title="Discover Real Music"
+        description="What your favorite cafes, brands, and friends actually listen to."
+        canonical="https://discoverrealmusic.com/"
+        openGraph={{
+          type: 'website',
+          locale: 'en',
+          url: 'https://discoverrealmusic.com/',
+        }}
+      />
       <Provider>
         <Head>
           <meta

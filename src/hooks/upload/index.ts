@@ -8,6 +8,7 @@ import type { Song } from '@/types/server.type';
 import getCroppedImg, { compressImage, createImage } from '@/utils/image.util';
 import { generateRandomNumber } from '@/utils/random';
 
+import { useMyHighlight } from '../highlight';
 import {
   deleteHighlightSongApi,
   postHighlightApi,
@@ -44,7 +45,7 @@ export function useUpload() {
     uploadAtom.deletingSongList,
   );
   const [editing, setEditing] = useAtom(uploadAtom.editing);
-
+  const { refetch } = useMyHighlight();
   const router = useRouter();
 
   const initialize = () => {
@@ -76,6 +77,7 @@ export function useUpload() {
 
       await postHighlightApi(formData);
       setUploading(false);
+      refetch();
       initialize();
       router.replace('/profile');
     } catch (error) {

@@ -17,6 +17,7 @@ import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import AddMusicItem from '../global/AddMusicItem';
 import HighlightItem from '../global/HighlightItem/HighlightItem';
+import { Avatar, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 
@@ -92,7 +93,7 @@ function ProfileScreen() {
     >
       <section className="flex h-full w-full flex-col">
         <div className="relative w-full">
-          <div className="aspect-4/5 w-full bg-gray-600">
+          <div className="relative aspect-4/5 w-full bg-gray-600">
             {user?.coverImgUrl && (
               <Image
                 alt="coverImg"
@@ -103,22 +104,20 @@ function ProfileScreen() {
               />
             )}
           </div>
-          <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-[20%]">
+          <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-8">
             {user?.bio && (
               <div className="whitespace-pre-line break-keep py-4">
                 <p className="text-sm text-gray-200">{user?.bio}</p>
               </div>
             )}
             <div className="flex items-center justify-between">
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <button type="button" className="rounded-full bg-white">
-                  <Image
-                    alt="profileImg"
-                    width={26}
-                    className="rounded-full"
-                    height={26}
-                    src={user?.profileImgUrl || ''}
-                  />
+                  {user?.profileImgUrl && (
+                    <Avatar className="bg-white">
+                      <AvatarImage src={user?.profileImgUrl || ''} />
+                    </Avatar>
+                  )}
                 </button>
                 <p className="font-bold text-white">
                   {user?.name ? user?.name : `user ${user?.id}`}
@@ -148,7 +147,7 @@ function ProfileScreen() {
               </div>
             </div>
           </div>
-          <div className="absolute top-[90%] h-full w-full rounded-t-xl bg-gray-900 p-4">
+          <div className="absolute top-[95%] h-full w-full rounded-t-xl bg-gray-900 p-4">
             <div className="grid grid-cols-2 gap-4">
               {renderHighlight()}
               <label
