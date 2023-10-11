@@ -1,6 +1,5 @@
 import colors from 'color';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import Image from 'next/image';
 import { Levels, Spinner } from 'react-activity';
 import { Draggable } from 'react-beautiful-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -70,7 +69,7 @@ function AddMusicItem({
               <MdDragHandle />
             </div>
           )}
-          <Image
+          <img
             className="object-fill"
             width={40}
             height={40}

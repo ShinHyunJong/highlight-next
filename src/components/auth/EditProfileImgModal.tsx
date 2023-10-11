@@ -1,5 +1,4 @@
 import { useAtom } from 'jotai';
-import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 
@@ -79,7 +78,7 @@ function EditProfileImgModal() {
         className="cursor-pointer rounded-full bg-white"
       >
         {(uploadingProfileImg || user?.profileImgUrl) && (
-          <Image
+          <img
             alt="profileImg"
             width={30}
             className="rounded-full"
