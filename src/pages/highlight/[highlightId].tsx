@@ -80,7 +80,7 @@ export async function getStaticPaths() {
       params: { highlightId: x.id.toString() },
     };
   });
-  return { paths, fallback: false };
+  return { paths };
 }
 
 export async function getStaticProps({ params }: any) {
@@ -89,7 +89,6 @@ export async function getStaticProps({ params }: any) {
     props: {
       highlightDetail,
     },
-    revalidate: 60,
   };
 }
 
