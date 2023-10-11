@@ -77,7 +77,8 @@ export const useAuth = () => {
 
       const result = await registerGoogleApi(email, googleId, orderInserted);
       setAccessToken(result.accessToken);
-      setUser(result.user);
+      getUser();
+      // setUser(result.user);
       setPickedSongList([]);
       setSignInLoading(false);
       router.replace('/profile');
