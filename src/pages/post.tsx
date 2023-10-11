@@ -2,21 +2,13 @@
 
 import { useRouter } from 'next/router';
 
-import AddMusic from '@/components/post/AddMusic';
+import AddMusicHighlight from '@/components/post/AddMusicHighlight';
 import PhotoController from '@/components/post/PhotoController';
-import { useUpload } from '@/hooks/upload';
-import HeaderTemplate from '@/templates/HeaderTemplate';
-
-const routeList = [
-  { title: 'Select Photo', value: 'photo' },
-  { title: 'Add Music', value: 'music' },
-  { title: 'Upload Highlight', value: 'highlight' },
-];
+import UploadHighlight from '@/components/post/UploadHighlight';
 
 function PostHighlight() {
   const router = useRouter();
   const { step } = router.query;
-  const { postHighlight } = useUpload();
 
   const renderContent = () => {
     switch (step) {
@@ -24,27 +16,17 @@ function PostHighlight() {
         return <PhotoController />;
 
       case 'music':
-        return <AddMusic />;
+        return <AddMusicHighlight />;
+
+      case 'upload':
+        return <UploadHighlight />;
 
       default:
         return <PhotoController />;
     }
   };
 
-  const title =
-    routeList.find((x) => x.value === step)?.title || 'Select Photo';
-  return (
-    <HeaderTemplate
-      rightNode={
-        <button type="button" onClick={postHighlight} className="clearButton">
-          <p>upload</p>
-        </button>
-      }
-      title={title}
-    >
-      {renderContent()}
-    </HeaderTemplate>
-  );
+  return <>{renderContent()}</>;
 }
 
 export default PostHighlight;

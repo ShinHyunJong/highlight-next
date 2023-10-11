@@ -1,12 +1,19 @@
 import '@/styles/global.css';
 import 'react-activity/dist/library.css';
+// Import Swiper styles
+import 'swiper/css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
+import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 
+import { AudioProvider } from '@/contexts/AudioContext';
+import { RouteProvider } from '@/contexts/RouteContext';
+import { useAuth } from '@/hooks/auth';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -21,28 +28,51 @@ declare global {
     MusicKit: Record<string, any>;
   }
 }
+const queryClient = new QueryClient();
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const Template = Component.Template || Empty;
   const props = Component.props || {};
+  const { getUser } = useAuth();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
-    <Provider>
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
-      </Head>
-      <NextNProgress color="#ffffff" options={{ showSpinner: false }} />
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        disableTransitionOnChange
+    <QueryClientProvider client={queryClient}>
+      <DefaultSeo
+        title="Discover Real Music"
+        description="What your favorite cafes, brands, and friends actually listen to."
+        canonical="https://discoverrealmusic.com/"
+        openGraph={{
+          type: 'website',
+          locale: 'en',
+          url: 'https://discoverrealmusic.com/',
+        }}
       />
-      <Template {...props}>
-        <Component {...pageProps} />
-      </Template>
-    </Provider>
+      <Provider>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+          />
+        </Head>
+        <NextNProgress color="#ffffff" options={{ showSpinner: false }} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        />
+        <RouteProvider>
+          <AudioProvider>
+            <Template {...props}>
+              <Component {...pageProps} />
+            </Template>
+          </AudioProvider>
+        </RouteProvider>
+      </Provider>
+    </QueryClientProvider>
   );
 };
 

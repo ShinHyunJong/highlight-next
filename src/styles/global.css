@@ -1,18 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+
 #__next {
   width: 100vw;
   height: 100svh;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'SF Pro Display', sans-serif;                                     
 }
 
 .deviceHeight {
   height: 100svh;
 }
+
+.fullBtnShadow {
+  box-shadow: 0px 7px 10px 0px rgba(255, 255, 255, 0.10);
+}
+
+.bottomGradient {
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 35%,  rgba(0,0,0,0) 80%);
+}
+
+.scrollbar-hide {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+  /* Firefox */
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
+
 
 
 @layer base{
@@ -33,4 +57,9 @@
 
 .footer {
   box-shadow: 0px -8px 16px 0px rgba(41, 41, 41, 0.05);
+}
+
+.swiper-slide {
+  height: auto !important;
+  display: flex !important;
 }

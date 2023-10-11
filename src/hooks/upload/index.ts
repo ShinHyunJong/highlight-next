@@ -1,11 +1,19 @@
 import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import authAtom from '@/atoms/auth';
 import uploadAtom from '@/atoms/upload';
+import type { Song } from '@/types/server.type';
 import getCroppedImg, { compressImage, createImage } from '@/utils/image.util';
 import { generateRandomNumber } from '@/utils/random';
 
-import { postHighlightApi } from './api';
+import { useMyHighlight } from '../highlight';
+import {
+  deleteHighlightSongApi,
+  postHighlightApi,
+  updateHighlightApi,
+} from './api';
 
 const calculateRatio = (width: number, height: number) => {
   if (width === height) {
@@ -19,37 +27,114 @@ const calculateRatio = (width: number, height: number) => {
 };
 
 export function useUpload() {
+  const [uploading, setUploading] = useAtom(uploadAtom.uploading);
   const [uploadingImageList, setUploadImageList] = useAtom(
     uploadAtom.uploadingImageList,
+  );
+  const [selectedPickSong, setSelectedPickSong] = useAtom(
+    authAtom.selectedPickSong,
   );
   const [staticUploadingImageList, setStaticUploadingImageList] = useAtom(
     uploadAtom.staticUploadingImageList,
   );
   const [processing, setIsProcessing] = useState(false);
+  const [editingHighlight, setEditingHighlight] = useAtom(
+    uploadAtom.editingHighlight,
+  );
+  const [deletingSongList, setDeleteingSongList] = useAtom(
+    uploadAtom.deletingSongList,
+  );
+  const [editing, setEditing] = useAtom(uploadAtom.editing);
+  const { refetch } = useMyHighlight();
+  const router = useRouter();
 
-  const postHighlight = async () => {
-    const formData = new FormData();
-    const imageList = await Promise.all(
+  const initialize = () => {
+    setSelectedPickSong([]);
+    setDeleteingSongList([]);
+    setStaticUploadingImageList([]);
+    setUploadImageList([]);
+  };
+
+  const postHighlight = async (title: string, desc: string) => {
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      const imageList = uploadingImageList.map((x) => x.croppedBlob);
+
+      const orderedSong = selectedPickSong.map((x, i) => {
+        return {
+          ...x,
+          order: i + 1,
+        };
+      });
+
+      formData.append('title', title);
+      formData.append('desc', desc);
+      formData.append('songList', JSON.stringify(orderedSong));
+      for (let i = 0; i < imageList.length; i += 1) {
+        formData.append(`imageList[]`, imageList[i]!);
+      }
+
+      await postHighlightApi(formData);
+      setUploading(false);
+      refetch();
+      initialize();
+      router.replace('/profile');
+    } catch (error) {
+      setUploading(false);
+    }
+  };
+
+  const completePhotoUpload = async () => {
+    const photoCompletd = await Promise.all(
       uploadingImageList.map(async (x) => {
         if (x.croppedBlob) {
-          return x.croppedBlob;
+          return x;
         }
         const defaultCropped = await getCroppedImg(x.src, {
           width: x.width,
-          height: x.height,
+          height: x.height - x.defaultCropY * 2,
           x: 0,
           y: x.defaultCropY,
         });
-        return defaultCropped;
+        return {
+          ...x,
+          croppedBlob: defaultCropped,
+          croppedUrl: URL.createObjectURL(defaultCropped!),
+        };
       }),
     );
+    setUploadImageList(photoCompletd);
+  };
 
-    formData.append('title', 'test');
-    for (let i = 0; i < imageList.length; i += 1) {
-      // formData.append(`file_name_list[${i}]`, imageList[i].name);
-      formData.append(`imageList[]`, imageList[i]!);
+  const updateHighlight = async (
+    highlightId: number,
+    title: string,
+    desc: string,
+  ) => {
+    try {
+      setUploading(true);
+      const orderInserted = selectedPickSong.map((x, i) => {
+        return {
+          ...x,
+          order: i + 1,
+        };
+      });
+      await updateHighlightApi(highlightId, title, desc, orderInserted);
+      await Promise.all(
+        deletingSongList.map(async (x) => {
+          if (x.id) {
+            await deleteHighlightSongApi(x.id);
+          }
+        }),
+      );
+      initialize();
+      router.replace('/profile');
+      setUploading(false);
+      setEditingHighlight(null);
+    } catch (error) {
+      setUploading(false);
     }
-    await postHighlightApi(formData);
   };
 
   const processFileList = async (files: File[] | Blob[]) => {
@@ -72,8 +157,11 @@ export function useUpload() {
             name: file.name,
             width: image.width,
             height: image.height,
+            crop: { x: 0, y: 0 },
+            zoom: 1,
             ratio: calculateRatio(image.width, image.height),
             croppedBlob: null,
+            croppedUrl: null,
             defaultCropY,
           };
         }),
@@ -86,10 +174,31 @@ export function useUpload() {
       setIsProcessing(false);
     }
   };
+
+  const handleDeleteSong = (song: Song) => {
+    setSelectedPickSong((prev) => {
+      const newList = [...prev];
+      const index = newList.findIndex((x) => x.isrc === song.isrc);
+      newList.splice(index, 1);
+      return newList;
+    });
+    setDeleteingSongList((prev) => {
+      const newList = [...prev];
+      newList.push(song);
+      return newList;
+    });
+  };
+
   return {
+    uploading,
     postHighlight,
+    completePhotoUpload,
     uploadingImageList,
     processFileList,
     processing,
+    handleDeleteSong,
+    updateHighlight,
+    editing,
+    initialize,
   };
 }

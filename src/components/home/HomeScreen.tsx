@@ -1,14 +1,24 @@
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FaUser } from 'react-icons/fa';
 
+import authAtom from '@/atoms/auth';
+import { useAuth } from '@/hooks/auth';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
 import Greeting from '../header/Gretting';
 
 function HomeScreen() {
   const router = useRouter();
+  const accessToken = useAtomValue(authAtom.accessToken);
+  const { getUser } = useAuth();
+
   const handleLogin = () => {
-    router.push('/?tab=pick');
+    if (accessToken) {
+      router.push('/profile');
+    } else {
+      router.push(`/auth?tab=before-pick`);
+    }
   };
   return (
     <HeaderTemplate title="">

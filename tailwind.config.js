@@ -18,8 +18,12 @@ module.exports = {
       },
     },
     extend: {
+      aspectRatio: {
+        '4/5': '4 / 5',
+      },
       colors: {
         gray: color.gray,
+        green: color.green,
         beige: {
           100: '#EBEAE1',
         },

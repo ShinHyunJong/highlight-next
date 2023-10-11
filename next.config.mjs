@@ -31,6 +31,14 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: [
+      'p.scdn.co',
+      'i.scdn.co',
+      'assets.discoverrealmusic.com',
+      'is1-ssl.mzstatic.com',
+    ],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -39,13 +47,13 @@ const nextConfig = {
 export default withPlugins(
   [
     [bundleAnalyzer],
-    [
-      withPWA({
-        dest: 'public',
-        register: true,
-        skipWaiting: true,
-      }),
-    ],
+    // [
+    //   withPWA({
+    //     dest: 'public',
+    //     register: true,
+    //     skipWaiting: true,
+    //   }),
+    // ],
   ],
   nextConfig,
 );

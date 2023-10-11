@@ -1,13 +1,7 @@
-import 'swiper/css';
-
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import HomeScreen from '@/components/home/HomeScreen';
-import ProfileScreen from '@/components/home/ProfileScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
-import AddMusic from '@/components/post/AddMusic';
-import PhotoController from '@/components/post/PhotoController';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_tZM-TJ9NvcfE810vCuMLNXPMR3ebkYA',
@@ -21,7 +15,6 @@ const firebaseConfig = {
 
 const Index = () => {
   const router = useRouter();
-  const { tab } = router.query;
 
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
@@ -61,29 +54,10 @@ const Index = () => {
   //   });
   // };
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-  }, []);
-
-  const renderRoutes = () => {
-    switch (tab) {
-      case 'home':
-        return <HomeScreen />;
-      case 'profile':
-        return <ProfileScreen />;
-      case 'upload':
-        return <PhotoController />;
-      case 'pick':
-        return <AddMusic />;
-      default:
-        return <HomeScreen />;
-    }
-  };
-
   return (
     <section className="relative flex h-full w-full flex-col">
       <Onboarding />
-      {renderRoutes()}
+      <HomeScreen />
     </section>
   );
 };
