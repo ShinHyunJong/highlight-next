@@ -8,6 +8,7 @@ import type { Song } from '@/types/server.type';
 import getCroppedImg, { compressImage, createImage } from '@/utils/image.util';
 import { generateRandomNumber } from '@/utils/random';
 
+import { useAudio } from '../audio';
 import { useMyHighlight } from '../highlight';
 import {
   deleteHighlightSongApi,
@@ -47,6 +48,7 @@ export function useUpload() {
   const [editing, setEditing] = useAtom(uploadAtom.editing);
   const { refetch } = useMyHighlight();
   const router = useRouter();
+  const { pause } = useAudio();
 
   const initialize = () => {
     setSelectedPickSong([]);
@@ -79,6 +81,7 @@ export function useUpload() {
       setUploading(false);
       refetch();
       initialize();
+      pause();
       router.replace('/profile');
     } catch (error) {
       setUploading(false);
@@ -132,6 +135,7 @@ export function useUpload() {
       router.replace('/profile');
       setUploading(false);
       setEditingHighlight(null);
+      pause();
     } catch (error) {
       setUploading(false);
     }

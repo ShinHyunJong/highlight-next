@@ -1,7 +1,3 @@
-import { useAtomValue } from 'jotai';
-import { useRouter } from 'next/router';
-
-import authAtom from '@/atoms/auth';
 import { useHighlightList } from '@/hooks/highlight';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight } from '@/types/server.type';
@@ -10,8 +6,6 @@ import HighlightItem from '../global/HighlightItem/HighlightItem';
 import Greeting from '../header/Gretting';
 
 function HomeScreen(props: { highlightList: Highlight[] }) {
-  const router = useRouter();
-  const accessToken = useAtomValue(authAtom.accessToken);
   const { highlightList } = useHighlightList(props.highlightList);
 
   return (

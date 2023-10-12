@@ -97,6 +97,7 @@ function AddMusicHighlight() {
 
   return (
     <HeaderTemplate
+      hasFooter={false}
       title="Add Music"
       rightNode={
         <div className="flex">

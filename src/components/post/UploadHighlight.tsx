@@ -38,6 +38,7 @@ function UploadHighlight() {
   return (
     <HeaderTemplate
       title="Upload"
+      hasFooter={false}
       rightNode={
         <Button
           isLoading={uploading}

@@ -51,6 +51,7 @@ function EditingHighlight() {
   return (
     <HeaderTemplate
       title="Edit"
+      hasFooter={false}
       rightNode={
         <Button
           isLoading={uploading}

@@ -28,5 +28,6 @@ export function useAudio() {
   };
   return {
     handlePlay,
+    pause,
   };
 }

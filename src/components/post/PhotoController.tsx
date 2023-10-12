@@ -108,6 +108,7 @@ function PhotoController() {
   return (
     <HeaderTemplate
       title="Select Photo"
+      hasFooter={false}
       rightNode={
         <Button
           type="button"
@@ -121,7 +122,10 @@ function PhotoController() {
         </Button>
       }
     >
-      <section className="flex h-full w-full flex-col justify-between">
+      <section
+        style={{ height: `calc(100svh - 50px)` }}
+        className="flex w-full flex-col justify-between"
+      >
         <div
           style={{ height: `calc(100% - ${thumbContainerH}px)` }}
           className="relative flex w-full flex-col"
