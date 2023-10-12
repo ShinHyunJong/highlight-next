@@ -18,18 +18,23 @@ function ItemSetting({ onClickEdit, onClickRemove }: ItemSettingProps) {
   const { deleting } = useMyHighlight();
   useOutsideClick(settingRef, () => setOpen(false));
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.preventDefault();
     onClickEdit();
   };
 
-  const handleRemove = () => {
+  const handleRemove = (e) => {
+    e.preventDefault();
     onClickRemove();
   };
 
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          setOpen(true);
+        }}
         type="button"
         className="clearButton absolute right-1 top-1 z-10"
       >
