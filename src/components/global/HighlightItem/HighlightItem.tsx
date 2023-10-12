@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { imageConfig } from '@/configs/image.config';
+import { useAudio } from '@/hooks/audio';
 import { useAuth } from '@/hooks/auth';
 import { useMyHighlight } from '@/hooks/highlight';
 import type { Highlight, HighlightImage } from '@/types/server.type';
@@ -19,6 +19,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   const isMine = user?.id === highlight.userId;
   const router = useRouter();
   const { handleDelete } = useMyHighlight();
+  const { handlePlay } = useAudio();
 
   const handleEdit = () => {
     router.push(`/edit?highlightId=${highlight.id}`);
@@ -29,8 +30,19 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
     }
   };
 
+  const handleHighlight = () => {
+    router.push(`/highlight/${highlight.id}`);
+    const highlightSong = highlight.highlightSong[0];
+    if (!highlightSong) return;
+    handlePlay(highlightSong.song!);
+  };
+
   return (
-    <Link href={`/highlight/${highlight.id}`} className="space-y-2">
+    <button
+      onClick={handleHighlight}
+      type="button"
+      className="clearButton space-y-2"
+    >
       <div
         key={`my-highlight-${highlight.id}`}
         className="relative aspect-[4/5] overflow-hidden"
@@ -48,7 +60,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
         />
       </div>
       <p>{highlight.title}</p>
-    </Link>
+    </button>
   );
 }
 
