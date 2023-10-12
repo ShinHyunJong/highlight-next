@@ -9,6 +9,9 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig = {
+  experimental: {
+    scrollRestoration: true,
+  },
   eslint: {
     dirs: ['.'],
     ignoreDuringBuilds: true,
