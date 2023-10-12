@@ -57,10 +57,10 @@ const Index = (props: IndexProps) => {
   // };
 
   return (
-    <section className="relative flex h-full w-full flex-col">
+    <>
       <Onboarding />
       <HomeScreen highlightList={props.highLightList} />
-    </section>
+    </>
   );
 };
 

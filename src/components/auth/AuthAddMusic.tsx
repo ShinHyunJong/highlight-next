@@ -103,6 +103,7 @@ function AuthAddMusic() {
 
   return (
     <HeaderTemplate
+      hasFooter={false}
       title="Select Top 3"
       rightNode={
         <Button

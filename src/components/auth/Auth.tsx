@@ -37,7 +37,7 @@ function Auth() {
     setAppleLoading(true);
     const config = {
       client_id: 'com.signin.highlight', // This is the service ID we created.
-      redirect_uri: 'https://api-dev.discoverrealmusic.com/auth/apple/verify', // As registered along with our service ID
+      redirect_uri: 'https://api-prod.discoverrealmusic.com/auth/apple/verify', // As registered along with our service ID
       response_type: 'code id_token',
       state: JSON.stringify(selectedPickSong), // Any string of your choice that you may use for some logic. It's optional and you may omit it.
       scope: 'name email', // To tell apple we want the user name and emails fields in the response it sends us.
@@ -108,7 +108,7 @@ function Auth() {
   };
 
   return (
-    <HeaderTemplate title="로그인">
+    <HeaderTemplate title="로그인" hasFooter={false}>
       <section className="flex h-full w-full flex-col p-4">
         <Stepper count={3} step={3} />
         <Greeting textList={['Join us.!']} />

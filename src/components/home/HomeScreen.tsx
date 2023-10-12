@@ -1,6 +1,5 @@
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
-import { FaUser } from 'react-icons/fa';
 
 import authAtom from '@/atoms/auth';
 import { useHighlightList } from '@/hooks/highlight';
@@ -15,13 +14,6 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   const accessToken = useAtomValue(authAtom.accessToken);
   const { highlightList } = useHighlightList(props.highlightList);
 
-  const handleLogin = () => {
-    if (accessToken) {
-      router.push('/profile');
-    } else {
-      router.push(`/auth?tab=before-pick`);
-    }
-  };
   return (
     <HeaderTemplate title="">
       <section className="w-full p-4">
@@ -31,15 +23,6 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
             Get Help from{' '}
             <b className="text-gray-200">brands, cafes, friends</b> and more.!
           </h1>
-        </div>
-        <div className="pt-8">
-          <button
-            onClick={handleLogin}
-            type="button"
-            className="rounded-full bg-white p-1"
-          >
-            <FaUser color="#000000" />
-          </button>
         </div>
         <div className="my-4 grid grid-cols-2 gap-4">
           {highlightList?.map((h) => {

@@ -1,3 +1,3 @@
 export const layoutConfig = {
-  footerHeight: 60,
+  footerHeight: 52,
 };

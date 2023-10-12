@@ -12,7 +12,7 @@ function AuthGreeting() {
   usePublicGuard();
 
   return (
-    <HeaderTemplate title="">
+    <HeaderTemplate title="" hasFooter={false}>
       <section className="flex h-full w-full flex-col p-4">
         <Stepper count={3} step={1} />
         <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />

@@ -91,7 +91,7 @@ function ProfileScreen() {
         </div>
       }
     >
-      <section className="flex h-full w-full flex-col">
+      <section className="flex w-full flex-col">
         <div className="relative w-full">
           <div className="relative aspect-4/5 w-full bg-gray-600">
             {user?.coverImgUrl && (
@@ -104,68 +104,68 @@ function ProfileScreen() {
                 fill
               />
             )}
+            <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-8">
+              {user?.bio && (
+                <div className="whitespace-pre-line break-keep py-4">
+                  <p className="text-sm text-gray-200">{user?.bio}</p>
+                </div>
+              )}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <button type="button" className="rounded-full bg-white">
+                    {user?.profileImgUrl && (
+                      <Avatar className="bg-white">
+                        <AvatarImage src={user?.profileImgUrl || ''} />
+                      </Avatar>
+                    )}
+                  </button>
+                  <p className="font-bold text-white">
+                    {user?.name ? user?.name : `user ${user?.id}`}
+                  </p>
+                </div>
+                <Button
+                  onClick={() => router.push('/auth/edit')}
+                  size="sm"
+                  variant="outline"
+                >
+                  Edit
+                </Button>
+              </div>
+              <div className="flex flex-1 flex-col justify-center gap-4">
+                <p>Favorite Top 3</p>
+                <div className="space-y-0 border-y border-white px-2 py-3">
+                  {userFav?.map((x, i) => {
+                    return (
+                      <AddMusicItem
+                        index={i}
+                        key={`usefr-fav-${x.id}`}
+                        song={x.song}
+                        onClick={handlePlay}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-8">
-            {user?.bio && (
-              <div className="whitespace-pre-line break-keep py-4">
-                <p className="text-sm text-gray-200">{user?.bio}</p>
-              </div>
-            )}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <button type="button" className="rounded-full bg-white">
-                  {user?.profileImgUrl && (
-                    <Avatar className="bg-white">
-                      <AvatarImage src={user?.profileImgUrl || ''} />
-                    </Avatar>
-                  )}
-                </button>
-                <p className="font-bold text-white">
-                  {user?.name ? user?.name : `user ${user?.id}`}
-                </p>
-              </div>
-              <Button
-                onClick={() => router.push('/auth/edit')}
-                size="sm"
-                variant="outline"
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="flex flex-1 flex-col justify-center gap-4">
-              <p>Favorite Top 3</p>
-              <div className="space-y-0 border-y border-white px-2 py-3">
-                {userFav?.map((x, i) => {
-                  return (
-                    <AddMusicItem
-                      index={i}
-                      key={`usefr-fav-${x.id}`}
-                      song={x.song}
-                      onClick={handlePlay}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <div className="absolute top-[95%] w-full rounded-t-xl bg-gray-900 p-4 pb-8">
-            <div className="grid grid-cols-2 gap-4">
-              {renderHighlight()}
-              <label
-                className="relative flex aspect-[4/5] cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
-                htmlFor="upload"
-              >
-                <FaPlus />
-              </label>
-              <input
-                onChange={handleFile}
-                multiple
-                accept="image/*"
-                type="file"
-                id="upload"
-                className="hidden"
-              />
-            </div>
+        </div>
+        <div className="w-full rounded-t-xl bg-gray-900 p-4 pb-8">
+          <div className="grid grid-cols-2 gap-4">
+            {renderHighlight()}
+            <label
+              className="relative flex aspect-[4/5] cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
+              htmlFor="upload"
+            >
+              <FaPlus />
+            </label>
+            <input
+              onChange={handleFile}
+              multiple
+              accept="image/*"
+              type="file"
+              id="upload"
+              className="hidden"
+            />
           </div>
         </div>
       </section>

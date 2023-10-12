@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdSpaceDashboard } from 'react-icons/md';
 
 import { onboardAtom } from '@/atoms';
+import authAtom from '@/atoms/auth';
 import { layoutConfig } from '@/configs/layout.config';
 
 const routes = [
@@ -14,25 +15,36 @@ const routes = [
 ];
 
 function BottomNav() {
+  const accessToken = useAtomValue(authAtom.accessToken);
+
   const [onboarded, setOnboard] = useAtom(onboardAtom);
   const router = useRouter();
 
   const [loaded, setLoaded] = useState(false);
-  const { tab } = router.query;
+  const path = router.asPath;
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
+  const handleTab = (link: string) => {
+    if (link === '/') {
+      router.push('/');
+    } else if (accessToken) {
+      router.push('/profile');
+    } else {
+      router.push(`/auth?tab=before-pick`);
+    }
+  };
+
   if (!loaded || !onboarded) return null;
   return (
     <footer
       style={{ height: layoutConfig.footerHeight }}
-      className="footer absolute bottom-0 z-10 flex w-full"
+      className="footer fixed bottom-0 z-50 mx-auto flex w-full max-w-[600px] bg-gray-900"
     >
       {routes.map((x) => {
-        const active =
-          x.value === 'home' ? !tab || tab === x.value : tab === x.value;
+        const active = x.link === path;
         return (
           <div
             key={x.value}
@@ -40,18 +52,16 @@ function BottomNav() {
           >
             <button
               type="button"
-              onClick={() =>
-                router.push(`?tab=${x.value}`, undefined, { shallow: true })
-              }
+              onClick={() => handleTab(x.link)}
               className="flex flex-col items-center justify-center gap-1"
             >
               <x.Icon
-                size={20}
+                size={16}
                 className={!active ? 'text-slate-600' : 'text-slate-200'}
               />
               <p
                 className={clsx(
-                  'text-sm',
+                  'text-xs',
                   !active ? 'text-slate-600' : 'text-slate-200',
                 )}
               >
