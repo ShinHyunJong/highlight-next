@@ -20,7 +20,7 @@ const calculateRatio = (width: number, height: number) => {
     return 1;
   }
   if (width > height) {
-    return 1.91 / 1;
+    return 16 / 9;
   }
 
   return 4 / 5;
