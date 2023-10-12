@@ -11,11 +11,12 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   return (
     <HeaderTemplate title="">
       <section className="w-full p-4">
-        <Greeting textList={['Discover', 'New Places', 'with Music']} />
+        <Greeting textList={['Discover', 'Real Music']} />
         <div className="pt-8 text-gray-500">
           <h1>
-            Get Help from{' '}
-            <b className="text-gray-200">brands, cafes, friends</b> and more.!
+            What your favorite{' '}
+            <b className="text-gray-200">cafes, brands, friends</b> actually
+            listen to!
           </h1>
         </div>
         <div className="my-4 grid grid-cols-2 gap-4">
