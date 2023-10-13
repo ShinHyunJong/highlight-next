@@ -1,4 +1,5 @@
-import { useSetAtom } from 'jotai';
+import MediaSession from '@mebtte/react-media-session';
+import { useAtom, useSetAtom } from 'jotai';
 import type { ReactNode } from 'react';
 import { createContext, useEffect, useRef } from 'react';
 
@@ -20,7 +21,7 @@ const AudioContext = createContext<AudioContextType>({
 
 function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const setPlayingAudio = useSetAtom(audioAtom.playingAudio);
+  const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const setAudioBuffering = useSetAtom(audioAtom.audioBuffering);
 
   useEffect(() => {
@@ -68,6 +69,26 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio,
       }}
     >
+      <MediaSession
+        title={playingAudio?.title}
+        artist={playingAudio?.artistName}
+        album={playingAudio?.albumName}
+        artwork={[
+          {
+            src: playingAudio?.thumbUrl || '',
+            sizes: '50x50',
+            type: 'image/jpeg',
+          },
+        ]}
+        onPlay={play}
+        onPause={pause}
+        // onSeekBackward={onSeekBackward}
+        // onSeekForward={onSeekForward}
+        // onPreviousTrack={playPreviousMusic}
+        // onNextTrack={playNextMusic}
+      >
+        children or null
+      </MediaSession>
       <audio
         onCanPlay={() => setAudioBuffering(false)}
         onEnded={handleEnd}
