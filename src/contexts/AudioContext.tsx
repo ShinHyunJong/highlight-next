@@ -1,9 +1,15 @@
-import MediaSession from '@mebtte/react-media-session';
+'use client';
+
 import { useAtom, useSetAtom } from 'jotai';
+import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
 import { createContext, useEffect, useRef } from 'react';
 
 import audioAtom from '@/atoms/audio';
+
+const DynamicMedida = dynamic(() => import('../components/global/MediaApp'), {
+  ssr: false,
+});
 
 type AudioContextType = {
   audio: HTMLAudioElement | null;
@@ -69,26 +75,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio,
       }}
     >
-      <MediaSession
-        title={playingAudio?.title}
-        artist={playingAudio?.artistName}
-        album={playingAudio?.albumName}
-        artwork={[
-          {
-            src: playingAudio?.thumbUrl || '',
-            sizes: '50x50',
-            type: 'image/jpeg',
-          },
-        ]}
-        onPlay={play}
-        onPause={pause}
-        // onSeekBackward={onSeekBackward}
-        // onSeekForward={onSeekForward}
-        // onPreviousTrack={playPreviousMusic}
-        // onNextTrack={playNextMusic}
-      >
-        children or null
-      </MediaSession>
+      <DynamicMedida playingAudio={playingAudio} play={play} pause={pause} />
       <audio
         onCanPlay={() => setAudioBuffering(false)}
         onEnded={handleEnd}
