@@ -1,5 +1,6 @@
 import { useAtom, useAtomValue } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import uploadAtom from '@/atoms/upload';
@@ -52,7 +53,12 @@ function UploadHighlight() {
     >
       <section className="w-full space-y-8 p-4">
         <div className="px-4">
-          <Swiper className="h-full w-full" spaceBetween={8} slidesPerView={2}>
+          <Swiper
+            modules={[Pagination]}
+            className="h-full w-full"
+            spaceBetween={8}
+            slidesPerView={2}
+          >
             {imageList.map((x) => {
               return (
                 <SwiperSlide key={x.id.toString()}>

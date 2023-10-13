@@ -3,21 +3,30 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
 
 
-#__next {
+body {
   width: 100vw;
   height: 100svh;
   font-family: 'SF Pro Display', sans-serif;  
   /* IE and Edge */
    -ms-overflow-style: none;
   /* Firefox */
-  scrollbar-width: none;                                   
+  scrollbar-width: none;       
 }
 
-#__next::-webkit-scrollbar {
-  display: none;
+#__next {
+  width: 100%;
+  height: 100%;
 }
+
 
 .deviceHeight {
   height: 100svh;
@@ -30,6 +39,11 @@
 .bottomGradient {
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgba(0,0,0,0.8) 45%,  rgba(0,0,0,0) 80%);
+}
+
+.lightBottomGradient {
+  background: rgba(0,0,0,0.7);
+  background: linear-gradient(0deg, rgba(0,0,0,0.5) 4%,  rgba(0,0,0,0) 10%);
 }
 
 .scrollbar-hide {
@@ -71,3 +85,5 @@
   height: auto !important;
   display: flex !important;
 }
+
+.swiper-pagination-bullet { opacity: 0.4 !important!  }

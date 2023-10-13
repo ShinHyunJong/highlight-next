@@ -2,6 +2,7 @@ import '@/styles/global.css';
 import 'react-activity/dist/library.css';
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaPlus } from 'react-icons/fa';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import uploadAtom from '@/atoms/upload';
@@ -65,7 +66,12 @@ function EditingHighlight() {
     >
       <section className="w-full space-y-8 p-4">
         <div className="px-4">
-          <Swiper spaceBetween={8} slidesPerView={2}>
+          <Swiper
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            spaceBetween={8}
+            slidesPerView={2}
+          >
             {editingHighlight?.highlightImage.map((x) => {
               return (
                 <SwiperSlide key={x.id.toString()}>

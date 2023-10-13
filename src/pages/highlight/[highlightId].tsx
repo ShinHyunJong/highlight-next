@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { NextSeo } from 'next-seo';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import AddMusicItem from '@/components/global/AddMusicItem';
@@ -21,10 +23,39 @@ type HighlightDetailProps = {
 function HighlightDetail(props: HighlightDetailProps) {
   const { handlePlay } = useAudio();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
+
+  const title = `Discover Real Music - ${props.highlightDetail?.title}`;
+  const description = props.highlightDetail?.desc || '';
+  const url = `https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`;
+  const images = props.highlightDetail?.highlightImage.map((x) => {
+    return {
+      url: x.url,
+    };
+  });
+
   return (
     <HeaderTemplate transparent title="">
+      <NextSeo
+        title={title}
+        description={description}
+        canonical={`https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`}
+        openGraph={{
+          type: 'website',
+          url,
+          title,
+          description,
+          images,
+          siteName: 'Discover Real Music',
+        }}
+      />
       <section className="w-full">
-        <Swiper className="w-full" spaceBetween={0} slidesPerView={1}>
+        <Swiper
+          modules={[Pagination]}
+          className="w-full"
+          pagination={{ clickable: true }}
+          spaceBetween={0}
+          slidesPerView={1}
+        >
           {highlightDetail?.highlightImage.map((x) => {
             return (
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
@@ -37,6 +68,7 @@ function HighlightDetail(props: HighlightDetailProps) {
                     priority
                     alt={x.key}
                   />
+                  <div className="lightBottomGradient absolute bottom-0 h-full w-full" />
                 </div>
               </SwiperSlide>
             );
