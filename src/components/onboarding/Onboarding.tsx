@@ -19,13 +19,13 @@ function Onboarding() {
 
   const sliderIndexCx = (index: number) =>
     clsx(
-      'h-1 w-[50%] rounded-full',
-      activeIndex === index ? 'bg-gray-600' : 'bg-gray-300',
+      'h-2 w-[50%] rounded-full',
+      activeIndex >= index ? 'bg-green-600' : 'bg-gray-300',
     );
   if (!loaded || onboarded) return null;
   return (
     <div
-      className={`deviceHeight absolute inset-0 z-[40] w-full ${
+      className={`deviceHeight fixed inset-0 z-[40] w-full ${
         onboarded ? 'opacity-0' : 'opacity-100'
       } bg-gray-900 transition-all duration-200 ease-out`}
     >
@@ -42,14 +42,17 @@ function Onboarding() {
           <OnboardingItem index={1} />
         </SwiperSlide>
       </Swiper>
-      <div className="absolute bottom-[20px] z-10 flex w-full flex-col justify-center px-8 pb-8">
+      <div className="fixed bottom-[50px] z-10 flex w-full justify-center">
+        <Button onClick={() => setOnboard(true)} variant="ghost">
+          SKIP
+        </Button>
+      </div>
+
+      <div className="fixed top-[50px] z-10 flex w-full flex-col justify-center px-8 pb-8">
         <div className="mb-8 flex w-full flex-row gap-2">
           <div className={sliderIndexCx(0)} />
           <div className={sliderIndexCx(1)} />
         </div>
-        <Button onClick={() => setOnboard(true)} variant="ghost">
-          SKIP
-        </Button>
       </div>
     </div>
   );

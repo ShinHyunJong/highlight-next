@@ -4,7 +4,7 @@ type OnboardingItemProps = {
 
 function OnboardingItem({ index }: OnboardingItemProps) {
   return (
-    <div className="flex h-full w-full flex-col justify-end gap-4 px-8 pb-[200px]">
+    <div className="flex h-full w-full flex-col justify-start gap-4 px-8 pt-[100px]">
       {index === 0 ? (
         <>
           <h1 className="text-5xl">Discovering</h1>
@@ -13,9 +13,9 @@ function OnboardingItem({ index }: OnboardingItemProps) {
         </>
       ) : (
         <>
-          <h1 className="text-5xl">Get help from</h1>
-          <h1 className="text-5xl">friends, brands</h1>
-          <h1 className="text-5xl">and cafes.!</h1>
+          <h2 className="text-5xl">Get help from</h2>
+          <h2 className="text-5xl">friends, brands</h2>
+          <h2 className="text-5xl">and cafes.!</h2>
         </>
       )}
     </div>
