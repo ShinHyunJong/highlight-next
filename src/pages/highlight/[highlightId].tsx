@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -23,7 +24,7 @@ type HighlightDetailProps = {
 function HighlightDetail(props: HighlightDetailProps) {
   const { handlePlay } = useAudio();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
-
+  const router = useRouter();
   const title = `Discover Real Music - ${props.highlightDetail?.title}`;
   const description = props.highlightDetail?.desc || '';
   const url = `https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`;

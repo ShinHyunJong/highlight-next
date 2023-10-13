@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router';
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+
 import HomeScreen from '@/components/home/HomeScreen';
 import Onboarding from '@/components/onboarding/Onboarding';
 import { getHighlightListApi } from '@/hooks/highlight/api';
@@ -18,6 +21,12 @@ type IndexProps = {
 };
 
 const Index = (props: IndexProps) => {
+  const router = useRouter();
+  const callback = () => {
+    console.log('bottom');
+  };
+  useBottomScrollListener(callback);
+
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
   //     'Notification' in window &&

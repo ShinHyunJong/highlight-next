@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { imageConfig } from '@/configs/image.config';
@@ -31,17 +32,16 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   };
 
   const handleHighlight = () => {
-    router.push(`/highlight/${highlight.id}`);
     const highlightSong = highlight.highlightSong[0];
     if (!highlightSong) return;
     handlePlay(highlightSong.song!);
   };
 
   return (
-    <button
+    <Link
+      href={`/highlight/${highlight.id}`}
       onClick={handleHighlight}
-      type="button"
-      className="clearButton space-y-2"
+      className="space-y-2"
     >
       <div
         key={`my-highlight-${highlight.id}`}
@@ -60,7 +60,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
         />
       </div>
       <p>{highlight.title}</p>
-    </button>
+    </Link>
   );
 }
 
