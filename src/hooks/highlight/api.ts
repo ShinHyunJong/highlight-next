@@ -3,7 +3,7 @@ import type { Highlight } from '@/types/server.type';
 
 export async function getHighlightListApi(): Promise<Highlight[]> {
   const { data } = await api.get(`/highlight/list`);
-  return data;
+  return data.highlightList;
 }
 
 export async function getHighlightApi(userId: string): Promise<Highlight[]> {
