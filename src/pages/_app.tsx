@@ -7,7 +7,6 @@ import 'swiper/css/pagination';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
-import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode, useEffect } from 'react';
@@ -15,6 +14,7 @@ import { type ReactNode, useEffect } from 'react';
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
 import { useAuth } from '@/hooks/auth';
+import { Meta } from '@/layouts/Meta';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -45,6 +45,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Meta />
       <DefaultSeo
         title="Discover Real Music"
         description="What your favorite cafes, brands, and friends actually listen to."
@@ -64,12 +65,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }}
       />
       <Provider>
-        <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1"
-          />
-        </Head>
         <NextNProgress color="#ffffff" options={{ showSpinner: false }} />
         <ThemeProvider
           attribute="class"
