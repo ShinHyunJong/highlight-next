@@ -1,6 +1,6 @@
 'use client';
 
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
 import { createContext, useEffect, useRef } from 'react';
@@ -29,6 +29,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const setAudioBuffering = useSetAtom(audioAtom.audioBuffering);
+  const playingAudioList = useAtomValue(audioAtom.playingAudioList);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -63,7 +64,23 @@ function AudioProvider({ children }: { children: ReactNode }) {
   };
 
   const handleEnd = () => {
-    setPlayingAudio(null);
+    if (playingAudioList.length > 0) {
+      const targetAudioIndex = playingAudioList.findIndex(
+        (x) => x.isrc === playingAudio?.isrc,
+      );
+      if (targetAudioIndex === -1) {
+        setPlayingAudio(null);
+      }
+      const nextAudio = playingAudioList[targetAudioIndex + 1];
+      if (nextAudio) {
+        setPlayingAudio(nextAudio);
+        changeAudio(nextAudio?.previewUrl);
+      } else {
+        setPlayingAudio(null);
+      }
+    } else {
+      setPlayingAudio(null);
+    }
   };
 
   return (

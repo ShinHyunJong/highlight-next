@@ -9,6 +9,9 @@ export function useAudio() {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const [audioBuffering, setAudioBuffering] = useAtom(audioAtom.audioBuffering);
   const { pause, changeAudio, audio } = useContext(AudioContext);
+  const [playingAudioList, setPlayingAudioList] = useAtom(
+    audioAtom.playingAudioList,
+  );
 
   const handlePlay = (song: Song) => {
     setAudioBuffering(true);
@@ -26,7 +29,16 @@ export function useAudio() {
       });
     }
   };
+
+  const resetPlayingAudioList = () => {
+    setPlayingAudioList([]);
+  };
+
   return {
+    playingAudio,
+    playingAudioList,
+    setPlayingAudioList,
+    resetPlayingAudioList,
     handlePlay,
     pause,
   };

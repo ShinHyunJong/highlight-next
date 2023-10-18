@@ -20,7 +20,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   const isMine = user?.id === highlight.userId;
   const router = useRouter();
   const { handleDelete } = useMyHighlight();
-  const { handlePlay } = useAudio();
+  const { handlePlay, setPlayingAudioList } = useAudio();
 
   const handleEdit = () => {
     router.push(`/edit?highlightId=${highlight.id}`);
@@ -35,6 +35,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
     const highlightSong = highlight.highlightSong[0];
     if (!highlightSong) return;
     handlePlay(highlightSong.song!);
+    setPlayingAudioList(highlight.highlightSong.map((x) => x.song!));
   };
 
   return (
