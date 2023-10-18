@@ -63,6 +63,36 @@ function AudioProvider({ children }: { children: ReactNode }) {
     play();
   };
 
+  const playNext = () => {
+    if (playingAudioList.length > 0) {
+      const targetAudioIndex = playingAudioList.findIndex(
+        (x) => x.isrc === playingAudio?.isrc,
+      );
+      const nextAudio = playingAudioList[targetAudioIndex + 1];
+      if (nextAudio) {
+        setPlayingAudio(nextAudio);
+        changeAudio(nextAudio?.previewUrl);
+      }
+      return null;
+    }
+    return null;
+  };
+
+  const playPrevious = () => {
+    if (playingAudioList.length > 0) {
+      const targetAudioIndex = playingAudioList.findIndex(
+        (x) => x.isrc === playingAudio?.isrc,
+      );
+      const nextAudio = playingAudioList[targetAudioIndex - 1];
+      if (nextAudio) {
+        setPlayingAudio(nextAudio);
+        changeAudio(nextAudio?.previewUrl);
+      }
+      return null;
+    }
+    return null;
+  };
+
   const handleEnd = () => {
     if (playingAudioList.length > 0) {
       const targetAudioIndex = playingAudioList.findIndex(
@@ -92,7 +122,13 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio,
       }}
     >
-      <DynamicMedida playingAudio={playingAudio} play={play} pause={pause} />
+      <DynamicMedida
+        playingAudio={playingAudio}
+        play={play}
+        pause={pause}
+        playNext={playNext}
+        playPrevious={playPrevious}
+      />
       <audio
         onCanPlay={() => setAudioBuffering(false)}
         onEnded={handleEnd}

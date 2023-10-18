@@ -5,10 +5,18 @@ import type { Song } from '@/types/server.type';
 type MediaAppProps = {
   playingAudio: Song | null;
   play: () => void;
+  playNext: () => void;
+  playPrevious: () => void;
   pause: () => void;
 };
 
-function MediaApp({ playingAudio, play, pause }: MediaAppProps) {
+function MediaApp({
+  playingAudio,
+  play,
+  pause,
+  playNext,
+  playPrevious,
+}: MediaAppProps) {
   return (
     <MediaSession
       title={playingAudio?.title}
@@ -25,8 +33,8 @@ function MediaApp({ playingAudio, play, pause }: MediaAppProps) {
       onPause={pause}
       // onSeekBackward={onSeekBackward}
       // onSeekForward={onSeekForward}
-      // onPreviousTrack={playPreviousMusic}
-      // onNextTrack={playNextMusic}
+      onPreviousTrack={playPrevious}
+      onNextTrack={playNext}
     />
   );
 }
