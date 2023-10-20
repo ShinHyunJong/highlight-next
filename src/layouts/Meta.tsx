@@ -31,7 +31,6 @@ const Meta = () => {
         key="icon16"
       />
       <link rel="icon" href={`${router.basePath}/favicon.ico`} key="favicon" />
-      <meta name="theme-color" content="#ffffff" />
     </Head>
   );
 };
