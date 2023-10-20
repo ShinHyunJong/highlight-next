@@ -51,6 +51,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
         {isMine && (
           <ItemSetting onClickEdit={handleEdit} onClickRemove={handleRemove} />
         )}
+        <div className="h-full w-full animate-pulse bg-gray-600" />
         <Image
           unoptimized
           fill
