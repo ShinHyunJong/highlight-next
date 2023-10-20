@@ -7,7 +7,6 @@ const Meta = () => {
   return (
     <Head>
       <meta charSet="UTF-8" key="charset" />
-
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1"
@@ -32,6 +31,7 @@ const Meta = () => {
         key="icon16"
       />
       <link rel="icon" href={`${router.basePath}/favicon.ico`} key="favicon" />
+      <meta name="theme-color" content="#ffffff" />
     </Head>
   );
 };
