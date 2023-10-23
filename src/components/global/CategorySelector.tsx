@@ -6,9 +6,14 @@ import { categoryConfig } from '@/configs/category.config';
 type CategorySelectorProps = {
   value: string | null;
   onChange: (c: string) => void;
+  hasAll?: boolean;
 };
 
-function CategorySelector({ value, onChange }: CategorySelectorProps) {
+function CategorySelector({
+  value,
+  onChange,
+  hasAll = false,
+}: CategorySelectorProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -19,17 +24,19 @@ function CategorySelector({ value, onChange }: CategorySelectorProps) {
     onChange(c);
   };
 
+  const configList = hasAll ? categoryConfig : categoryConfig.slice(1);
+
   return (
     <div className="space-x-2">
-      {categoryConfig.map((x) => {
+      {configList.map((x) => {
         return (
           <button
             type="button"
             className={clsx(
-              'rounded-md px-4 py-2 text-sm',
+              'rounded-md px-3 py-1 text-sm',
               selectedCategory === x.value
                 ? 'bg-gray-500 text-white'
-                : 'border border-white bg-black text-white',
+                : 'border border-gray-500 bg-black text-white',
             )}
             onClick={() => handleCategory(x.value)}
             key={`category-${x.id}`}

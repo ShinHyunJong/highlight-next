@@ -1,15 +1,39 @@
+import { useAtom } from 'jotai';
 import Image from 'next/image';
 
+import { globalAtom } from '@/atoms';
 import { useHighlightList } from '@/hooks/highlight';
 import whiteLogo from '@/public/assets/images/highlight_white.png';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight } from '@/types/server.type';
 
+import CategorySelector from '../global/CategorySelector';
 import HighlightItem from '../global/HighlightItem/HighlightItem';
 import Greeting from '../header/Gretting';
+import { Skeleton } from '../ui/skeleton';
 
 function HomeScreen(props: { highlightList: Highlight[] }) {
-  const { highlightList } = useHighlightList(props.highlightList);
+  const { highlightList, isLoading } = useHighlightList(props.highlightList);
+  const [category, setCategory] = useAtom(globalAtom.selectedCategoryAtom);
+  const renderContent = () => {
+    if (isLoading) {
+      const list = Array.from({ length: 4 }).map((_, i) => i);
+      return list.map((x) => (
+        <Skeleton className="aspect-[4/5]" key={`skeleton-${x}`} />
+      ));
+    }
+    return highlightList?.map((h) => {
+      const firstImage = h.highlightImage[0];
+      if (!firstImage) return null;
+      return (
+        <HighlightItem
+          key={`highlight-${h.id}`}
+          highlight={h}
+          highlightImage={firstImage}
+        />
+      );
+    });
+  };
 
   return (
     <HeaderTemplate title="">
@@ -23,19 +47,10 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
             listen to!
           </h1>
         </div>
-        <div className="my-4 grid grid-cols-2 gap-4">
-          {highlightList?.map((h) => {
-            const firstImage = h.highlightImage[0];
-            if (!firstImage) return null;
-            return (
-              <HighlightItem
-                key={`highlight-${h.id}`}
-                highlight={h}
-                highlightImage={firstImage}
-              />
-            );
-          })}
+        <div className="my-4">
+          <CategorySelector hasAll value={category} onChange={setCategory} />
         </div>
+        <div className="mb-4 grid grid-cols-2 gap-4">{renderContent()}</div>
       </section>
     </HeaderTemplate>
   );

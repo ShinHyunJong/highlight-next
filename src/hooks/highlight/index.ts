@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 
+import { globalAtom } from '@/atoms';
 import uploadAtom from '@/atoms/upload';
 import type { Highlight } from '@/types/server.type';
 
@@ -39,9 +40,14 @@ export function useMyHighlight() {
 }
 
 export function useHighlightList(highlightList?: Highlight[]) {
+  const category = useAtomValue(globalAtom.selectedCategoryAtom);
+
   const { data, isLoading } = useQuery(
-    ['mainFeed'],
-    () => getHighlightListApi(),
+    ['mainFeed', category],
+    () =>
+      getHighlightListApi(
+        !category || category === 'all' ? undefined : category,
+      ),
     {
       refetchOnWindowFocus: false,
       initialData: highlightList,
