@@ -13,10 +13,13 @@ import Greeting from '../header/Gretting';
 import { Skeleton } from '../ui/skeleton';
 
 function HomeScreen(props: { highlightList: Highlight[] }) {
-  const { highlightList, isLoading } = useHighlightList(props.highlightList);
+  const { highlightList, isLoading, isRefetching } = useHighlightList(
+    props.highlightList,
+  );
   const [category, setCategory] = useAtom(globalAtom.selectedCategoryAtom);
+  const isAll = !category || category === 'all';
   const renderContent = () => {
-    if (isLoading) {
+    if (!isAll && isRefetching) {
       const list = Array.from({ length: 4 }).map((_, i) => i);
       return list.map((x) => (
         <Skeleton className="aspect-[4/5]" key={`skeleton-${x}`} />

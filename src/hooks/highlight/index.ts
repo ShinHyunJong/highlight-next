@@ -41,22 +41,22 @@ export function useMyHighlight() {
 
 export function useHighlightList(highlightList?: Highlight[]) {
   const category = useAtomValue(globalAtom.selectedCategoryAtom);
+  const isAll = !category || category === 'all';
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isRefetching, isFetching } = useQuery(
     ['mainFeed', category],
-    () =>
-      getHighlightListApi(
-        !category || category === 'all' ? undefined : category,
-      ),
+    () => getHighlightListApi(isAll ? undefined : category),
     {
       refetchOnWindowFocus: false,
-      initialData: highlightList,
+      initialData: isAll ? highlightList : [],
     },
   );
 
   return {
     highlightList: data,
     isLoading,
+    isRefetching,
+    isFetching,
   };
 }
 
