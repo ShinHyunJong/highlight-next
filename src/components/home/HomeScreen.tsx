@@ -1,9 +1,9 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
+import whiteLogo from 'public/assets/images/highlight_white.png';
 
 import { globalAtom } from '@/atoms';
 import { useHighlightList } from '@/hooks/highlight';
-import whiteLogo from '@/public/assets/images/highlight_white.png';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight } from '@/types/server.type';
 
@@ -38,7 +38,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   return (
     <HeaderTemplate title="">
       <section className="w-full p-4">
-        <Image src={whiteLogo} width={60} height={60} alt="logo" />
+        <Image unoptimized src={whiteLogo} width={60} height={60} alt="logo" />
         <Greeting textList={['Discover', 'Real Music']} />
         <div className="pt-8 text-gray-500">
           <h1>
