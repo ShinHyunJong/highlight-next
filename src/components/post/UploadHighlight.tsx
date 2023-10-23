@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -7,6 +8,7 @@ import uploadAtom from '@/atoms/upload';
 import { useUpload } from '@/hooks/upload';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
+import CategorySelector from '../global/CategorySelector';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import SongController from './components/SongController';
@@ -29,9 +31,11 @@ function UploadHighlight() {
   });
 
   const { postHighlight, uploading } = useUpload();
+  const [category, setCategory] = useState<string | null>(null);
 
   const handlePost = () => {
-    postHighlight(getValues().title, getValues().desc);
+    if (!category) return;
+    postHighlight(getValues().title, getValues().desc, category);
   };
 
   const titleValue = watch('title');
@@ -43,7 +47,7 @@ function UploadHighlight() {
       rightNode={
         <Button
           isLoading={uploading}
-          isDisabled={!titleValue}
+          isDisabled={!titleValue || !category}
           onClick={handlePost}
           variant="ghost"
         >
@@ -93,6 +97,10 @@ function UploadHighlight() {
               return <Input {...field} type="text" placeholder="Caption" />;
             }}
           />
+        </div>
+        <div className="space-y-2">
+          <p>Pick Your Category</p>
+          <CategorySelector value={category} onChange={setCategory} />
         </div>
         <div className="space-y-2">
           <p>Tracks</p>

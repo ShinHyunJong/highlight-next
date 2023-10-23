@@ -57,7 +57,11 @@ export function useUpload() {
     setUploadImageList([]);
   };
 
-  const postHighlight = async (title: string, desc: string) => {
+  const postHighlight = async (
+    title: string,
+    desc: string,
+    category: string,
+  ) => {
     try {
       setUploading(true);
       const formData = new FormData();
@@ -72,6 +76,7 @@ export function useUpload() {
 
       formData.append('title', title);
       formData.append('desc', desc);
+      formData.append('category', category);
       formData.append('songList', JSON.stringify(orderedSong));
       for (let i = 0; i < imageList.length; i += 1) {
         formData.append(`imageList[]`, imageList[i]!);
@@ -114,6 +119,7 @@ export function useUpload() {
     highlightId: number,
     title: string,
     desc: string,
+    category: string,
   ) => {
     try {
       setUploading(true);
@@ -123,7 +129,13 @@ export function useUpload() {
           order: i + 1,
         };
       });
-      await updateHighlightApi(highlightId, title, desc, orderInserted);
+      await updateHighlightApi(
+        highlightId,
+        title,
+        desc,
+        category,
+        orderInserted,
+      );
       await Promise.all(
         deletingSongList.map(async (x) => {
           if (x.id) {

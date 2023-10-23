@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaPlus } from 'react-icons/fa';
 import { Pagination } from 'swiper/modules';
@@ -10,6 +10,7 @@ import uploadAtom from '@/atoms/upload';
 import { useUpload } from '@/hooks/upload';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 
+import CategorySelector from '../global/CategorySelector';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import SongController from './components/SongController';
@@ -21,6 +22,8 @@ type FormValues = {
 
 function EditingHighlight() {
   const router = useRouter();
+  const [category, setCategory] = useState<string | null>(null);
+
   const [editingHighlight, setEditingHighlight] = useAtom(
     uploadAtom.editingHighlight,
   );
@@ -35,12 +38,18 @@ function EditingHighlight() {
     if (!editingHighlight) return;
     setValue('title', editingHighlight?.title || '');
     setValue('desc', editingHighlight?.desc || '');
+    setCategory(editingHighlight?.category || null);
   }, [editingHighlight]);
 
   const { uploading, editing, updateHighlight } = useUpload();
 
   const handlePost = () => {
-    updateHighlight(editingHighlight?.id!, getValues().title, getValues().desc);
+    updateHighlight(
+      editingHighlight?.id!,
+      getValues().title,
+      getValues().desc,
+      category!,
+    );
   };
 
   const handleAddMusic = () => {
@@ -56,7 +65,7 @@ function EditingHighlight() {
       rightNode={
         <Button
           isLoading={uploading}
-          isDisabled={!titleValue}
+          isDisabled={!titleValue || !category}
           onClick={handlePost}
           variant="ghost"
         >
@@ -106,6 +115,10 @@ function EditingHighlight() {
               return <Input {...field} type="text" placeholder="Caption" />;
             }}
           />
+        </div>
+        <div className="space-y-2">
+          <p>Pick Your Category</p>
+          <CategorySelector value={category} onChange={setCategory} />
         </div>
         <div className="space-y-2">
           <p>Tracks</p>

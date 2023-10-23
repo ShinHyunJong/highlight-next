@@ -36,7 +36,7 @@ function ItemSetting({ onClickEdit, onClickRemove }: ItemSettingProps) {
           setOpen(true);
         }}
         type="button"
-        className="clearButton absolute right-1 top-1 z-10"
+        className="absolute right-1 top-1 z-10 rounded-sm bg-[rgba(0,0,0,0.2)]"
       >
         <BiDotsVerticalRounded size={16} />
       </button>

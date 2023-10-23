@@ -14,6 +14,7 @@ export async function updateHighlightApi(
   highlightId: number,
   title: string,
   desc: string,
+  category: string,
   songList: Song[],
 ) {
   const { data } = await api.put(`/highlight/${highlightId}`, {
@@ -21,6 +22,7 @@ export async function updateHighlightApi(
     title,
     desc,
     songList,
+    category,
   });
 }
 

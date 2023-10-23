@@ -39,6 +39,7 @@ export type Highlight = {
   highlightImage: HighlightImage[];
   desc?: string | null;
   tags?: string | null;
+  category?: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
