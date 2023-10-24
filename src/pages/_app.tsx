@@ -14,7 +14,6 @@ import { type ReactNode, useEffect } from 'react';
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
 import { useAuth } from '@/hooks/auth';
-import { Meta } from '@/layouts/Meta';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 type AppProps<P = any> = {
@@ -45,7 +44,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Meta />
       <DefaultSeo
         title="Discover Real Music"
         description="What your favorite cafes, brands, and friends actually listen to."
