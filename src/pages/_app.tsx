@@ -11,6 +11,7 @@ import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode, useEffect } from 'react';
 
+import { Toaster } from '@/components/ui/toaster';
 import { AudioProvider } from '@/contexts/AudioContext';
 import { RouteProvider } from '@/contexts/RouteContext';
 import { useAuth } from '@/hooks/auth';
@@ -72,6 +73,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           disableTransitionOnChange
         />
         <RouteProvider>
+          <Toaster />
           <GetUser />
           <AudioProvider>
             <Template {...props}>

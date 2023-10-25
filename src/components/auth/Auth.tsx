@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
 import { Spinner } from 'react-activity';
-import { FaApple, FaGoogle } from 'react-icons/fa';
+import { FaApple, FaEnvelope, FaGoogle } from 'react-icons/fa';
 
 import authAtom from '@/atoms/auth';
 import { useAuth } from '@/hooks/auth';
@@ -118,6 +118,16 @@ function Auth() {
           </div>
         ) : (
           <div className="flex flex-col gap-4 py-8">
+            <button
+              type="button"
+              onClick={() => router.push('/auth/email')}
+              className="fullBtnShadow relative flex w-full items-center justify-center rounded-lg border border-white px-4 py-2 text-white shadow-md"
+            >
+              <div className="absolute left-4">
+                <FaEnvelope />
+              </div>
+              Sign with Email
+            </button>
             <button
               type="button"
               onClick={handleApple}

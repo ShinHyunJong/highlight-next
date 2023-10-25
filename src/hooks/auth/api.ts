@@ -42,6 +42,11 @@ export async function registerGoogleApi(
   return data;
 }
 
+export async function signInApi(email: string, password: string) {
+  const { data } = await api.post('/auth/signIn/email', { email, password });
+  return data;
+}
+
 export async function registerSongsApi(songList: Song[]) {
   const { data } = await api.post('/auth/register/songs', {
     songList,

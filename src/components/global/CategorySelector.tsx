@@ -27,7 +27,7 @@ function CategorySelector({
   const configList = hasAll ? categoryConfig : categoryConfig.slice(1);
 
   return (
-    <div className="space-x-2">
+    <div className="flex flex-wrap gap-1">
       {configList.map((x) => {
         return (
           <button

@@ -3,12 +3,14 @@ import { useRouter } from 'next/router';
 
 import authAtom from '@/atoms/auth';
 import uploadAtom from '@/atoms/upload';
+import { useToast } from '@/components/ui/use-toast';
 
 import {
   deleteFavSong,
   getMeApi,
   getMeFavApi,
   registerGoogleApi,
+  signInApi,
   updateCoverImgApi,
   updateFavSong,
   updateProfileApi,
@@ -44,6 +46,7 @@ export const useAuth = () => {
   const [deleteingSongList, setDeleteingSongList] = useAtom(
     uploadAtom.deletingSongList,
   );
+  const { toast } = useToast();
 
   const initilizeUploadingAsessts = () => {
     setUploadingProfileImg(null);
@@ -65,6 +68,24 @@ export const useAuth = () => {
       setUserLoading(false);
     } catch (error) {
       setUserLoading(false);
+    }
+  };
+
+  const postSignInEmail = async (email: string, password: string) => {
+    setSignInLoading(true);
+    try {
+      const result = await signInApi(email, password);
+      setAccessToken(result);
+      getUser();
+      setSignInLoading(false);
+      router.replace('/profile');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'Account does not exsit!.',
+      });
+      setSignInLoading(false);
     }
   };
 
@@ -162,5 +183,6 @@ export const useAuth = () => {
     profileLoading,
     updateProfile,
     initilizeUploadingAsessts,
+    postSignInEmail,
   };
 };
