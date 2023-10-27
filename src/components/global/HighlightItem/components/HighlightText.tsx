@@ -1,26 +1,29 @@
-import TextTruncate from 'react-text-truncate'; // recommend
+import LinesEllipsis from 'react-lines-ellipsis';
 
 type HighlightTextProps = {
   title: string;
   desc: string;
 };
+
 function HighlightText({ title, desc }: HighlightTextProps) {
   return (
     <div className="absolute bottom-0 z-[20] w-full p-2 text-lg">
       <div className="mb-2 font-bold">
-        <TextTruncate
-          line={2}
-          element="p"
-          truncateText="…"
-          text={title || ''}
+        <LinesEllipsis
+          text={title}
+          maxLine="2"
+          ellipsis="..."
+          trimRight
+          basedOn="letters"
         />
       </div>
       <div className="text-sm">
-        <TextTruncate
-          line={2}
-          element="span"
-          truncateText="…"
-          text={desc || ''}
+        <LinesEllipsis
+          text={desc}
+          maxLine="2"
+          ellipsis="..."
+          trimRight
+          basedOn="letters"
         />
       </div>
     </div>
