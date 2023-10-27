@@ -13,7 +13,7 @@ import type { Highlight, HighlightImage } from '@/types/server.type';
 import ItemSetting from './ItemSetting';
 
 const DynamicText = dynamic(() => import('./components/HighlightText'), {
-  ssr: true,
+  ssr: false,
 });
 type HighlightItesmProps = {
   highlightImage: HighlightImage;

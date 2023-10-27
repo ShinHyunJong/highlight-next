@@ -6,7 +6,7 @@ type HighlightTextProps = {
 };
 function HighlightText({ title, desc }: HighlightTextProps) {
   return (
-    <div className="absolute bottom-0 z-[20] w-full p-4 text-lg">
+    <div className="absolute bottom-0 z-[20] w-full p-2 text-lg">
       <div className="mb-2 font-bold">
         <TextTruncate
           line={2}
