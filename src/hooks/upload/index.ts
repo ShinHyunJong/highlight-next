@@ -17,14 +17,14 @@ import {
 } from './api';
 
 const calculateRatio = (width: number, height: number) => {
-  if (width === height) {
-    return 1;
+  const ratio = width / height;
+  if (ratio < 0.8) {
+    return 0.8;
   }
-  if (width > height) {
-    return 670 / 629;
+  if (ratio >= 0.8 && ratio < 1.91) {
+    return ratio;
   }
-
-  return 4 / 5;
+  return 1.91;
 };
 
 export function useUpload() {

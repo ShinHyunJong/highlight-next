@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -16,6 +17,7 @@ import {
 import { foramtName } from '@/hooks/utils/format.utils';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight } from '@/types/server.type';
+import { getImageData } from '@/utils/image.util';
 
 type HighlightDetailProps = {
   highlightDetail: Highlight;
@@ -33,6 +35,19 @@ function HighlightDetail(props: HighlightDetailProps) {
       url: x.url,
     };
   });
+  const [imageRatio, setImageRatio] = useState(0.8);
+
+  const getFirstImageRatio = async (url: string) => {
+    const { ratio } = await getImageData(url);
+    setImageRatio(ratio);
+  };
+
+  useEffect(() => {
+    if (!props.highlightDetail) return;
+    const firstImage = props.highlightDetail.highlightImage[0];
+    if (!firstImage) return;
+    getFirstImageRatio(firstImage.url);
+  }, [props.highlightDetail]);
 
   return (
     <HeaderTemplate transparent title="">
@@ -60,7 +75,10 @@ function HighlightDetail(props: HighlightDetailProps) {
           {highlightDetail?.highlightImage.map((x) => {
             return (
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
-                <div className="relative aspect-4/5 w-full">
+                <div
+                  style={{ aspectRatio: imageRatio }}
+                  className="relative  w-full"
+                >
                   <Image
                     unoptimized
                     className="object-contain"

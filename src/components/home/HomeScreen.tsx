@@ -53,7 +53,9 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
         <div className="my-4">
           <CategorySelector hasAll value={category} onChange={setCategory} />
         </div>
-        <div className="mb-4 grid grid-cols-2 gap-4">{renderContent()}</div>
+        <div className="mb-4 grid grid-cols-2 gap-x-2 gap-y-4">
+          {renderContent()}
+        </div>
       </section>
     </HeaderTemplate>
   );

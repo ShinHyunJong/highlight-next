@@ -46,6 +46,16 @@ body {
   background: linear-gradient(0deg, rgba(0,0,0,0.5) 4%,  rgba(0,0,0,0) 10%);
 }
 
+.lightBottomGradient {
+  background: rgba(0,0,0,0.7);
+  background: linear-gradient(0deg, rgba(0,0,0,0.5) 4%,  rgba(0,0,0,0) 10%);
+}
+
+.highlightGradient {
+  background: rgba(0,0,0,0.1);
+  background: linear-gradient(180deg, rgba(53, 49, 49, 0.00) 49.48%, #585858 100%);
+}
+
 .scrollbar-hide {
   /* IE and Edge */
   -ms-overflow-style: none;

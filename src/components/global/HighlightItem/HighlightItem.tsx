@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { imageConfig } from '@/configs/image.config';
 import { useAudio } from '@/hooks/audio';
 import { useAuth } from '@/hooks/auth';
@@ -10,6 +12,9 @@ import type { Highlight, HighlightImage } from '@/types/server.type';
 
 import ItemSetting from './ItemSetting';
 
+const DynamicText = dynamic(() => import('./components/HighlightText'), {
+  ssr: true,
+});
 type HighlightItesmProps = {
   highlightImage: HighlightImage;
   highlight: Highlight;
@@ -39,30 +44,42 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
   };
 
   return (
-    <Link
-      href={`/highlight/${highlight.id}`}
-      onClick={handleHighlight}
-      className="space-y-2"
-    >
-      <div
-        key={`my-highlight-${highlight.id}`}
-        className="relative aspect-[4/5] overflow-hidden"
+    <div className="space-y-4">
+      <Link
+        href={`/highlight/${highlight.id}`}
+        onClick={handleHighlight}
+        className="space-y-2"
       >
-        {isMine && (
-          <ItemSetting onClickEdit={handleEdit} onClickRemove={handleRemove} />
-        )}
-        <div className="h-full w-full animate-pulse rounded-md bg-gray-600" />
-        <Image
-          unoptimized
-          fill
-          alt={highlightImage.key}
-          src={highlightImage.url}
-          sizes={imageConfig.sizes}
-          className="rounded-md object-cover"
-        />
+        <div
+          key={`my-highlight-${highlight.id}`}
+          style={{ aspectRatio: 0.57 }}
+          className="relative overflow-hidden rounded-lg"
+        >
+          <div className="highlightGradient absolute inset-0 z-[10] h-full w-full" />
+          {isMine && (
+            <ItemSetting
+              onClickEdit={handleEdit}
+              onClickRemove={handleRemove}
+            />
+          )}
+          <Image
+            unoptimized
+            fill
+            alt={highlightImage.key}
+            src={highlightImage.url}
+            sizes={imageConfig.sizes}
+            className="rounded-lg object-cover"
+          />
+          <DynamicText title={highlight.title} desc={highlight.desc || ''} />
+        </div>
+      </Link>
+      <div className="flex items-center gap-2">
+        <Avatar className="h-6 w-6 bg-white">
+          <AvatarImage src={highlight?.user?.profileImgUrl || ''} />
+        </Avatar>
+        <p className="text-gray-300">{highlight?.user?.name || ''}</p>
       </div>
-      <p>{highlight.title}</p>
-    </Link>
+    </div>
   );
 }
 
