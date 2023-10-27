@@ -11,6 +11,9 @@
   display: none;
 }
 
+p {
+  line-height: 1;
+}  
 
 body {
   width: 100vw;
@@ -19,7 +22,8 @@ body {
   /* IE and Edge */
    -ms-overflow-style: none;
   /* Firefox */
-  scrollbar-width: none;       
+  scrollbar-width: none;   
+  
 }
 
 #__next {
