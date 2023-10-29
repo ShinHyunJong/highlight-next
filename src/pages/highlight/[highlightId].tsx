@@ -128,7 +128,7 @@ function HighlightDetail(props: HighlightDetailProps) {
           })}
         </Swiper>
       </section>
-      <section className="flex flex-col px-4 pt-4">
+      <section className="flex flex-col px-4 pt-8">
         <div className="flex items-center gap-2 text-sm text-gray-300">
           <Avatar className="bg-white">
             <AvatarImage src={highlightDetail?.user?.profileImgUrl || ''} />
@@ -136,6 +136,9 @@ function HighlightDetail(props: HighlightDetailProps) {
           <p>By {foramtName(highlightDetail?.user)}</p>
           <p>|</p>
           <p>{dayjs(highlightDetail?.createdAt).format('DD MMM YYYY')}</p>
+        </div>
+        <div className="px-2 py-4">
+          <p className="text-gray-300">{highlightDetail?.desc}</p>
         </div>
       </section>
       <section className="w-full p-4">
