@@ -19,6 +19,7 @@ function AuthGreeting() {
       >
         <div className="flex flex-col">
           <Stepper count={3} step={1} />
+          <p className="my-4 text-gray-400">Before you join</p>
           <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />
           <div className="py-8">
             <Button onClick={() => router.push('/auth?tab=pick')}>
