@@ -137,9 +137,6 @@ function HighlightDetail(props: HighlightDetailProps) {
           <p>|</p>
           <p>{dayjs(highlightDetail?.createdAt).format('DD MMM YYYY')}</p>
         </div>
-        <div className="px-2 py-4">
-          <p className="text-gray-300">{highlightDetail?.desc}</p>
-        </div>
       </section>
       <section className="w-full p-4">
         <div className="flex flex-col">
