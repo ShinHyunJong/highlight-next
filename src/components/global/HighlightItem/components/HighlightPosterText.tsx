@@ -1,14 +1,14 @@
 import LinesEllipsis from 'react-lines-ellipsis';
 
-type HighlightTextProps = {
+type HighlightPosterTextProps = {
   title: string;
   desc: string;
 };
 
-function HighlightText({ title, desc }: HighlightTextProps) {
+function HighlightPosterText({ title, desc }: HighlightPosterTextProps) {
   return (
-    <div className="absolute bottom-0 z-[20] w-full p-2 text-lg">
-      <div className="mb-2 font-bold leading-5">
+    <div className="absolute bottom-0 z-[20] w-full p-2 pb-8 text-lg">
+      <div className="mb-2 text-3xl font-bold leading-6">
         <LinesEllipsis
           text={title}
           maxLine="2"
@@ -30,4 +30,4 @@ function HighlightText({ title, desc }: HighlightTextProps) {
   );
 }
 
-export default HighlightText;
+export default HighlightPosterText;
