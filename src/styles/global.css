@@ -98,4 +98,10 @@ body {
   display: flex !important;
 }
 
+.active-music-item {
+  opacity: 0.5;
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.00) 1.32%, rgba(255, 255, 255, 0.51) 49.74%, rgba(255, 255, 255, 0.00) 100%);
+  filter: blur(10px);
+}
+
 .swiper-pagination-bullet { opacity: 0.4 !important!  }

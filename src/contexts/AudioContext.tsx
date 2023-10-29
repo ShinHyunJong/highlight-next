@@ -30,6 +30,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const setAudioBuffering = useSetAtom(audioAtom.audioBuffering);
   const playingAudioList = useAtomValue(audioAtom.playingAudioList);
+  const playingHighlight = useAtomValue(audioAtom.playingHighlight);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -124,6 +125,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
     >
       <DynamicMedida
         playingAudio={playingAudio}
+        playingHighlight={playingHighlight}
         play={play}
         pause={pause}
         playNext={playNext}

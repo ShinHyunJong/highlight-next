@@ -61,8 +61,14 @@ function AddMusicItem({
       <li
         aria-hidden="true"
         onClick={() => onClick && onClick(song)}
-        className="clearButton flex w-full flex-row items-stretch justify-between gap-2 p-2"
+        className="clearButton relative flex w-full flex-row items-stretch justify-between gap-2 p-2"
       >
+        {active && (
+          <div
+            style={{ height: `calc(100% + 20px)` }}
+            className="active-music-item absolute inset-0 w-full"
+          />
+        )}
         <div className="flex flex-1 flex-row items-center gap-3">
           {provided && draggable && (
             <div {...provided.dragHandleProps}>

@@ -26,7 +26,7 @@ const DynamicText = dynamic(
       '../../components/global/HighlightItem/components/HighlightPosterText'
     ),
   {
-    ssr: false,
+    ssr: true,
   },
 );
 
@@ -85,8 +85,11 @@ function HighlightDetail(props: HighlightDetailProps) {
           spaceBetween={0}
           slidesPerView={1}
         >
-          <SwiperSlide style={{ aspectRatio: imageRatio }}>
-            <div className="relative w-full">
+          <SwiperSlide className="w-full">
+            <div
+              className="relative w-full"
+              style={{ aspectRatio: imageRatio }}
+            >
               <div className="highlightGradient absolute inset-0 z-[10] h-full w-full" />
 
               <Image
@@ -140,6 +143,7 @@ function HighlightDetail(props: HighlightDetailProps) {
       </section>
       <section className="w-full p-4">
         <div className="flex flex-col">
+          <p className="mb-4 text-lg font-bold">Related Songs</p>
           <div className="space-y-1">
             {highlightDetail?.highlightSong.map((x, i) => {
               return (

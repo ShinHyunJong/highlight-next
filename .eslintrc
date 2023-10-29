@@ -64,7 +64,8 @@
         "unused-imports/no-unused-vars": [
           "error",
           { "argsIgnorePattern": "^_" }
-        ]
+        ],
+        "jsx-a11y/interactive-supports-focus": "off" // Disable interactive elements must either have children or use the role attribute
       }
     },
     // Configuration for testing

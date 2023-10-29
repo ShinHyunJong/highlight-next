@@ -1,9 +1,10 @@
 import MediaSession from '@mebtte/react-media-session';
 
-import type { Song } from '@/types/server.type';
+import type { Highlight, Song } from '@/types/server.type';
 
 type MediaAppProps = {
   playingAudio: Song | null;
+  playingHighlight: Highlight | null;
   play: () => void;
   playNext: () => void;
   playPrevious: () => void;
@@ -16,19 +17,21 @@ function MediaApp({
   pause,
   playNext,
   playPrevious,
+  playingHighlight,
 }: MediaAppProps) {
+  const artwork = playingHighlight?.highlightImage.map((x) => {
+    return {
+      src: x.url,
+      sizes: '512x512',
+      type: 'image/jpeg',
+    };
+  });
   return (
     <MediaSession
-      title={playingAudio?.title}
-      artist={playingAudio?.artistName}
+      title={playingHighlight?.title || ''}
+      artist={playingHighlight?.user?.name || ''}
       album={playingAudio?.albumName}
-      artwork={[
-        {
-          src: playingAudio?.thumbUrl || '',
-          sizes: '50x50',
-          type: 'image/jpg',
-        },
-      ]}
+      artwork={artwork || []}
       onPlay={play}
       onPause={pause}
       // onSeekBackward={onSeekBackward}

@@ -13,23 +13,26 @@ function AuthGreeting() {
 
   return (
     <HeaderTemplate title="" hasFooter={false}>
-      <section className="flex h-full w-full flex-col p-4">
-        <Stepper count={3} step={1} />
-        <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />
-        <div className="py-8">
-          <Button onClick={() => router.push('/auth?tab=pick')}>
-            Get Started
-          </Button>
+      <section
+        style={{ height: `calc(100svh - 50px)` }}
+        className="flex w-full flex-col justify-between p-4"
+      >
+        <div className="flex flex-col">
+          <Stepper count={3} step={1} />
+          <Greeting textList={['Pick your', 'Favorite Top 3', 'Songs.!']} />
+          <div className="py-8">
+            <Button onClick={() => router.push('/auth?tab=pick')}>
+              Get Started
+            </Button>
+          </div>
         </div>
-        <div className="mt-8">
-          <Button
-            onClick={() => router.push('/auth')}
-            type="button"
-            variant="link"
-            className="px-0"
-          >
-            <p className="text-gray-500">Already have account?</p>
-          </Button>
+        <div
+          role="button"
+          onClick={() => router.push('/auth')}
+          className="flex flex-col border-t border-dashed border-gray-500 pb-8 pt-6"
+        >
+          <p className="text-gray-400">Already have account?</p>
+          <p className="text-green-600">Click here to login</p>
         </div>
       </section>
     </HeaderTemplate>

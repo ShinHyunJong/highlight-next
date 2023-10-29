@@ -18,6 +18,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   );
   const [category, setCategory] = useAtom(globalAtom.selectedCategoryAtom);
   const isAll = !category || category === 'all';
+
   const renderContent = () => {
     if (!isAll && isRefetching) {
       const list = Array.from({ length: 4 }).map((_, i) => i);
@@ -43,7 +44,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
       <section className="w-full p-4">
         <Image unoptimized src={whiteLogo} width={60} height={60} alt="logo" />
         <Greeting textList={['Discover', 'Real Music']} />
-        <div className="pt-8 text-gray-500">
+        <div className="pt-8 text-gray-400">
           <h1>
             What your favorite{' '}
             <b className="text-gray-200">cafes, brands, friends</b> actually

@@ -12,6 +12,9 @@ export function useAudio() {
   const [playingAudioList, setPlayingAudioList] = useAtom(
     audioAtom.playingAudioList,
   );
+  const [playingHighlight, setPlayingHighlight] = useAtom(
+    audioAtom.playingHighlight,
+  );
 
   const handlePlay = (song: Song) => {
     setAudioBuffering(true);
@@ -41,5 +44,7 @@ export function useAudio() {
     resetPlayingAudioList,
     handlePlay,
     pause,
+    playingHighlight,
+    setPlayingHighlight,
   };
 }
