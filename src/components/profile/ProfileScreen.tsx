@@ -65,16 +65,6 @@ function ProfileScreen() {
     );
   };
 
-  // useEffect(() => {
-  //   if (!error) return;
-  //   if (isAxiosError(error)) {
-  //     const { response } = error;
-  //     if (response?.status === 401) {
-  //       router.push('/?tab=home');
-  //     }
-  //   }
-  // }, [error]);
-
   return (
     <HeaderTemplate
       title=""

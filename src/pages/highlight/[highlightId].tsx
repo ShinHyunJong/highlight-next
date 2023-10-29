@@ -100,13 +100,10 @@ function HighlightDetail(props: HighlightDetailProps) {
                 priority
                 alt="mainImage"
               />
-              <DynamicText
-                title={props.highlightDetail.title}
-                desc={props.highlightDetail.desc || ''}
-              />
+              <DynamicText title={props.highlightDetail.title} />
             </div>
           </SwiperSlide>
-          {highlightDetail?.highlightImage.map((x) => {
+          {highlightDetail?.highlightImage.slice(1).map((x) => {
             return (
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
                 <div
