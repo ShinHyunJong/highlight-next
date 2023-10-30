@@ -108,7 +108,7 @@ function Auth() {
   };
 
   return (
-    <HeaderTemplate title="로그인" hasFooter={false}>
+    <HeaderTemplate title="Log In" hasFooter={false}>
       <section className="flex h-full w-full flex-col p-4">
         <Stepper count={3} step={3} />
         <Greeting textList={['Join us.!']} />
