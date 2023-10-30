@@ -93,7 +93,7 @@ function HighlightDetail(props: HighlightDetailProps) {
               <div className="highlightGradient absolute inset-0 z-[10] h-full w-full" />
               <Image
                 unoptimized
-                className="object-contain"
+                className="object-cover"
                 src={mainImageUrl || ''}
                 fill
                 priority
@@ -111,7 +111,7 @@ function HighlightDetail(props: HighlightDetailProps) {
                 >
                   <Image
                     unoptimized
-                    className="object-contain"
+                    className="object-cover"
                     src={x.url}
                     fill
                     priority
