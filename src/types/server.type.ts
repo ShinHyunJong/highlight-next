@@ -1,10 +1,12 @@
 export type User = {
   id: number;
+  alias: string;
   email: string;
   name: string | null;
   bio: string | null;
   coverImgUrl: string | null;
   profileImgUrl: string | null;
+  userFavSong: UserFav[];
   createdAt: Date;
   updatedAt: Date;
 };

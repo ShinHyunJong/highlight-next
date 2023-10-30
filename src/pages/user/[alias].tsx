@@ -1,44 +1,43 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-'use client';
-
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { FaPlus } from 'react-icons/fa';
-import { SlSettings } from 'react-icons/sl';
+import { NextSeo } from 'next-seo';
 
+import AddMusicItem from '@/components/global/AddMusicItem';
+import HighlightItem from '@/components/global/HighlightItem/HighlightItem';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAudio } from '@/hooks/audio';
-import { useAuth } from '@/hooks/auth';
-import { useMyHighlight } from '@/hooks/highlight';
-import { useUpload } from '@/hooks/upload';
+import { useUser, useUserHighlightList } from '@/hooks/user';
+import {
+  getUserDetailApi,
+  getUserHighlightApi,
+  getUserListApi,
+} from '@/hooks/user/api';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
+import type { Highlight, User } from '@/types/server.type';
 
-import AddMusicItem from '../global/AddMusicItem';
-import HighlightItem from '../global/HighlightItem/HighlightItem';
-import { Avatar, AvatarImage } from '../ui/avatar';
-import { Button } from '../ui/button';
-import { Skeleton } from '../ui/skeleton';
+type UserPageProps = {
+  userProfile: User;
+  userHighlightList: Highlight[];
+};
 
-function ProfileScreen() {
+function UserPage(props: UserPageProps) {
   const router = useRouter();
-  const { processFileList, initialize } = useUpload();
-  const { user, userFav, initilizeUploadingAsessts } = useAuth();
-  const { myHighlightList, isLoading } = useMyHighlight();
+  const { user } = useUser(props.userProfile);
+  const { highlightList, isLoading } = useUserHighlightList(
+    props.userHighlightList,
+  );
   const { handlePlay } = useAudio();
-  const handleFile = async (e: any) => {
-    try {
-      const { files } = e.target;
-      router.push('/post');
-      await processFileList(files);
-    } catch (error) {}
-  };
 
-  useEffect(() => {
-    initialize();
-    initilizeUploadingAsessts();
-  }, []);
+  const title = `Discover Real Music - ${
+    props.userProfile?.name || `user.${user.id}`
+  }`;
+  const description = props.userProfile?.bio || '';
+  const url = `https://discoverrealmusic.com/@${props.userProfile?.alias}`;
 
   const renderHighlight = () => {
     if (isLoading) {
@@ -50,13 +49,13 @@ function ProfileScreen() {
     }
     return (
       <>
-        {myHighlightList.map((h) => {
+        {highlightList.map((h) => {
           const firstImage = h.highlightImage[0];
           if (!firstImage) return null;
           return (
             <HighlightItem
               isProfile
-              key={`my-highlight-${h.id}`}
+              key={`user-highlight-${h.id}`}
               highlight={h}
               highlightImage={firstImage}
             />
@@ -67,21 +66,20 @@ function ProfileScreen() {
   };
 
   return (
-    <HeaderTemplate
-      title=""
-      transparent
-      rightNode={
-        <div>
-          <button
-            onClick={() => router.push('/profile?tab=settings')}
-            type="button"
-            className="clearButton"
-          >
-            <SlSettings />
-          </button>
-        </div>
-      }
-    >
+    <HeaderTemplate title="" transparent>
+      <NextSeo
+        title={title}
+        description={description}
+        canonical={`https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`}
+        openGraph={{
+          type: 'website',
+          url,
+          title,
+          description,
+          images: [{ url: props.userProfile?.profileImgUrl || '' }],
+          siteName: 'Discover Real Music',
+        }}
+      />
       <section className="flex w-full flex-col">
         <div className="relative w-full">
           <div className="relative aspect-4/5 w-full bg-gray-600">
@@ -125,7 +123,7 @@ function ProfileScreen() {
               <div className="flex flex-1 flex-col justify-center gap-4">
                 <p>Favorite Top 3</p>
                 <div className="space-y-0 border-y border-white px-2 py-3">
-                  {userFav?.map((x, i) => {
+                  {user?.userFavSong?.map((x, i) => {
                     return (
                       <AddMusicItem
                         index={i}
@@ -141,29 +139,34 @@ function ProfileScreen() {
           </div>
         </div>
         <div className="w-full rounded-t-xl bg-gray-900 p-4 pb-8">
-          <div className="grid grid-cols-2 gap-4">
-            {renderHighlight()}
-            <label
-              className="relative flex aspect-[4/5] cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
-              htmlFor="upload"
-            >
-              <FaPlus />
-            </label>
-            <input
-              onChange={handleFile}
-              multiple
-              accept="image/*"
-              type="file"
-              id="upload"
-              className="hidden"
-            />
-          </div>
+          <div className="grid grid-cols-2 gap-4">{renderHighlight()}</div>
         </div>
       </section>
     </HeaderTemplate>
   );
 }
 
-ProfileScreen.Template = AppTemplate;
+export async function getStaticPaths() {
+  const userList = await getUserListApi();
+  const paths = userList.map((x) => {
+    return {
+      params: { alias: x.alias.toString() },
+    };
+  });
+  return { paths, fallback: 'blocking' };
+}
 
-export default ProfileScreen;
+export async function getStaticProps({ params }: any) {
+  const userProfile = await getUserDetailApi(params.alias);
+  const userHighlightList = await getUserHighlightApi(params.alias);
+  return {
+    props: {
+      userProfile,
+      userHighlightList,
+    },
+  };
+}
+
+UserPage.Template = AppTemplate;
+
+export default UserPage;

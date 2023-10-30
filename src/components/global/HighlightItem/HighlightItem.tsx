@@ -18,9 +18,14 @@ const DynamicText = dynamic(() => import('./components/HighlightText'), {
 type HighlightItesmProps = {
   highlightImage: HighlightImage;
   highlight: Highlight;
+  isProfile?: boolean;
 };
 
-function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
+function HighlightItem({
+  highlightImage,
+  highlight,
+  isProfile = false,
+}: HighlightItesmProps) {
   const { user } = useAuth();
   const isMine = user?.id === highlight.userId;
   const router = useRouter();
@@ -66,7 +71,7 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
           <Image
             unoptimized
             fill
-            alt={highlightImage.key}
+            alt={highlightImage.url}
             src={highlightImage.url}
             sizes={imageConfig.sizes}
             className="rounded-lg object-cover"
@@ -74,12 +79,16 @@ function HighlightItem({ highlightImage, highlight }: HighlightItesmProps) {
           <DynamicText title={highlight.title} desc={highlight.desc || ''} />
         </div>
       </Link>
-      <div className="flex items-center gap-2">
-        <Avatar className="h-6 w-6 bg-white">
-          <AvatarImage src={highlight?.user?.profileImgUrl || ''} />
-        </Avatar>
-        <p className="text-gray-300">{highlight?.user?.name || ''}</p>
-      </div>
+      {!isProfile && (
+        <Link href={`/@${highlight.user?.alias}`}>
+          <div className="mt-4 flex items-center gap-2">
+            <Avatar className="h-6 w-6 bg-white">
+              <AvatarImage src={highlight?.user?.profileImgUrl || ''} />
+            </Avatar>
+            <p className="text-gray-300">{highlight?.user?.name || ''}</p>
+          </div>
+        </Link>
+      )}
     </div>
   );
 }

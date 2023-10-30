@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
@@ -37,7 +37,6 @@ type HighlightDetailProps = {
 function HighlightDetail(props: HighlightDetailProps) {
   const { handlePlay } = useAudio();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
-  const router = useRouter();
   const title = `Discover Real Music - ${props.highlightDetail?.title}`;
   const description = props.highlightDetail?.desc || '';
   const url = `https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`;
@@ -124,14 +123,17 @@ function HighlightDetail(props: HighlightDetailProps) {
         </Swiper>
       </section>
       <section className="flex flex-col px-4 pt-8">
-        <div className="flex items-center gap-2 text-sm text-gray-300">
-          <Avatar className="bg-white">
-            <AvatarImage src={highlightDetail?.user?.profileImgUrl || ''} />
-          </Avatar>
-          <p>By {foramtName(highlightDetail?.user)}</p>
-          <p>|</p>
-          <p>{dayjs(highlightDetail?.createdAt).format('DD MMM YYYY')}</p>
-        </div>
+        <Link href={`/@${highlightDetail?.user?.alias}`}>
+          <div className="flex items-center gap-2 text-sm text-gray-300">
+            <Avatar className="bg-white">
+              <AvatarImage src={highlightDetail?.user?.profileImgUrl || ''} />
+            </Avatar>
+            <p>By {foramtName(highlightDetail?.user)}</p>
+            <p>|</p>
+            <p>{dayjs(highlightDetail?.createdAt).format('DD MMM YYYY')}</p>
+          </div>
+        </Link>
+
         <div className="px-2 py-4">
           <p className="text-gray-300">{highlightDetail?.desc}</p>
         </div>

@@ -9,6 +9,14 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/@:alias',
+        destination: '/user/:alias',
+      },
+    ];
+  },
   experimental: {
     scrollRestoration: true,
   },
