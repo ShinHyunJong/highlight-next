@@ -7,7 +7,7 @@ type HighlightPosterTextProps = {
 function HighlightPosterText({ title }: HighlightPosterTextProps) {
   return (
     <div className="absolute bottom-0 z-[20] w-full p-2 pb-8 text-lg">
-      <div className="mb-3 text-3xl font-bold leading-6">
+      <div className="mb-3 text-3xl font-bold">
         <LinesEllipsis
           text={title}
           maxLine="2"

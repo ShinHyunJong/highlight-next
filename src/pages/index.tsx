@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 import HomeScreen from '@/components/home/HomeScreen';
-import Onboarding from '@/components/onboarding/Onboarding';
 import { getHighlightListApi } from '@/hooks/highlight/api';
 import type { Highlight } from '@/types/server.type';
 
@@ -65,12 +64,7 @@ const Index = (props: IndexProps) => {
   //   });
   // };
 
-  return (
-    <>
-      <Onboarding />
-      <HomeScreen highlightList={props.highLightList} />
-    </>
-  );
+  return <HomeScreen highlightList={props.highLightList} />;
 };
 
 export async function getStaticProps() {

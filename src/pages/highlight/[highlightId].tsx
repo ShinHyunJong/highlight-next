@@ -91,7 +91,6 @@ function HighlightDetail(props: HighlightDetailProps) {
               style={{ aspectRatio: imageRatio }}
             >
               <div className="highlightGradient absolute inset-0 z-[10] h-full w-full" />
-
               <Image
                 unoptimized
                 className="object-contain"
@@ -108,7 +107,7 @@ function HighlightDetail(props: HighlightDetailProps) {
               <SwiperSlide key={`highlight-image-${x.id}`} className="w-full">
                 <div
                   style={{ aspectRatio: imageRatio }}
-                  className="relative  w-full"
+                  className="relative w-full"
                 >
                   <Image
                     unoptimized
@@ -118,7 +117,6 @@ function HighlightDetail(props: HighlightDetailProps) {
                     priority
                     alt={x.key}
                   />
-                  <div className="absolute bottom-0 h-full w-full" />
                 </div>
               </SwiperSlide>
             );
