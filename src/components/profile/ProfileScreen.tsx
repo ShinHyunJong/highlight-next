@@ -84,7 +84,10 @@ function ProfileScreen() {
     >
       <section className="flex w-full flex-col">
         <div className="relative w-full">
-          <div className="relative aspect-4/5 w-full bg-gray-600">
+          <div
+            className="relative w-full bg-gray-600"
+            style={{ aspectRatio: 0.7 }}
+          >
             {user?.coverImgUrl && (
               <Image
                 alt="coverImg"

@@ -82,7 +82,10 @@ function UserPage(props: UserPageProps) {
       />
       <section className="flex w-full flex-col">
         <div className="relative w-full">
-          <div className="relative aspect-4/5 w-full bg-gray-600">
+          <div
+            className="relative w-full bg-gray-600"
+            style={{ aspectRatio: 0.7 }}
+          >
             {user?.coverImgUrl && (
               <Image
                 alt="coverImg"
@@ -93,7 +96,7 @@ function UserPage(props: UserPageProps) {
                 fill
               />
             )}
-            <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-8">
+            <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4">
               {user?.bio && (
                 <div className="whitespace-pre-line break-keep py-4">
                   <p className="text-sm text-gray-200">{user?.bio}</p>

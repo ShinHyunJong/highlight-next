@@ -46,7 +46,9 @@ function HighlightDetail(props: HighlightDetailProps) {
     };
   });
   const [imageRatio, setImageRatio] = useState(0.8);
-  const [mainImageUrl, setMainImageUrl] = useState<string | null>(null);
+  const [mainImageUrl, setMainImageUrl] = useState<string>(
+    props.highlightDetail?.highlightImage[0]?.url || '',
+  );
 
   const getFirstImageRatio = async (url: string) => {
     const { ratio } = await getImageData(url);
