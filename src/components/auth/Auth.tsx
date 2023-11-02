@@ -126,7 +126,7 @@ function Auth() {
               <div className="absolute left-4">
                 <FaEnvelope />
               </div>
-              Sign with Email
+              Admin Login
             </button>
             <button
               type="button"
