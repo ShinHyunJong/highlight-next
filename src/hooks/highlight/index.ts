@@ -8,7 +8,11 @@ import type { Highlight } from '@/types/server.type';
 
 import { getMyHighlightApi } from '../auth/api';
 import { deleteHighlightApi } from '../upload/api';
-import { getHighlightDetailApi, getHighlightListApi } from './api';
+import {
+  getHighlightDetailApi,
+  getHighlightListApi,
+  getRelatedHighlightApi,
+} from './api';
 
 export function useMyHighlight() {
   const [deleting, setDeleting] = useAtom(uploadAtom.deleting);
@@ -75,6 +79,25 @@ export function useHighlightDetail(detail?: Highlight) {
 
   return {
     highlightDetail: data,
+    refetch,
+    isLoading,
+  };
+}
+
+export function useRelatedHighlight() {
+  const router = useRouter();
+  const highlightId = Number(router.query.highlightId);
+
+  const { data, isLoading, refetch } = useQuery(
+    ['relatedHighlight', highlightId],
+    () => getRelatedHighlightApi(highlightId),
+    {
+      enabled: !!highlightId,
+    },
+  );
+
+  return {
+    relatedHighlightList: data || [],
     refetch,
     isLoading,
   };

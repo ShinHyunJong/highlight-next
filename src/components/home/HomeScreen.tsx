@@ -40,7 +40,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   };
 
   return (
-    <HeaderTemplate title="">
+    <HeaderTemplate transparent title="">
       <section className="w-full p-4">
         <Image unoptimized src={whiteLogo} width={60} height={60} alt="logo" />
         <Greeting textList={['Discover', 'Real Music']} />

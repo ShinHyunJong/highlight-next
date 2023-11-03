@@ -8,9 +8,11 @@ import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import AddMusicItem from '@/components/global/AddMusicItem';
+import HighlightItem from '@/components/global/HighlightItem/HighlightItem';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAudio } from '@/hooks/audio';
-import { useHighlightDetail } from '@/hooks/highlight';
+import { useHighlightDetail, useRelatedHighlight } from '@/hooks/highlight';
 import {
   getHighlightDetailApi,
   getHighlightListApi,
@@ -37,6 +39,7 @@ type HighlightDetailProps = {
 function HighlightDetail(props: HighlightDetailProps) {
   const { handlePlay } = useAudio();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
+  const { relatedHighlightList, isLoading } = useRelatedHighlight();
   const title = `Discover Real Music - ${props.highlightDetail?.title}`;
   const description = props.highlightDetail?.desc || '';
   const url = `https://discoverrealmusic.com/highlight/${props.highlightDetail?.id}`;
@@ -62,6 +65,26 @@ function HighlightDetail(props: HighlightDetailProps) {
     setMainImageUrl(firstImage.url);
     getFirstImageRatio(firstImage.url);
   }, [props.highlightDetail]);
+
+  const renderRelated = () => {
+    if (isLoading) {
+      const list = Array.from({ length: 4 }).map((_, i) => i);
+      return list.map((x) => (
+        <Skeleton className="aspect-[4/5]" key={`skeleton-${x}`} />
+      ));
+    }
+    return relatedHighlightList.map((x) => {
+      const firstImage = x.highlightImage[0];
+      if (!firstImage) return null;
+      return (
+        <HighlightItem
+          key={`related-highlight-${x.id}`}
+          highlight={x}
+          highlightImage={firstImage}
+        />
+      );
+    });
+  };
 
   return (
     <HeaderTemplate transparent title="">
@@ -154,6 +177,14 @@ function HighlightDetail(props: HighlightDetailProps) {
                 />
               );
             })}
+          </div>
+        </div>
+      </section>
+      <section className="w-full p-4">
+        <div className="flex flex-col">
+          <p className="mb-4 text-lg font-bold">More Music Discovery</p>
+          <div className="mb-4 grid grid-cols-2 gap-x-2 gap-y-4">
+            {renderRelated()}
           </div>
         </div>
       </section>

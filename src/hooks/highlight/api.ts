@@ -20,3 +20,10 @@ export async function getHighlightDetailApi(
   const { data } = await api.get(`/highlight/detail/${highlightId}`);
   return data;
 }
+
+export async function getRelatedHighlightApi(
+  highlightId: number,
+): Promise<Highlight[]> {
+  const { data } = await api.get(`/highlight/related/${highlightId}`);
+  return data;
+}
