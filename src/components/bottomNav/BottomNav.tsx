@@ -56,7 +56,7 @@ function BottomNav() {
               className="flex flex-col items-center justify-center gap-1"
             >
               <x.Icon
-                size={16}
+                size={20}
                 className={!active ? 'text-slate-600' : 'text-slate-200'}
               />
               <p
