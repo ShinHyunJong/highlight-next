@@ -7,7 +7,6 @@ import { NextSeo } from 'next-seo';
 import AddMusicItem from '@/components/global/AddMusicItem';
 import HighlightItem from '@/components/global/HighlightItem/HighlightItem';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAudio } from '@/hooks/audio';
 import { useUser, useUserHighlightList } from '@/hooks/user';
@@ -115,19 +114,20 @@ function UserPage(props: UserPageProps) {
                     {user?.name ? user?.name : `user ${user?.id}`}
                   </p>
                 </div>
-              <div className="flex flex-1 flex-col justify-center gap-4">
-                <p>Favorite Top 3</p>
-                <div className="space-y-0 border-y border-white px-2 py-3">
-                  {user?.userFavSong?.map((x, i) => {
-                    return (
-                      <AddMusicItem
-                        index={i}
-                        key={`usefr-fav-${x.id}`}
-                        song={x.song}
-                        onClick={handlePlay}
-                      />
-                    );
-                  })}
+                <div className="flex flex-1 flex-col justify-center gap-4">
+                  <p>Favorite Top 3</p>
+                  <div className="space-y-0 border-y border-white px-2 py-3">
+                    {user?.userFavSong?.map((x, i) => {
+                      return (
+                        <AddMusicItem
+                          index={i}
+                          key={`usefr-fav-${x.id}`}
+                          song={x.song}
+                          onClick={handlePlay}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
