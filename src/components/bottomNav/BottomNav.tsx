@@ -37,7 +37,7 @@ function BottomNav() {
     }
   };
 
-  if (!loaded || !onboarded) return null;
+  if (!loaded) return null;
   return (
     <footer
       style={{ height: layoutConfig.footerHeight }}
