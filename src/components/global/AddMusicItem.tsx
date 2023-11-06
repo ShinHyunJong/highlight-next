@@ -63,7 +63,7 @@ function AddMusicItem({
       <li
         aria-hidden="true"
         onClick={() => onClick && onClick(song)}
-        className="clearButton flex w-full flex-row items-stretch justify-between gap-2 p-2"
+        className="flex w-full flex-row items-stretch justify-between gap-2 p-2"
       >
         <div className="relative flex flex-1 flex-row items-center gap-3">
           {provided && draggable && (
@@ -82,14 +82,13 @@ function AddMusicItem({
             <p className="text-sm font-semibold">{song.title}</p>
             <p className="text-sm text-gray-400">{song.artistName}</p>
           </div>
-          {active && (
-            <div
-              className={clsx(
-                'absolute inset-0 h-full w-full',
-                active ? 'active-music-item' : 'bg-transparent',
-              )}
-            />
-          )}
+
+          <div
+            className={clsx(
+              'absolute inset-0 h-full w-full',
+              active ? 'active-music-item' : 'bg-transparent',
+            )}
+          />
         </div>
         <div className="relative flex items-center justify-end gap-3">
           <div>{renderLevel()}</div>
