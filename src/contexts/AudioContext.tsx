@@ -2,11 +2,13 @@
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import { createContext, useEffect, useRef } from 'react';
 
 import audioAtom from '@/atoms/audio';
 import BottomPlayer from '@/components/bottomPlayer';
+import { playerRouteWhiteList } from '@/configs/player.config';
 
 const DynamicMedida = dynamic(() => import('../components/global/MediaApp'), {
   ssr: false,
@@ -29,6 +31,7 @@ const AudioContext = createContext<AudioContextType>({
 });
 
 function AudioProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
   const [isPlaying, setIsPlaying] = useAtom(audioAtom.isPlaying);
@@ -41,6 +44,8 @@ function AudioProvider({ children }: { children: ReactNode }) {
     if (!audioRef.current) return;
     audioRef.current.volume = 0.3;
   }, []);
+
+  const hide = playerRouteWhiteList.includes(router.route);
 
   // useEffect(() => {
   //   if (!audioRef.current) return;
@@ -156,7 +161,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
         onEnded={handleEnd}
         ref={audioRef}
       />
-      {playingAudio && (
+      {playingAudio && !hide && (
         <BottomPlayer
           handlePlay={play}
           handlePause={pause}
