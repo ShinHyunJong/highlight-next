@@ -10,7 +10,7 @@ import authAtom from '@/atoms/auth';
 import { layoutConfig } from '@/configs/layout.config';
 
 const routes = [
-  { value: 'home', text: 'HIGHLIGHT', link: '/', Icon: MdSpaceDashboard },
+  { value: 'home', text: 'DISCOVER', link: '/', Icon: MdSpaceDashboard },
   { value: 'profile', text: 'PROFILE', link: '/profile', Icon: FaUserAlt },
 ];
 

@@ -19,7 +19,7 @@ import {
 } from '@/hooks/highlight/api';
 import { foramtName } from '@/hooks/utils/format.utils';
 import HeaderTemplate from '@/templates/HeaderTemplate';
-import type { Highlight } from '@/types/server.type';
+import type { Highlight, Song } from '@/types/server.type';
 import { getImageData } from '@/utils/image.util';
 
 const DynamicText = dynamic(
@@ -37,7 +37,12 @@ type HighlightDetailProps = {
 };
 
 function HighlightDetail(props: HighlightDetailProps) {
-  const { handlePlay } = useAudio();
+  const {
+    handlePlay,
+    setPlayingHighlight,
+    setPlayingAudioList,
+    playingHighlight,
+  } = useAudio();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
   const { relatedHighlightList, isLoading } = useRelatedHighlight();
   const title = `Discover Real Music - ${props.highlightDetail?.title}`;
@@ -84,6 +89,17 @@ function HighlightDetail(props: HighlightDetailProps) {
         />
       );
     });
+  };
+
+  const onPlay = (s: Song) => {
+    if (!highlightDetail) return;
+    handlePlay(s);
+    if (!playingHighlight) {
+      setPlayingAudioList(
+        highlightDetail?.highlightSong.map((x) => x.song!) || [],
+      );
+      setPlayingHighlight(highlightDetail);
+    }
   };
 
   return (
@@ -170,7 +186,7 @@ function HighlightDetail(props: HighlightDetailProps) {
             {highlightDetail?.highlightSong.map((x, i) => {
               return (
                 <AddMusicItem
-                  onClick={handlePlay}
+                  onClick={onPlay}
                   index={i}
                   key={`higlight-song-${x.id}`}
                   song={x.song!}

@@ -51,6 +51,7 @@ export type HighlightSong = {
   highlightId: number;
   songId: number;
   song?: Song;
+  order: number;
 };
 
 export type HighlightImage = {

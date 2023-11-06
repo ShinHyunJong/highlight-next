@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import BottomNav from '@/components/bottomNav/BottomNav';
 import Header from '@/components/header/Header';
 import { layoutConfig } from '@/configs/layout.config';
+import { useAudio } from '@/hooks/audio';
 
 function HeaderTemplate({
   children,
@@ -22,6 +23,18 @@ function HeaderTemplate({
   onCloseModal?: () => void;
   hasFooter?: boolean;
 }) {
+  const { playingAudio } = useAudio();
+
+  const calcaulatePaddingBottom = () => {
+    if (hasFooter && playingAudio) {
+      return layoutConfig.footerHeight + layoutConfig.bottomPlayerHeight;
+    }
+    if (hasFooter && !playingAudio) {
+      return layoutConfig.footerHeight;
+    }
+    return 0;
+  };
+
   return (
     <section className="scrollbar-hide relative mx-auto w-full max-w-[600px]">
       <Header
@@ -33,7 +46,7 @@ function HeaderTemplate({
       />
       <section
         style={{
-          paddingBottom: hasFooter ? layoutConfig.footerHeight : 0,
+          paddingBottom: calcaulatePaddingBottom(),
         }}
         className={clsx('w-full', transparent ? 'pt-0' : 'pt-[50px]')}
       >

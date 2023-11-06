@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { createContext, useEffect, useRef } from 'react';
 
 import audioAtom from '@/atoms/audio';
+import BottomPlayer from '@/components/bottomPlayer';
 
 const DynamicMedida = dynamic(() => import('../components/global/MediaApp'), {
   ssr: false,
@@ -15,6 +16,7 @@ type AudioContextType = {
   audio: HTMLAudioElement | null;
   play: () => void;
   pause: () => void;
+  seek: () => void;
   changeAudio: (src: string) => void;
 };
 
@@ -22,13 +24,16 @@ const AudioContext = createContext<AudioContextType>({
   audio: null,
   play: () => {},
   pause: () => {},
+  seek: () => {},
   changeAudio: (src: string) => {},
 });
 
 function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
+  const [isPlaying, setIsPlaying] = useAtom(audioAtom.isPlaying);
   const setAudioBuffering = useSetAtom(audioAtom.audioBuffering);
+
   const playingAudioList = useAtomValue(audioAtom.playingAudioList);
   const playingHighlight = useAtomValue(audioAtom.playingHighlight);
 
@@ -52,9 +57,16 @@ function AudioProvider({ children }: { children: ReactNode }) {
 
   const play = () => {
     audioRef?.current?.play();
+    setIsPlaying(true);
+  };
+
+  const seek = () => {
+    if (!audioRef?.current) return;
+    audioRef.current.currentTime = 0;
   };
 
   const pause = () => {
+    setIsPlaying(false);
     audioRef?.current?.pause();
   };
 
@@ -71,6 +83,8 @@ function AudioProvider({ children }: { children: ReactNode }) {
       );
       const nextAudio = playingAudioList[targetAudioIndex + 1];
       if (nextAudio) {
+        setAudioBuffering(true);
+        setIsPlaying(true);
         setPlayingAudio(nextAudio);
         changeAudio(nextAudio?.previewUrl);
       }
@@ -86,6 +100,8 @@ function AudioProvider({ children }: { children: ReactNode }) {
       );
       const nextAudio = playingAudioList[targetAudioIndex - 1];
       if (nextAudio) {
+        setAudioBuffering(true);
+        setIsPlaying(true);
         setPlayingAudio(nextAudio);
         changeAudio(nextAudio?.previewUrl);
       }
@@ -101,6 +117,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
       );
       if (targetAudioIndex === -1) {
         setPlayingAudio(null);
+        setIsPlaying(false);
       }
       const nextAudio = playingAudioList[targetAudioIndex + 1];
       if (nextAudio) {
@@ -108,9 +125,11 @@ function AudioProvider({ children }: { children: ReactNode }) {
         changeAudio(nextAudio?.previewUrl);
       } else {
         setPlayingAudio(null);
+        setIsPlaying(false);
       }
     } else {
       setPlayingAudio(null);
+      setIsPlaying(false);
     }
   };
 
@@ -118,6 +137,7 @@ function AudioProvider({ children }: { children: ReactNode }) {
     <AudioContext.Provider
       value={{
         audio: audioRef.current,
+        seek,
         play,
         pause,
         changeAudio,
@@ -136,6 +156,15 @@ function AudioProvider({ children }: { children: ReactNode }) {
         onEnded={handleEnd}
         ref={audioRef}
       />
+      {playingAudio && (
+        <BottomPlayer
+          handlePlay={play}
+          handlePause={pause}
+          handleNext={playNext}
+          handlePrev={playPrevious}
+        />
+      )}
+
       {children}
     </AudioContext.Provider>
   );

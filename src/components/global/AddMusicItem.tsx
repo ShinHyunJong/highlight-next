@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import colors from 'color';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Levels, Spinner } from 'react-activity';
 import { Draggable } from 'react-beautiful-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -11,6 +11,7 @@ import { MdClose, MdDragHandle } from 'react-icons/md';
 import audioAtom from '@/atoms/audio';
 import authAtom from '@/atoms/auth';
 import uploadAtom from '@/atoms/upload';
+import { useAudio } from '@/hooks/audio';
 import type { Song } from '@/types/server.type';
 
 type AddMusicItemProps = {
@@ -34,12 +35,12 @@ function AddMusicItem({
   deleteable,
   draggable,
 }: AddMusicItemProps) {
-  const [playingAudio, setPlayingAudio] = useAtom(audioAtom.playingAudio);
+  const { playingAudio, isPlaying } = useAudio();
   const selectedPickSong = useAtomValue(authAtom.selectedPickSong);
   const setDeletingSong = useSetAtom(uploadAtom.deletingSongList);
   const buffering = useAtomValue(audioAtom.audioBuffering);
 
-  const active = playingAudio?.isrc === song.isrc;
+  const active = isPlaying && playingAudio?.isrc === song.isrc;
   const added = selectedPickSong.map((s) => s.isrc).includes(song.isrc);
 
   const getItemStyle = (isDragging, draggableStyle) => ({
