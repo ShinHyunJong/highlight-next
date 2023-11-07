@@ -15,7 +15,6 @@ import audioAtom from '@/atoms/audio';
 import { layoutConfig } from '@/configs/layout.config';
 import { useAudio } from '@/hooks/audio';
 import { useTabParam } from '@/hooks/utils/route.utils';
-import { playingProfile } from '@/atoms/audio/atom';
 
 const Wrapper = ({
   children,

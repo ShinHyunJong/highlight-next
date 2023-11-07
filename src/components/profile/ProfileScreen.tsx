@@ -27,7 +27,13 @@ function ProfileScreen() {
   const { processFileList, initialize } = useUpload();
   const { user, userFav, initilizeUploadingAsessts } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
-  const { handlePlay, setPlayingAudioList, setPlayingHighlight } = useAudio();
+  const {
+    handlePlay,
+    setPlayingAudioList,
+    setPlayingHighlight,
+    playingProfile,
+    setPlayingProfile,
+  } = useAudio();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
@@ -69,7 +75,10 @@ function ProfileScreen() {
 
   const handlePlayFavorite = (s: Song) => {
     handlePlay(s);
-    setPlayingAudioList(userFav.map((x) => x.song));
+    if (!playingProfile || playingProfile?.id !== user?.id) {
+      setPlayingProfile(user);
+      setPlayingAudioList(userFav.map((x) => x.song));
+    }
     setPlayingHighlight(null);
   };
 

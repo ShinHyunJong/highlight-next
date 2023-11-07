@@ -1,1 +1,1 @@
-export const playerRouteWhiteList = ['/auth', '/profile'];
+export const playerRouteWhiteList = ['/auth', '/post'];
