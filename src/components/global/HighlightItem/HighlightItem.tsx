@@ -8,6 +8,7 @@ import { imageConfig } from '@/configs/image.config';
 import { useAudio } from '@/hooks/audio';
 import { useAuth } from '@/hooks/auth';
 import { useMyHighlight } from '@/hooks/highlight';
+import { useTabParam } from '@/hooks/utils/route.utils';
 import type { Highlight, HighlightImage } from '@/types/server.type';
 
 import ItemSetting from './ItemSetting';
@@ -29,6 +30,9 @@ function HighlightItem({
   const { user } = useAuth();
   const isMine = user?.id === highlight.userId;
   const router = useRouter();
+  const { getTabParam } = useTabParam();
+  const firstRoute = router.route;
+  const { tab } = router.query;
   const { handleDelete } = useMyHighlight();
   const { handlePlay, setPlayingAudioList, setPlayingHighlight } = useAudio();
 
@@ -52,7 +56,7 @@ function HighlightItem({
   return (
     <div className="space-y-4">
       <Link
-        href={`/highlight/${highlight.id}`}
+        href={`/highlight/${highlight.id}${getTabParam()}`}
         onClick={handleHighlight}
         className="space-y-2"
       >
@@ -80,7 +84,7 @@ function HighlightItem({
         </div>
       </Link>
       {!isProfile && (
-        <Link href={`/@${highlight.user?.alias}`}>
+        <Link href={`/@${highlight.user?.alias}${getTabParam()}`}>
           <div className="mt-4 flex items-center gap-2">
             <Avatar className="h-6 w-6 bg-white">
               <AvatarImage src={highlight?.user?.profileImgUrl || ''} />

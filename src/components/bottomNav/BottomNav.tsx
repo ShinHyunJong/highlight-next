@@ -10,7 +10,7 @@ import authAtom from '@/atoms/auth';
 import { layoutConfig } from '@/configs/layout.config';
 
 const routes = [
-  { value: 'home', text: 'DISCOVER', link: '/', Icon: MdSpaceDashboard },
+  { value: 'discover', text: 'DISCOVER', link: '/', Icon: MdSpaceDashboard },
   { value: 'profile', text: 'PROFILE', link: '/profile', Icon: FaUserAlt },
 ];
 
@@ -22,6 +22,7 @@ function BottomNav() {
 
   const [loaded, setLoaded] = useState(false);
   const path = router.asPath;
+  const { tabFrom } = router.query;
 
   useEffect(() => {
     setLoaded(true);
@@ -44,7 +45,7 @@ function BottomNav() {
       className="footer fixed bottom-0 z-50 mx-auto flex w-full max-w-[600px] bg-gray-900"
     >
       {routes.map((x) => {
-        const active = x.link === path;
+        const active = x.link === path || x.value === tabFrom;
         return (
           <div
             key={x.value}

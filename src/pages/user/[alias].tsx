@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 
 import AddMusicItem from '@/components/global/AddMusicItem';
@@ -17,7 +16,7 @@ import {
 } from '@/hooks/user/api';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
-import type { Highlight, User } from '@/types/server.type';
+import type { Highlight, Song, User } from '@/types/server.type';
 
 type UserPageProps = {
   userProfile: User;
@@ -25,12 +24,17 @@ type UserPageProps = {
 };
 
 function UserPage(props: UserPageProps) {
-  const router = useRouter();
   const { user } = useUser(props.userProfile);
   const { highlightList, isLoading } = useUserHighlightList(
     props.userHighlightList,
   );
-  const { handlePlay } = useAudio();
+  const {
+    handlePlay,
+    setPlayingAudioList,
+    setPlayingHighlight,
+    setPlayingProfile,
+    playingProfile,
+  } = useAudio();
 
   const title = `Discover Real Music - ${
     props.userProfile?.name || `user.${user.id}`
@@ -62,6 +66,15 @@ function UserPage(props: UserPageProps) {
         })}
       </>
     );
+  };
+
+  const handlePlayFavorite = (s: Song) => {
+    handlePlay(s);
+    if (!playingProfile || playingProfile?.id !== user?.id) {
+      setPlayingProfile(user);
+      setPlayingAudioList(user.userFavSong.map((x) => x.song));
+    }
+    setPlayingHighlight(null);
   };
 
   return (
@@ -124,7 +137,7 @@ function UserPage(props: UserPageProps) {
                         index={i}
                         key={`usefr-fav-${x.id}`}
                         song={x.song}
-                        onClick={handlePlay}
+                        onClick={handlePlayFavorite}
                       />
                     );
                   })}

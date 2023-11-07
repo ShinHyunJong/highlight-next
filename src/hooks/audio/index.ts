@@ -16,6 +16,7 @@ export function useAudio() {
   const [playingHighlight, setPlayingHighlight] = useAtom(
     audioAtom.playingHighlight,
   );
+  const [playingProfile, setPlayingProfile] = useAtom(audioAtom.playingProfile);
 
   const handlePlay = (song: Song) => {
     setAudioBuffering(true);
@@ -52,5 +53,7 @@ export function useAudio() {
     playingHighlight,
     setPlayingHighlight,
     audioBuffering,
+    playingProfile,
+    setPlayingProfile,
   };
 }

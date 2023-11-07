@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { Spinner } from 'react-activity';
@@ -15,6 +14,8 @@ import {
 import audioAtom from '@/atoms/audio';
 import { layoutConfig } from '@/configs/layout.config';
 import { useAudio } from '@/hooks/audio';
+import { useTabParam } from '@/hooks/utils/route.utils';
+import { playingProfile } from '@/atoms/audio/atom';
 
 const Wrapper = ({
   children,
@@ -45,27 +46,34 @@ function BottomPlayer({
   handleNext,
   handlePrev,
 }: BottomPlayerProps) {
-  const { playingAudio, playingHighlight, audioBuffering } = useAudio();
+  const {
+    playingAudio,
+    playingHighlight,
+    audioBuffering,
+    playingProfile,
+    playingAudioList,
+  } = useAudio();
   const [isPlaying, setIsPlaying] = useAtom(audioAtom.isPlaying);
-  const router = useRouter();
+  const { getTabParam } = useTabParam();
   const playStatus = useMemo(() => {
     let hasNext = false;
     let hasPrev = false;
-    const currentPlaying = playingHighlight?.highlightSong.find(
-      (x) => x.song?.isrc === playingAudio?.isrc,
+
+    const currentPlayingIndex = playingAudioList.findIndex(
+      (x) => x.isrc === playingAudio?.isrc,
     );
-    const currentOrder = currentPlaying?.order || 0;
-    if (currentOrder === undefined) {
+
+    if (currentPlayingIndex === -1) {
       hasNext = false;
       hasPrev = false;
     }
 
-    const higherSongIndex = playingHighlight?.highlightSong?.findIndex(
-      (x) => x.order > currentOrder,
+    const higherSongIndex = playingAudioList?.findIndex(
+      (x, i) => i > currentPlayingIndex,
     );
 
-    const lowerSongList = playingHighlight?.highlightSong?.filter(
-      (x) => x.order < currentOrder,
+    const lowerSongList = playingAudioList?.filter(
+      (x, i) => i < currentPlayingIndex,
     );
 
     if (higherSongIndex === undefined) {
@@ -116,11 +124,20 @@ function BottomPlayer({
     );
   };
 
-  const PlayerDiv = playingHighlight ? Link : Wrapper;
+  const PlayerDiv = playingHighlight || playingProfile ? Link : Wrapper;
+  const getHref = () => {
+    if (playingHighlight) {
+      return `/highlight/${playingHighlight.id}${getTabParam()}`;
+    }
+    if (playingAudio) {
+      return `/@${playingProfile?.alias}${getTabParam()}`;
+    }
+    return '';
+  };
 
   return (
     <PlayerDiv
-      href={playingHighlight ? `/highlight/${playingHighlight.id}` : ''}
+      href={getHref()}
       className="fixed z-30 flex w-full justify-center bg-transparent"
       style={{
         height: `${layoutConfig.bottomPlayerHeight}px`,

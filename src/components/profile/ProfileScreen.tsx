@@ -14,6 +14,7 @@ import { useMyHighlight } from '@/hooks/highlight';
 import { useUpload } from '@/hooks/upload';
 import AppTemplate from '@/templates/AppTemplate';
 import HeaderTemplate from '@/templates/HeaderTemplate';
+import type { Song } from '@/types/server.type';
 
 import AddMusicItem from '../global/AddMusicItem';
 import HighlightItem from '../global/HighlightItem/HighlightItem';
@@ -26,7 +27,7 @@ function ProfileScreen() {
   const { processFileList, initialize } = useUpload();
   const { user, userFav, initilizeUploadingAsessts } = useAuth();
   const { myHighlightList, isLoading } = useMyHighlight();
-  const { handlePlay } = useAudio();
+  const { handlePlay, setPlayingAudioList, setPlayingHighlight } = useAudio();
   const handleFile = async (e: any) => {
     try {
       const { files } = e.target;
@@ -64,6 +65,12 @@ function ProfileScreen() {
         })}
       </>
     );
+  };
+
+  const handlePlayFavorite = (s: Song) => {
+    handlePlay(s);
+    setPlayingAudioList(userFav.map((x) => x.song));
+    setPlayingHighlight(null);
   };
 
   return (
@@ -134,7 +141,7 @@ function ProfileScreen() {
                         index={i}
                         key={`usefr-fav-${x.id}`}
                         song={x.song}
-                        onClick={handlePlay}
+                        onClick={handlePlayFavorite}
                       />
                     );
                   })}

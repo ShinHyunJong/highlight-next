@@ -18,6 +18,7 @@ import {
   getHighlightListApi,
 } from '@/hooks/highlight/api';
 import { foramtName } from '@/hooks/utils/format.utils';
+import { useTabParam } from '@/hooks/utils/route.utils';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight, Song } from '@/types/server.type';
 import { getImageData } from '@/utils/image.util';
@@ -43,6 +44,7 @@ function HighlightDetail(props: HighlightDetailProps) {
     setPlayingAudioList,
     playingHighlight,
   } = useAudio();
+  const { getTabParam } = useTabParam();
   const { highlightDetail } = useHighlightDetail(props.highlightDetail);
   const { relatedHighlightList, isLoading } = useRelatedHighlight();
   const title = `Discover Real Music - ${props.highlightDetail?.title}`;
@@ -164,7 +166,7 @@ function HighlightDetail(props: HighlightDetailProps) {
         </Swiper>
       </section>
       <section className="flex flex-col px-4 pt-8">
-        <Link href={`/@${highlightDetail?.user?.alias}`}>
+        <Link href={`/@${highlightDetail?.user?.alias}${getTabParam()}`}>
           <div className="flex items-center gap-2 text-sm text-gray-300">
             <Avatar className="bg-white">
               <AvatarImage src={highlightDetail?.user?.profileImgUrl || ''} />
