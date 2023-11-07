@@ -98,7 +98,7 @@ function AddMusicModal({ maxSongCount }: AddMusicModalProps) {
   return (
     <section
       className={clsx(
-        'fixed inset-0 z-[100] mx-auto h-[100svh] w-screen max-w-[600px] overflow-y-auto bg-gray-900',
+        'fixed inset-0 z-[100] mx-auto h-[100svh] w-screen max-w-[412px] overflow-y-auto bg-gray-900',
         open ? 'block' : 'hidden',
       )}
     >

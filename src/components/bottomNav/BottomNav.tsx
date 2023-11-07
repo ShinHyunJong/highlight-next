@@ -42,7 +42,7 @@ function BottomNav() {
   return (
     <footer
       style={{ height: layoutConfig.footerHeight }}
-      className="footer fixed bottom-0 z-50 mx-auto flex w-full max-w-[600px] bg-gray-900"
+      className="footer fixed bottom-0 z-50 mx-auto flex w-full max-w-[412px] bg-gray-900"
     >
       {routes.map((x) => {
         const active = x.link === path || x.value === tabFrom;

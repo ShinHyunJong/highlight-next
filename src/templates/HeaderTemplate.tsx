@@ -36,7 +36,7 @@ function HeaderTemplate({
   };
 
   return (
-    <section className="scrollbar-hide relative mx-auto w-full max-w-[600px]">
+    <section className="scrollbar-hide relative mx-auto w-full max-w-[412px]">
       <Header
         isModal={isModal}
         title={title}

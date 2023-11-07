@@ -145,7 +145,7 @@ function BottomPlayer({
     >
       <div
         style={{ background: 'rgba(57, 57, 57, 0.74)' }}
-        className="flex h-full w-full max-w-[600px] items-center justify-between rounded-lg px-4 backdrop-blur-lg"
+        className="flex h-full w-full max-w-[412px] items-center justify-between rounded-lg px-4 backdrop-blur-lg"
       >
         <div className="flex items-center gap-2">
           <img
