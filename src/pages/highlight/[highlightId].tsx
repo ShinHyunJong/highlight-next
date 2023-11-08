@@ -200,7 +200,7 @@ function HighlightDetail(props: HighlightDetailProps) {
       </section>
       <section className="w-full p-4">
         <div className="flex flex-col">
-          <p className="mb-4 text-lg font-bold">More Music Discovery</p>
+          <p className="mb-4 text-lg font-bold">Similar Vibe</p>
           <div className="mb-4 grid grid-cols-2 gap-x-2 gap-y-4">
             {renderRelated()}
           </div>

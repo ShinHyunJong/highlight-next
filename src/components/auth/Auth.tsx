@@ -26,7 +26,7 @@ function Auth() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (!router.query.accessToken || !router.query.user) return;
+    if (!router.query.accessToken) return;
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
     getUser();
