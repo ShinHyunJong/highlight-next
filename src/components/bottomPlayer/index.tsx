@@ -145,15 +145,18 @@ function BottomPlayer({
     >
       <div
         style={{ background: 'rgba(57, 57, 57, 0.74)' }}
-        className="flex h-full w-full max-w-[412px] items-center justify-between rounded-lg px-4 backdrop-blur-lg"
+        className="flex h-full w-full max-w-[412px] items-center justify-between gap-2 rounded-lg p-2 backdrop-blur-lg"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 truncate">
           <img
             alt="playerThumb"
             className="h-[30px] w-[30px] rounded-md shadow-md"
             src={playingAudio?.thumbUrl}
           />
-          <p className="truncate text-sm">{playingAudio?.title}</p>
+          <div className="flex-1 space-y-0">
+            <p className="text-sm">{playingAudio?.title}</p>
+            <p className="text-xs text-gray-400">{playingAudio?.artistName}</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
