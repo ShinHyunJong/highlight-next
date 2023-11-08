@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
+import Linkify from 'react-linkify';
 
 import AddMusicItem from '@/components/global/AddMusicItem';
 import HighlightItem from '@/components/global/HighlightItem/HighlightItem';
@@ -110,9 +111,22 @@ function UserPage(props: UserPageProps) {
             )}
             <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4">
               {user?.bio && (
-                <div className="whitespace-pre-line break-keep py-4">
-                  <p className="text-sm text-gray-200">{user?.bio}</p>
-                </div>
+                <Linkify
+                  componentDecorator={(decoratedHref, decoratedText, key) => (
+                    <a
+                      target="blank"
+                      className="text-green-400"
+                      href={decoratedHref}
+                      key={key}
+                    >
+                      {decoratedText}
+                    </a>
+                  )}
+                >
+                  <div className="whitespace-pre-line break-keep py-4">
+                    <p className="text-sm text-gray-200">{user?.bio}</p>
+                  </div>
+                </Linkify>
               )}
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">

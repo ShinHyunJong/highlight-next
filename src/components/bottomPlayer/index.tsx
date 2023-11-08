@@ -153,7 +153,7 @@ function BottomPlayer({
             className="h-[30px] w-[30px] rounded-md shadow-md"
             src={playingAudio?.thumbUrl}
           />
-          <p>{playingAudio?.title}</p>
+          <p className="truncate text-sm">{playingAudio?.title}</p>
         </div>
 
         <div className="flex items-center gap-2">

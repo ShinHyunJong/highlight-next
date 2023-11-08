@@ -66,6 +66,7 @@
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.11.0",
     "react-lines-ellipsis": "^0.15.4",
+    "react-linkify": "^1.0.0-alpha",
     "react-mentions": "^4.4.10",
     "react-query": "^3.39.3",
     "react-remove-scroll-bar": "^2.3.4",

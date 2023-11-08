@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { SlSettings } from 'react-icons/sl';
+import Linkify from 'react-linkify';
 
 import { useAudio } from '@/hooks/audio';
 import { useAuth } from '@/hooks/auth';
@@ -116,9 +117,22 @@ function ProfileScreen() {
             )}
             <div className="bottomGradient absolute bottom-0 flex h-full w-full flex-col-reverse px-4 pb-8">
               {user?.bio && (
-                <div className="whitespace-pre-line break-keep py-4">
-                  <p className="text-sm text-gray-200">{user?.bio}</p>
-                </div>
+                <Linkify
+                  componentDecorator={(decoratedHref, decoratedText, key) => (
+                    <a
+                      target="blank"
+                      className="text-green-400"
+                      href={decoratedHref}
+                      key={key}
+                    >
+                      {decoratedText}
+                    </a>
+                  )}
+                >
+                  <div className="whitespace-pre-line break-keep py-4">
+                    <p className="text-sm text-gray-200">{user?.bio}</p>
+                  </div>
+                </Linkify>
               )}
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
