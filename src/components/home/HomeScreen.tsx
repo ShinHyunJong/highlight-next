@@ -65,7 +65,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
           />
           <Link
             href="/search"
-            className="w-full rounded-lg bg-gray-700 px-4 py-3 text-gray-400"
+            className="w-full flex-1 rounded-lg bg-gray-700 px-4 py-3 text-gray-400"
           >
             <div className="flex items-center gap-2">
               <FaSearch />
