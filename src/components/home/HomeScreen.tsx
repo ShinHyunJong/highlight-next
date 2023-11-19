@@ -1,6 +1,9 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
+import Link from 'next/link';
 import whiteLogo from 'public/assets/images/highlight_white.png';
+import { useForm } from 'react-hook-form';
+import { FaSearch } from 'react-icons/fa';
 
 import { globalAtom } from '@/atoms';
 import { useHighlightList } from '@/hooks/highlight';
@@ -12,12 +15,22 @@ import HighlightItem from '../global/HighlightItem/HighlightItem';
 import Greeting from '../header/Gretting';
 import { Skeleton } from '../ui/skeleton';
 
+type FormValues = {
+  term: string;
+};
+
 function HomeScreen(props: { highlightList: Highlight[] }) {
   const { highlightList, isLoading, isRefetching } = useHighlightList(
     props.highlightList,
   );
   const [category, setCategory] = useAtom(globalAtom.selectedCategoryAtom);
   const isAll = !category || category === 'all';
+
+  const { control, watch } = useForm<FormValues>({
+    defaultValues: {
+      term: '',
+    },
+  });
 
   const renderContent = () => {
     if (!isAll && isRefetching) {
@@ -42,7 +55,24 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
   return (
     <HeaderTemplate transparent title="">
       <section className="w-full p-4">
-        <Image unoptimized src={whiteLogo} width={60} height={60} alt="logo" />
+        <div className="flex flex-row items-center gap-4">
+          <Image
+            unoptimized
+            src={whiteLogo}
+            width={60}
+            height={60}
+            alt="logo"
+          />
+          <Link
+            href="/search"
+            className="w-full rounded-lg bg-gray-700 px-4 py-3 text-gray-400"
+          >
+            <div className="flex items-center gap-2">
+              <FaSearch />
+              <p>Search Songs...</p>
+            </div>
+          </Link>
+        </div>
         <Greeting textList={['Discover', 'Real Music']} />
         <div className="pt-8 text-gray-400">
           <h1>

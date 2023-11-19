@@ -8,7 +8,7 @@ type HighlightTextProps = {
 function HighlightText({ title, desc }: HighlightTextProps) {
   return (
     <div className="absolute bottom-0 z-[20] w-full p-2 pb-4 text-lg">
-      <div className="mb-2 font-bold leading-5">
+      <div className="mb-2 break-keep font-bold leading-5">
         <LinesEllipsis
           text={title}
           maxLine="2"

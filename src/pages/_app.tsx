@@ -7,8 +7,8 @@ import 'swiper/css/pagination';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps as NextAppProps } from 'next/app';
+import NextNProgress from 'next-progress';
 import { DefaultSeo } from 'next-seo';
-import NextNProgress from 'nextjs-progressbar';
 import { type ReactNode, useEffect } from 'react';
 
 import { Toaster } from '@/components/ui/toaster';
@@ -66,7 +66,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }}
       />
       <Provider>
-        <NextNProgress color="#ffffff" options={{ showSpinner: false }} />
+        <NextNProgress
+          disableSameRoute
+          color="#ffffff"
+          options={{ showSpinner: false }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
