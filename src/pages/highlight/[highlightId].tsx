@@ -205,7 +205,7 @@ function HighlightDetail(props: HighlightDetailProps) {
 }
 
 export async function getStaticPaths() {
-  const { highlightList } = await getHighlightListApi();
+  const { highlightList } = await getHighlightListApi(undefined, 0, true);
   const paths = highlightList.map((x) => {
     return {
       params: { highlightId: x.id.toString() },
