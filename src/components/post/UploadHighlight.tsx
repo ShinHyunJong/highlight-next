@@ -11,6 +11,7 @@ import HeaderTemplate from '@/templates/HeaderTemplate';
 import CategorySelector from '../global/CategorySelector';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 import SongController from './components/SongController';
 
 type FormValues = {
@@ -94,7 +95,7 @@ function UploadHighlight() {
             control={control}
             rules={{ required: true, min: 2, max: 50 }}
             render={({ field }) => {
-              return <Input {...field} type="text" placeholder="Caption" />;
+              return <Textarea {...field} rows={5} placeholder="Caption" />;
             }}
           />
         </div>

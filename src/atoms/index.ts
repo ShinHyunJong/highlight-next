@@ -15,8 +15,10 @@ export const pageAtom = atomWithHash('page', 1, {
 });
 
 export const onboardAtom = atomWithStorage<boolean | null>('onBoarded', false);
+export const afterLoginUrlAtom = atom<string | null>(null);
 
 const selectedCategoryAtom = atom<string | null>('all');
 export const globalAtom = {
   selectedCategoryAtom,
+  afterLoginUrlAtom,
 };

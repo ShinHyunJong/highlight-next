@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 
@@ -10,6 +10,7 @@ import { getMyHighlightApi } from '../auth/api';
 import { deleteHighlightApi } from '../upload/api';
 import {
   getHighlightDetailApi,
+  getHighlightLikeApi,
   getHighlightListApi,
   getRelatedHighlightApi,
 } from './api';
@@ -43,21 +44,48 @@ export function useMyHighlight() {
   };
 }
 
-export function useHighlightList(highlightList?: Highlight[]) {
+export function useHighlightList(
+  highlightList: Highlight[],
+  totalCount: number,
+) {
   const category = useAtomValue(globalAtom.selectedCategoryAtom);
   const isAll = !category || category === 'all';
 
-  const { data, isLoading, isRefetching, isFetching } = useQuery(
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
     ['mainFeed', category],
-    () => getHighlightListApi(isAll ? undefined : category),
+    ({ pageParam }) =>
+      getHighlightListApi(isAll ? undefined : category, pageParam),
     {
       refetchOnWindowFocus: false,
-      initialData: isAll ? highlightList : [],
+      initialData: {
+        pages: [{ highlightList: isAll ? highlightList : [], totalCount }],
+        pageParams: [0],
+      },
+      getNextPageParam: (lastPage, allPages) => {
+        const { totalCount } = lastPage;
+        const accmulatUtterances = allPages.reduce(
+          (acc, obj) => acc + obj.highlightList.length,
+          0,
+        );
+        if (accmulatUtterances >= totalCount) return undefined;
+        return accmulatUtterances === 20 ? 20 : accmulatUtterances;
+      },
     },
   );
 
   return {
-    highlightList: data,
+    fetchNextPage,
+    highlightList: data?.pages?.map((x) => x.highlightList).flat() || [],
+    isFetchingNextPage,
+    hasNextPage,
     isLoading,
     isRefetching,
     isFetching,
@@ -99,6 +127,23 @@ export function useRelatedHighlight() {
   return {
     relatedHighlightList: data || [],
     refetch,
+    isLoading,
+  };
+}
+
+export function useHighlightLike() {
+  const router = useRouter();
+  const highlightId = Number(router.query.highlightId);
+
+  const { data, isLoading, refetch } = useQuery(
+    ['highlightLike', highlightId],
+    () => getHighlightLikeApi(highlightId),
+    {
+      enabled: !!highlightId,
+    },
+  );
+  return {
+    highlightLike: data,
     isLoading,
   };
 }

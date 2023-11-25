@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
@@ -8,6 +7,7 @@ import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import AddMusicItem from '@/components/global/AddMusicItem';
+import HighlightPosterText from '@/components/global/HighlightItem/components/HighlightPosterText';
 import HighlightItem from '@/components/global/HighlightItem/HighlightItem';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -22,16 +22,6 @@ import { useTabParam } from '@/hooks/utils/route.utils';
 import HeaderTemplate from '@/templates/HeaderTemplate';
 import type { Highlight, Song } from '@/types/server.type';
 import { getImageData } from '@/utils/image.util';
-
-const DynamicText = dynamic(
-  () =>
-    import(
-      '../../components/global/HighlightItem/components/HighlightPosterText'
-    ),
-  {
-    ssr: true,
-  },
-);
 
 type HighlightDetailProps = {
   highlightDetail: Highlight;
@@ -141,7 +131,11 @@ function HighlightDetail(props: HighlightDetailProps) {
                 priority
                 alt="mainImage"
               />
-              <DynamicText title={props.highlightDetail.title} />
+
+              <HighlightPosterText
+                title={props.highlightDetail.title}
+                count={props.highlightDetail._count?.highlightLike}
+              />
             </div>
           </SwiperSlide>
           {highlightDetail?.highlightImage.slice(1).map((x) => {
@@ -211,7 +205,7 @@ function HighlightDetail(props: HighlightDetailProps) {
 }
 
 export async function getStaticPaths() {
-  const highlightList = await getHighlightListApi();
+  const { highlightList } = await getHighlightListApi();
   const paths = highlightList.map((x) => {
     return {
       params: { highlightId: x.id.toString() },

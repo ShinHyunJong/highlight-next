@@ -1,12 +1,13 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
 import { Spinner } from 'react-activity';
 import { FaApple, FaEnvelope, FaGoogle } from 'react-icons/fa';
 
+import { globalAtom } from '@/atoms';
 import authAtom from '@/atoms/auth';
 import { useAuth } from '@/hooks/auth';
 import { api } from '@/requests';
@@ -23,6 +24,7 @@ function Auth() {
   const [selectedPickSong, setSelectedPickSong] = useAtom(
     authAtom.selectedPickSong,
   );
+  const afterLoginUrl = useAtomValue(globalAtom.afterLoginUrlAtom);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -30,8 +32,12 @@ function Auth() {
     setSelectedPickSong([]);
     setAccessToken(router.query.accessToken.toString());
     getUser();
-    router.replace('/profile');
-  }, [router]);
+    if (afterLoginUrl) {
+      router.replace(afterLoginUrl);
+    } else {
+      router.replace('/profile');
+    }
+  }, [router, afterLoginUrl]);
 
   const handleApple = () => {
     setAppleLoading(true);

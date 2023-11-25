@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import Image from 'next/image';
 import Link from 'next/link';
 import whiteLogo from 'public/assets/images/highlight_white.png';
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useForm } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
 
@@ -19,10 +20,15 @@ type FormValues = {
   term: string;
 };
 
-function HomeScreen(props: { highlightList: Highlight[] }) {
-  const { highlightList, isLoading, isRefetching } = useHighlightList(
-    props.highlightList,
-  );
+function HomeScreen(props: { highlightList: Highlight[]; totalCount: number }) {
+  const {
+    highlightList,
+    isLoading,
+    isRefetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useHighlightList(props.highlightList, props.totalCount);
   const [category, setCategory] = useAtom(globalAtom.selectedCategoryAtom);
   const isAll = !category || category === 'all';
 
@@ -36,7 +42,7 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
     if (!isAll && isRefetching) {
       const list = Array.from({ length: 4 }).map((_, i) => i);
       return list.map((x) => (
-        <Skeleton className="aspect-[4/5]" key={`skeleton-${x}`} />
+        <Skeleton style={{ aspectRatio: 0.57 }} key={`skeleton-${x}`} />
       ));
     }
     return highlightList?.map((h) => {
@@ -51,6 +57,24 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
       );
     });
   };
+
+  const renderNextLoading = () => {
+    if (isFetchingNextPage) {
+      const list = Array.from({ length: 2 }).map((_, i) => i);
+      return list.map((x) => (
+        <Skeleton style={{ aspectRatio: 0.57 }} key={`skeleton-${x}`} />
+      ));
+    }
+    return null;
+  };
+
+  const handleNextPage = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useBottomScrollListener(handleNextPage);
 
   return (
     <HeaderTemplate transparent title="">
@@ -81,11 +105,12 @@ function HomeScreen(props: { highlightList: Highlight[] }) {
             listen to!
           </h1>
         </div>
-        <div className="my-4">
+        <div className="sticky top-0 z-40 bg-gray-900 py-4">
           <CategorySelector hasAll value={category} onChange={setCategory} />
         </div>
         <div className="mb-4 grid grid-cols-2 gap-x-2 gap-y-4">
           {renderContent()}
+          {renderNextLoading()}
         </div>
       </section>
     </HeaderTemplate>

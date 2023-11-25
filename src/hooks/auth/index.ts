@@ -1,6 +1,7 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 
+import { globalAtom } from '@/atoms';
 import authAtom from '@/atoms/auth';
 import uploadAtom from '@/atoms/upload';
 import { useToast } from '@/components/ui/use-toast';
@@ -46,6 +47,7 @@ export const useAuth = () => {
   const [deleteingSongList, setDeleteingSongList] = useAtom(
     uploadAtom.deletingSongList,
   );
+  const afterLoginUrl = useAtomValue(globalAtom.afterLoginUrlAtom);
   const { toast } = useToast();
 
   const initilizeUploadingAsessts = () => {
@@ -105,7 +107,11 @@ export const useAuth = () => {
       // setUser(result.user);
       setPickedSongList([]);
       setSignInLoading(false);
-      router.replace('/profile');
+      if (afterLoginUrl) {
+        router.replace(afterLoginUrl);
+      } else {
+        router.replace('/profile');
+      }
     } catch (error) {
       setSignInLoading(false);
     }

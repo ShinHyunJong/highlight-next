@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router';
-import { useBottomScrollListener } from 'react-bottom-scroll-listener';
-
 import HomeScreen from '@/components/home/HomeScreen';
 import { getHighlightListApi } from '@/hooks/highlight/api';
 import type { Highlight } from '@/types/server.type';
@@ -16,16 +13,11 @@ const firebaseConfig = {
 };
 
 type IndexProps = {
-  highLightList: Highlight[];
+  totalCount: number;
+  highlightList: Highlight[];
 };
 
 const Index = (props: IndexProps) => {
-  const router = useRouter();
-  const callback = () => {
-    console.log('bottom');
-  };
-  useBottomScrollListener(callback);
-
   // const onMessageFCM = async () => {
   //   const isSupported = () =>
   //     'Notification' in window &&
@@ -64,14 +56,20 @@ const Index = (props: IndexProps) => {
   //   });
   // };
 
-  return <HomeScreen highlightList={props.highLightList} />;
+  return (
+    <HomeScreen
+      totalCount={props.totalCount}
+      highlightList={props.highlightList}
+    />
+  );
 };
 
 export async function getStaticProps() {
-  const highLightList = await getHighlightListApi();
+  const { totalCount, highlightList } = await getHighlightListApi();
   return {
     props: {
-      highLightList,
+      totalCount,
+      highlightList,
     },
     revalidate: 60,
   };

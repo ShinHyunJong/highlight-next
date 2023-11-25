@@ -44,6 +44,7 @@ export type Highlight = {
   category?: string | null;
   createdAt: Date;
   updatedAt: Date;
+  _count?: HighlightLikeCount;
 };
 
 export type HighlightSong = {
@@ -52,6 +53,17 @@ export type HighlightSong = {
   songId: number;
   song?: Song;
   order: number;
+};
+
+type HighlightLikeCount = {
+  highlightLike: number;
+};
+
+export type HighlightLike = {
+  id: number;
+  highlightId: number;
+  userId: number;
+  createdAt?: Date;
 };
 
 export type HighlightImage = {
