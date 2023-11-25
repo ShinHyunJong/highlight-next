@@ -33,6 +33,10 @@ function HighlightPosterText({ title, count }: HighlightPosterTextProps) {
     }
   }, [highlightLike]);
 
+  useEffect(() => {
+    setCount(count);
+  }, [count]);
+
   const handleLike = async () => {
     if (!highlightId || isLoading) return;
     if (!user) {

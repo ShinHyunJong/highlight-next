@@ -65,11 +65,7 @@ const Index = (props: IndexProps) => {
 };
 
 export async function getStaticProps() {
-  const { totalCount, highlightList } = await getHighlightListApi(
-    undefined,
-    0,
-    true,
-  );
+  const { totalCount, highlightList } = await getHighlightListApi(undefined, 0);
   return {
     props: {
       totalCount,
