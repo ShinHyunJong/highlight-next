@@ -175,13 +175,23 @@ function ProfileScreen() {
         </div>
         <div className="w-full rounded-t-xl bg-gray-900 p-4 pb-8">
           <div className="grid grid-cols-2 gap-4">
-            {renderHighlight()}
             <label
-              className="relative flex aspect-[4/5] cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
               htmlFor="upload"
+              className="relative flex cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200"
+              style={{ aspectRatio: 0.57 }}
             >
-              <FaPlus />
+              <Button>
+                <label
+                  className="flex cursor-pointer items-center gap-1"
+                  htmlFor="upload"
+                >
+                  <FaPlus />
+                  <p>New Post</p>
+                </label>
+              </Button>
             </label>
+            {renderHighlight()}
+
             <input
               onChange={handleFile}
               multiple

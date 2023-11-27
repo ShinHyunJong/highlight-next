@@ -1,3 +1,5 @@
+'use client';
+
 import LinesEllipsis from 'react-lines-ellipsis';
 
 type HighlightTextProps = {

@@ -75,7 +75,8 @@ export function useHighlightList(
           (acc, obj) => acc + obj.highlightList.length,
           0,
         );
-        if (accmulatUtterances >= totalCount) return undefined;
+        if (accmulatUtterances >= totalCount || accmulatUtterances < 20)
+          return undefined;
         return accmulatUtterances === 20 ? 20 : accmulatUtterances;
       },
     },

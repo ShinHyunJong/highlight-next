@@ -72,6 +72,7 @@ function HighlightItem({
           )}
           <Image
             unoptimized
+            priority
             fill
             alt={highlightImage.url}
             src={highlightImage.url}

@@ -105,7 +105,7 @@ function HomeScreen(props: { highlightList: Highlight[]; totalCount: number }) {
             listen to!
           </h1>
         </div>
-        <div className="sticky top-0 z-40 bg-gray-900 py-4">
+        <div className="sticky top-0 z-50 bg-gray-900 py-4">
           <CategorySelector hasAll value={category} onChange={setCategory} />
         </div>
         <div className="mb-4 grid grid-cols-2 gap-x-2 gap-y-4">
