@@ -134,7 +134,7 @@ function HighlightDetail(props: HighlightDetailProps) {
 
               <HighlightPosterText
                 title={props.highlightDetail.title}
-                count={props.highlightDetail._count?.highlightLike!}
+                count={highlightDetail?._count?.highlightLike!}
               />
             </div>
           </SwiperSlide>
