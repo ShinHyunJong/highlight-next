@@ -133,7 +133,7 @@ function HighlightDetail(props: HighlightDetailProps) {
               />
 
               <HighlightPosterText
-                title={props.highlightDetail.title}
+                title={highlightDetail?.title || ''}
                 count={highlightDetail?._count?.highlightLike!}
               />
             </div>
